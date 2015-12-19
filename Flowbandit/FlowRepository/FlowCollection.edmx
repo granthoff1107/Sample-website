@@ -1,0 +1,801 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="FlowCollectionModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar" MaxLength="2048" Nullable="false" />
+          <Property Name="Created" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="Last Modified" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="Entry" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Visible" Type="bit" Nullable="false" />
+          <Property Name="FK_UserID" Type="int" />
+          <Property Name="CoverPhotoUrl" Type="nvarchar" MaxLength="2083" />
+        </EntityType>
+        <EntityType Name="PostComment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="2048" Nullable="false" />
+          <Property Name="Created" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="FK_UserID" Type="int" />
+          <Property Name="FK_ParentID" Type="int" />
+          <Property Name="FK_PostID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PrivilegeLevel">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tag">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TagsToPost">
+          <Key>
+            <PropertyRef Name="FK_TagID" />
+            <PropertyRef Name="FK_PostID" />
+          </Key>
+          <Property Name="FK_TagID" Type="int" Nullable="false" />
+          <Property Name="FK_PostID" Type="int" Nullable="false" />
+          <Property Name="BS" Type="bit" />
+        </EntityType>
+        <EntityType Name="TagsToVideo">
+          <Key>
+            <PropertyRef Name="FK_TagID" />
+            <PropertyRef Name="FK_VideoID" />
+          </Key>
+          <Property Name="FK_TagID" Type="int" Nullable="false" />
+          <Property Name="FK_VideoID" Type="int" Nullable="false" />
+          <Property Name="BS" Type="bit" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="1024" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="FK_PrivilegelevelID" Type="int" Nullable="false" />
+          <Property Name="Created" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="Verified" Type="bit" Nullable="false" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="2083" />
+        </EntityType>
+        <EntityType Name="Video">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Created" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="ThumbnailUrl" Type="nvarchar" MaxLength="2083" Nullable="false" />
+          <Property Name="VideoUrl" Type="nvarchar" MaxLength="2083" Nullable="false" />
+          <Property Name="Visible" Type="bit" Nullable="false" />
+          <Property Name="FK_UserID" Type="int" />
+        </EntityType>
+        <EntityType Name="VideoComment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="2048" Nullable="false" />
+          <Property Name="Created" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="FK_VideoID" Type="int" Nullable="false" />
+          <Property Name="FK_UserID" Type="int" />
+          <Property Name="FK_ParentID" Type="int" />
+        </EntityType>
+        <Association Name="FK_Blog_Users">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Post" Type="Self.Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="FK_UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Comment">
+          <End Role="PostComment" Type="Self.PostComment" Multiplicity="0..1" />
+          <End Role="PostComment1" Type="Self.PostComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PostComment">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PostComment1">
+              <PropertyRef Name="FK_ParentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Post">
+          <End Role="Post" Type="Self.Post" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="PostComment" Type="Self.PostComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PostComment">
+              <PropertyRef Name="FK_PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="PostComment" Type="Self.PostComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PostComment">
+              <PropertyRef Name="FK_UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TagsToPost_Post">
+          <End Role="Post" Type="Self.Post" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TagsToPost" Type="Self.TagsToPost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TagsToPost">
+              <PropertyRef Name="FK_PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TagsToPost_Tag">
+          <End Role="Tag" Type="Self.Tag" Multiplicity="1" />
+          <End Role="TagsToPost" Type="Self.TagsToPost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tag">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TagsToPost">
+              <PropertyRef Name="FK_TagID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TagsToVideo_Tag">
+          <End Role="Tag" Type="Self.Tag" Multiplicity="1" />
+          <End Role="TagsToVideo" Type="Self.TagsToVideo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tag">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TagsToVideo">
+              <PropertyRef Name="FK_TagID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TagsToVideo_Video">
+          <End Role="Video" Type="Self.Video" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TagsToVideo" Type="Self.TagsToVideo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Video">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TagsToVideo">
+              <PropertyRef Name="FK_VideoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_PrivilegeLevel">
+          <End Role="PrivilegeLevel" Type="Self.PrivilegeLevel" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PrivilegeLevel">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="FK_PrivilegelevelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Video_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Video" Type="Self.Video" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Video">
+              <PropertyRef Name="FK_UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VideoComment_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="VideoComment" Type="Self.VideoComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="VideoComment">
+              <PropertyRef Name="FK_UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VideoComment_Video">
+          <End Role="Video" Type="Self.Video" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="VideoComment" Type="Self.VideoComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Video">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="VideoComment">
+              <PropertyRef Name="FK_VideoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VideoComment_VideoComment">
+          <End Role="VideoComment" Type="Self.VideoComment" Multiplicity="0..1" />
+          <End Role="VideoComment1" Type="Self.VideoComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VideoComment">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="VideoComment1">
+              <PropertyRef Name="FK_ParentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FlowCollectionModelStoreContainer">
+          <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PostComment" EntityType="Self.PostComment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PrivilegeLevel" EntityType="Self.PrivilegeLevel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tag" EntityType="Self.Tag" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TagsToPost" EntityType="Self.TagsToPost" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TagsToVideo" EntityType="Self.TagsToVideo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Video" EntityType="Self.Video" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VideoComment" EntityType="Self.VideoComment" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Blog_Users" Association="Self.FK_Blog_Users">
+            <End Role="User" EntitySet="User" />
+            <End Role="Post" EntitySet="Post" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Comment" Association="Self.FK_Comment_Comment">
+            <End Role="PostComment" EntitySet="PostComment" />
+            <End Role="PostComment1" EntitySet="PostComment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Post" Association="Self.FK_Comment_Post">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="PostComment" EntitySet="PostComment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_User" Association="Self.FK_Comment_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="PostComment" EntitySet="PostComment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TagsToPost_Post" Association="Self.FK_TagsToPost_Post">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="TagsToPost" EntitySet="TagsToPost" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TagsToPost_Tag" Association="Self.FK_TagsToPost_Tag">
+            <End Role="Tag" EntitySet="Tag" />
+            <End Role="TagsToPost" EntitySet="TagsToPost" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TagsToVideo_Tag" Association="Self.FK_TagsToVideo_Tag">
+            <End Role="Tag" EntitySet="Tag" />
+            <End Role="TagsToVideo" EntitySet="TagsToVideo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TagsToVideo_Video" Association="Self.FK_TagsToVideo_Video">
+            <End Role="Video" EntitySet="Video" />
+            <End Role="TagsToVideo" EntitySet="TagsToVideo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_PrivilegeLevel" Association="Self.FK_Users_PrivilegeLevel">
+            <End Role="PrivilegeLevel" EntitySet="PrivilegeLevel" />
+            <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Video_User" Association="Self.FK_Video_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Video" EntitySet="Video" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VideoComment_User" Association="Self.FK_VideoComment_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="VideoComment" EntitySet="VideoComment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VideoComment_Video" Association="Self.FK_VideoComment_Video">
+            <End Role="Video" EntitySet="Video" />
+            <End Role="VideoComment" EntitySet="VideoComment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VideoComment_VideoComment" Association="Self.FK_VideoComment_VideoComment">
+            <End Role="VideoComment" EntitySet="VideoComment" />
+            <End Role="VideoComment1" EntitySet="VideoComment" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FlowCollectionModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Last_Modified" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Entry" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Visible" Type="Boolean" Nullable="false" />
+          <Property Name="FK_UserID" Type="Int32" />
+          <Property Name="CoverPhotoUrl" Type="String" MaxLength="2083" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Blog_Users" FromRole="Post" ToRole="User" />
+          <NavigationProperty Name="TagsToPosts" Relationship="Self.FK_TagsToPost_Post" FromRole="Post" ToRole="TagsToPost" />
+          <NavigationProperty Name="PostComments" Relationship="FlowCollectionModel.FK_Comment_Post" FromRole="Post" ToRole="PostComment" />
+        </EntityType>
+        <EntityType Name="PrivilegeLevel">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="Self.FK_Users_PrivilegeLevel" FromRole="PrivilegeLevel" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Tag">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="TagsToPosts" Relationship="Self.FK_TagsToPost_Tag" FromRole="Tag" ToRole="TagsToPost" />
+          <NavigationProperty Name="TagsToVideos" Relationship="Self.FK_TagsToVideo_Tag" FromRole="Tag" ToRole="TagsToVideo" />
+        </EntityType>
+        <EntityType Name="TagsToPost">
+          <Key>
+            <PropertyRef Name="FK_TagID" />
+            <PropertyRef Name="FK_PostID" />
+          </Key>
+          <Property Name="FK_TagID" Type="Int32" Nullable="false" />
+          <Property Name="FK_PostID" Type="Int32" Nullable="false" />
+          <Property Name="BS" Type="Boolean" />
+          <NavigationProperty Name="Post" Relationship="Self.FK_TagsToPost_Post" FromRole="TagsToPost" ToRole="Post" />
+          <NavigationProperty Name="Tag" Relationship="Self.FK_TagsToPost_Tag" FromRole="TagsToPost" ToRole="Tag" />
+        </EntityType>
+        <EntityType Name="TagsToVideo">
+          <Key>
+            <PropertyRef Name="FK_TagID" />
+            <PropertyRef Name="FK_VideoID" />
+          </Key>
+          <Property Name="FK_TagID" Type="Int32" Nullable="false" />
+          <Property Name="FK_VideoID" Type="Int32" Nullable="false" />
+          <Property Name="BS" Type="Boolean" />
+          <NavigationProperty Name="Tag" Relationship="Self.FK_TagsToVideo_Tag" FromRole="TagsToVideo" ToRole="Tag" />
+          <NavigationProperty Name="Video" Relationship="Self.FK_TagsToVideo_Video" FromRole="TagsToVideo" ToRole="Video" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Username" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FK_PrivilegelevelID" Type="Int32" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Verified" Type="Boolean" Nullable="false" />
+          <Property Name="ImageUrl" Type="String" MaxLength="2083" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Posts" Relationship="Self.FK_Blog_Users" FromRole="User" ToRole="Post" />
+          <NavigationProperty Name="PrivilegeLevel" Relationship="Self.FK_Users_PrivilegeLevel" FromRole="User" ToRole="PrivilegeLevel" />
+          <NavigationProperty Name="Videos" Relationship="Self.FK_Video_User" FromRole="User" ToRole="Video" />
+          <NavigationProperty Name="VideoComments" Relationship="Self.FK_VideoComment_User" FromRole="User" ToRole="VideoComment" />
+          <NavigationProperty Name="PostComments" Relationship="FlowCollectionModel.FK_Comment_User" FromRole="User" ToRole="PostComment" />
+        </EntityType>
+        <EntityType Name="Video">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="ThumbnailUrl" Type="String" MaxLength="2083" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="VideoUrl" Type="String" MaxLength="2083" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Visible" Type="Boolean" Nullable="false" />
+          <Property Name="FK_UserID" Type="Int32" />
+          <NavigationProperty Name="TagsToVideos" Relationship="Self.FK_TagsToVideo_Video" FromRole="Video" ToRole="TagsToVideo" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Video_User" FromRole="Video" ToRole="User" />
+          <NavigationProperty Name="VideoComments" Relationship="Self.FK_VideoComment_Video" FromRole="Video" ToRole="VideoComment" />
+        </EntityType>
+        <EntityType Name="VideoComment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Comment" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="FK_VideoID" Type="Int32" Nullable="false" />
+          <Property Name="FK_UserID" Type="Int32" />
+          <Property Name="FK_ParentID" Type="Int32" />
+          <NavigationProperty Name="User" Relationship="Self.FK_VideoComment_User" FromRole="VideoComment" ToRole="User" />
+          <NavigationProperty Name="Video" Relationship="Self.FK_VideoComment_Video" FromRole="VideoComment" ToRole="Video" />
+          <NavigationProperty Name="VideoComment1" Relationship="Self.FK_VideoComment_VideoComment" FromRole="VideoComment" ToRole="VideoComment1" />
+          <NavigationProperty Name="VideoComment2" Relationship="Self.FK_VideoComment_VideoComment" FromRole="VideoComment1" ToRole="VideoComment" />
+        </EntityType>
+        <Association Name="FK_Blog_Users">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Post" Type="Self.Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="FK_UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TagsToPost_Post">
+          <End Role="Post" Type="Self.Post" Multiplicity="1" />
+          <End Role="TagsToPost" Type="Self.TagsToPost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TagsToPost">
+              <PropertyRef Name="FK_PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Users_PrivilegeLevel">
+          <End Role="PrivilegeLevel" Type="Self.PrivilegeLevel" Multiplicity="1" />
+          <End Role="User" Type="Self.User" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PrivilegeLevel">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="User">
+              <PropertyRef Name="FK_PrivilegelevelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TagsToPost_Tag">
+          <End Role="Tag" Type="Self.Tag" Multiplicity="1" />
+          <End Role="TagsToPost" Type="Self.TagsToPost" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tag">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TagsToPost">
+              <PropertyRef Name="FK_TagID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TagsToVideo_Tag">
+          <End Role="Tag" Type="Self.Tag" Multiplicity="1" />
+          <End Role="TagsToVideo" Type="Self.TagsToVideo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tag">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TagsToVideo">
+              <PropertyRef Name="FK_TagID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TagsToVideo_Video">
+          <End Role="Video" Type="Self.Video" Multiplicity="1" />
+          <End Role="TagsToVideo" Type="Self.TagsToVideo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Video">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="TagsToVideo">
+              <PropertyRef Name="FK_VideoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Video_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Video" Type="Self.Video" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Video">
+              <PropertyRef Name="FK_UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VideoComment_User">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="VideoComment" Type="Self.VideoComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="VideoComment">
+              <PropertyRef Name="FK_UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VideoComment_Video">
+          <End Role="Video" Type="Self.Video" Multiplicity="1" />
+          <End Role="VideoComment" Type="Self.VideoComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Video">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="VideoComment">
+              <PropertyRef Name="FK_VideoID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VideoComment_VideoComment">
+          <End Role="VideoComment" Type="Self.VideoComment" Multiplicity="0..1" />
+          <End Role="VideoComment1" Type="Self.VideoComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VideoComment">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="VideoComment1">
+              <PropertyRef Name="FK_ParentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FlowCollectionEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Posts" EntityType="Self.Post" />
+          <EntitySet Name="PrivilegeLevels" EntityType="Self.PrivilegeLevel" />
+          <EntitySet Name="Tags" EntityType="Self.Tag" />
+          <EntitySet Name="TagsToPosts" EntityType="Self.TagsToPost" />
+          <EntitySet Name="TagsToVideos" EntityType="Self.TagsToVideo" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="Videos" EntityType="Self.Video" />
+          <EntitySet Name="VideoComments" EntityType="Self.VideoComment" />
+          <AssociationSet Name="FK_Blog_Users" Association="Self.FK_Blog_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Post" EntitySet="Posts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TagsToPost_Post" Association="Self.FK_TagsToPost_Post">
+            <End Role="Post" EntitySet="Posts" />
+            <End Role="TagsToPost" EntitySet="TagsToPosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Users_PrivilegeLevel" Association="Self.FK_Users_PrivilegeLevel">
+            <End Role="PrivilegeLevel" EntitySet="PrivilegeLevels" />
+            <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TagsToPost_Tag" Association="Self.FK_TagsToPost_Tag">
+            <End Role="Tag" EntitySet="Tags" />
+            <End Role="TagsToPost" EntitySet="TagsToPosts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TagsToVideo_Tag" Association="Self.FK_TagsToVideo_Tag">
+            <End Role="Tag" EntitySet="Tags" />
+            <End Role="TagsToVideo" EntitySet="TagsToVideos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TagsToVideo_Video" Association="Self.FK_TagsToVideo_Video">
+            <End Role="Video" EntitySet="Videos" />
+            <End Role="TagsToVideo" EntitySet="TagsToVideos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Video_User" Association="Self.FK_Video_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Video" EntitySet="Videos" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VideoComment_User" Association="Self.FK_VideoComment_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="VideoComment" EntitySet="VideoComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VideoComment_Video" Association="Self.FK_VideoComment_Video">
+            <End Role="Video" EntitySet="Videos" />
+            <End Role="VideoComment" EntitySet="VideoComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VideoComment_VideoComment" Association="Self.FK_VideoComment_VideoComment">
+            <End Role="VideoComment" EntitySet="VideoComments" />
+            <End Role="VideoComment1" EntitySet="VideoComments" />
+          </AssociationSet>
+          <EntitySet Name="PostComments" EntityType="FlowCollectionModel.PostComment" />
+          <AssociationSet Name="FK_Comment_Post" Association="FlowCollectionModel.FK_Comment_Post">
+            <End Role="Post" EntitySet="Posts" />
+            <End Role="PostComment" EntitySet="PostComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_Comment" Association="FlowCollectionModel.FK_Comment_Comment">
+            <End Role="PostComment" EntitySet="PostComments" />
+            <End Role="PostComment1" EntitySet="PostComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Comment_User" Association="FlowCollectionModel.FK_Comment_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="PostComment" EntitySet="PostComments" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="PostComment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Comment" Type="String" Nullable="false" MaxLength="2048" FixedLength="false" Unicode="true" />
+          <Property Name="Created" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="FK_UserID" Type="Int32" />
+          <Property Name="FK_ParentID" Type="Int32" />
+          <Property Name="FK_PostID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Post" Relationship="FlowCollectionModel.FK_Comment_Post" FromRole="PostComment" ToRole="Post" />
+          <NavigationProperty Name="PostComment1" Relationship="FlowCollectionModel.FK_Comment_Comment" FromRole="PostComment" ToRole="PostComment1" />
+          <NavigationProperty Name="PostComment2" Relationship="FlowCollectionModel.FK_Comment_Comment" FromRole="PostComment1" ToRole="PostComment" />
+          <NavigationProperty Name="User" Relationship="FlowCollectionModel.FK_Comment_User" FromRole="PostComment" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Comment_Post">
+          <End Type="FlowCollectionModel.Post" Role="Post" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="FlowCollectionModel.PostComment" Role="PostComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PostComment">
+              <PropertyRef Name="FK_PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_Comment">
+          <End Type="FlowCollectionModel.PostComment" Role="PostComment" Multiplicity="0..1" />
+          <End Type="FlowCollectionModel.PostComment" Role="PostComment1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PostComment">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PostComment1">
+              <PropertyRef Name="FK_ParentID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Comment_User">
+          <End Type="FlowCollectionModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="FlowCollectionModel.PostComment" Role="PostComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="PostComment">
+              <PropertyRef Name="FK_UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FlowCollectionModelStoreContainer" CdmEntityContainer="FlowCollectionEntities">
+          <EntitySetMapping Name="Posts">
+            <EntityTypeMapping TypeName="FlowCollectionModel.Post">
+              <MappingFragment StoreEntitySet="Post">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Last_Modified" ColumnName="Last Modified" />
+                <ScalarProperty Name="Entry" ColumnName="Entry" />
+                <ScalarProperty Name="Visible" ColumnName="Visible" />
+                <ScalarProperty Name="FK_UserID" ColumnName="FK_UserID" />
+                <ScalarProperty Name="CoverPhotoUrl" ColumnName="CoverPhotoUrl" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PrivilegeLevels">
+            <EntityTypeMapping TypeName="FlowCollectionModel.PrivilegeLevel">
+              <MappingFragment StoreEntitySet="PrivilegeLevel">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tags">
+            <EntityTypeMapping TypeName="FlowCollectionModel.Tag">
+              <MappingFragment StoreEntitySet="Tag">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TagsToPosts">
+            <EntityTypeMapping TypeName="FlowCollectionModel.TagsToPost">
+              <MappingFragment StoreEntitySet="TagsToPost">
+                <ScalarProperty Name="FK_TagID" ColumnName="FK_TagID" />
+                <ScalarProperty Name="FK_PostID" ColumnName="FK_PostID" />
+                <ScalarProperty Name="BS" ColumnName="BS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TagsToVideos">
+            <EntityTypeMapping TypeName="FlowCollectionModel.TagsToVideo">
+              <MappingFragment StoreEntitySet="TagsToVideo">
+                <ScalarProperty Name="FK_TagID" ColumnName="FK_TagID" />
+                <ScalarProperty Name="FK_VideoID" ColumnName="FK_VideoID" />
+                <ScalarProperty Name="BS" ColumnName="BS" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="FlowCollectionModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="FK_PrivilegelevelID" ColumnName="FK_PrivilegelevelID" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Verified" ColumnName="Verified" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Videos">
+            <EntityTypeMapping TypeName="FlowCollectionModel.Video">
+              <MappingFragment StoreEntitySet="Video">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="ThumbnailUrl" ColumnName="ThumbnailUrl" />
+                <ScalarProperty Name="VideoUrl" ColumnName="VideoUrl" />
+                <ScalarProperty Name="Visible" ColumnName="Visible" />
+                <ScalarProperty Name="FK_UserID" ColumnName="FK_UserID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VideoComments">
+            <EntityTypeMapping TypeName="FlowCollectionModel.VideoComment">
+              <MappingFragment StoreEntitySet="VideoComment">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="FK_VideoID" ColumnName="FK_VideoID" />
+                <ScalarProperty Name="FK_UserID" ColumnName="FK_UserID" />
+                <ScalarProperty Name="FK_ParentID" ColumnName="FK_ParentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PostComments">
+            <EntityTypeMapping TypeName="FlowCollectionModel.PostComment">
+              <MappingFragment StoreEntitySet="PostComment">
+                <ScalarProperty Name="FK_PostID" ColumnName="FK_PostID" />
+                <ScalarProperty Name="FK_ParentID" ColumnName="FK_ParentID" />
+                <ScalarProperty Name="FK_UserID" ColumnName="FK_UserID" />
+                <ScalarProperty Name="Created" ColumnName="Created" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

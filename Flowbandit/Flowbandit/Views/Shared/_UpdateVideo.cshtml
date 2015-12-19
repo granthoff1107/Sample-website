@@ -1,0 +1,99 @@
+﻿@model Flowbandit.Models.VideoVM
+
+<h1 class="page-header">
+    Dashboard
+    <small>Subheading</small>
+</h1>
+<ol class="breadcrumb">
+    <li>
+        <i class="fa fa-dashboard"></i>  <a href="#">#Tags</a>
+    </li>
+    <li class="active">
+        <i class="fa fa-file"></i> #tag2
+    </li>
+</ol>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Create a new video
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <form role="form" id="newvideoform" method="post" action="@Url.Action("NewVideo")" enctype="multipart/form-data">
+                            <input type="hidden" name="NewVideo.ID" value="@Model.VideoID">
+                            <input type="hidden" name="NewVideo.Created" value="@DateTime.Now.ToString()">
+                            <div class="form-group">
+                                <label>Title</label>
+                                <input class="form-control" name="NewVideo.Name" value="@Model.VideoName" placeholder="Title, Make it catchy">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Video Url</label>
+                                <input class="form-control" name="NewVideo.VideoUrl" value="@Model.VideoUrl" placeholder="https://www.youtube.com/embed/NSxOE-1P2y0">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Thumbnail Url</label>
+                                <input class="form-control" name="NewVideo.ThumbnailUrl" value="@Model.ThumbnailUrl" placeholder="http://img.youtube.com/vi/<insert-youtube-video-id-here>/hqdefault.jpg">
+                            </div>
+                            
+
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea class="form-control tinyMce" name="NewVideo.Description" placeholder="Video Description" rows="12">@Model.Description</textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="ui-widget">
+                                    <label>Tags</label>
+                                    <input class="form-control append-bottom" id="tagsac" placeholder="Tag Your Post">
+                                </div>
+                                <table class="table table-bordered table-condensed">
+                                    <tbody id="suggestedtags">
+                                        <tr>
+                                            <th>Tags</th>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span id="tagtemplate" class="label bg-light-blue suggesttag hidden">Juggling<a class="closetag" href="#">&nbsp;<i class="fa fa-times white"></i></a></span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <div class="checkbox">
+                                            <label>
+                                                <input type="checkbox" checked="checked" name="NewVideo.Visible" value="@Model.isVisible.ToString().ToLower()">&nbsp;Is Visible
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="pull-right">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.col-lg-6 (nested) -->
+                    <div class="col-lg-6" id="preview">
+
+                    </div>
+                </div>
+                <!-- /.row (nested) -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>

@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Flowbandit.Models.IComment>
+
+@using Flowbandit.Models;
+
+
+
+@helper GenerateComments(IEnumerable<IComment> Comments)
+{
+    foreach (var com in Comments)
+    {
+        <div class="media append-bottom">
+            <a class="pull-left" href="#">
+                <img class="media-object" src="@com.UserProfilePicUrl" alt="In A comment">
+            </a>
+            <div class="media-body">
+                <h4 class="media-heading">
+                    @com.Username;
+                    <small>@com.Created</small>
+                </h4>
+                @com.CommentText
+
+
+                @*
+                    This Doesn't work for some reason
+                    @if(com.hasChildren)
+                    {
+                        GenerateComments(com.Children);
+                    }*@
+
+            </div>
+        </div>
+    }
+}
+@GenerateComments(Model)
+
+

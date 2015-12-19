@@ -1,0 +1,49 @@
+﻿@model Flowbandit.Models.VideosVM
+
+
+@{
+    ViewBag.Title = "Video";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section AdditionalScripts
+{
+    <script src="~/Content/js/FlowJS/InfiniteScroll.js"></script>
+    <script>
+        $(function () {
+
+            $('#videoPageNumber').val(1);
+
+            var setVideoElements = function () { setElementsHeight('.videothumbnail'); };
+
+            //loads when the window loads body load doesn't fire for some reason
+            $(window).load(function () {
+                setVideoElements();
+            });
+
+            //Loads after infinite scroll fires
+            $('body').on('load', setVideoElements);
+
+            $(window).resize(function () {
+                clearHeight('.videothumbnail');
+                setVideoElements();
+            });
+
+            scrollListener('@Url.Action("GetVideos")', '#videocontent', '#videoPageNumber', '@Model.TotalPages', setVideoElements )
+        });
+    </script>
+}
+
+<input type="hidden" id="videoPageNumber" value="1">
+    <header class="jumbotron hero-spacer">
+        <h1>Featured Video's</h1>
+        <p>Check out the new video's on Flowbandit, Don't enjoy yourself too much.</p>
+    </header>
+    <hr>
+    <!-- Title -->
+    
+    <!-- /.row -->
+    <!-- Page Features -->
+<div id="videocontent">
+    @Html.Partial("_VideosContent", Model)
+</div>

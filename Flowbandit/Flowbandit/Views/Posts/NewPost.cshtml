@@ -1,0 +1,31 @@
+﻿@using Flowbandit.Models;
+
+@{
+    ViewBag.Title = "NewPost";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section AdditionalScripts
+{
+    <script src="~/Scripts/tinymce/tinymce.js"></script>
+    <script src="~/Content/js/FlowJS/Flowglobals.js"></script>
+    <link rel="stylesheet" href="~/Content/css/FlowCss/bootstrap-jQuery-autocomplete.css">
+
+    <script type="text/javascript">
+
+        $(function () {
+            TagsAutoComplete('#tagsac', '@Url.Action("TagsAutocomplete", "Posts")', DefaultAddTagsToTable);
+            ActivateCloseTag();
+            OverrideSubmitFormWithTags("#newpostform", ".suggesttag");
+            initTinyMce();
+        });
+          
+    </script>
+}
+
+<div class="row">
+    <div class="hidden"></div>
+    <div class="col-lg-12">
+        @Html.Partial("_UpdatePost", new PostVM())
+    </div>
+</div>
