@@ -27,9 +27,12 @@ $(function() {
     });
 
     var url = window.location;
-    var element = $('ul.nav a').filter(function() {
-        return this.href == url || url.href.indexOf(this.href) == 0;
-    }).addClass('active').parent().parent().addClass('in').parent();
+    var elements = $('ul.nav a').filter(function() {
+        //Consider changing the path locator to be greater than the location.origin incase the path is in the host url
+        return this.href == url || (url.href.indexOf(this.href) == 0 && location.pathname.indexOf(this.href) > -1);
+    })
+
+    var element = elements.addClass('active').parent().parent().addClass('in').parent();
     if (element.is('li')) {
         element.addClass('active');
     }
