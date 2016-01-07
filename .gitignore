@@ -40,6 +40,8 @@ Thumbs.db
 # Files with Sensitive info #
 ######################
 *.config
+*.sou
+*.publishsettings
 
 /Flowbandit/Flowbandit/bin/
 /Flowbandit/Flowbandit/obj/
