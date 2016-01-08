@@ -13,7 +13,6 @@ namespace Flowbandit.Models
         static public string StripHtml(string Value)
         {
             return Regex.Replace(Value, Pattern, string.Empty);
-
         }
     }
 }

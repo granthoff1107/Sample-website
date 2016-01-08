@@ -12,17 +12,13 @@
     <link rel="stylesheet" href="~/Content/css/FlowCss/bootstrap-jQuery-autocomplete.css">
 
     <script type="text/javascript">
-
         $(function () {
             TagsAutoComplete('#tagsac', '@Url.Action("TagsAutocomplete", "Videos")', DefaultAddTagsToTable);
             ActivateCloseTag();
             OverrideSubmitFormWithTags("#newvideoform", ".suggesttag");
             initTinyMce();
         });
-
     </script>
-
-
 
 }
 

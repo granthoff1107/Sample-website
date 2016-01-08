@@ -16,12 +16,9 @@ namespace Flowbandit.Controllers
 
         public VideosController()
         {
-
             var tmpRepo = new VideoRepository();
             InitializerRepository(tmpRepo);
-
         }
-
 
         protected IVideoRepository Repo
         {
@@ -31,12 +28,10 @@ namespace Flowbandit.Controllers
             }
         }
 
-
         public ActionResult Index()
         {
             var tmpViewModel = new VideosVM(Repo);
             return View(tmpViewModel);
-        
         }
 
         public ActionResult GetVideos(int pageNumber)
@@ -76,11 +71,10 @@ namespace Flowbandit.Controllers
             {
                 var urlhelper = new UrlHelper(this.ControllerContext.RequestContext);
 
-                var Results = new List<AutoCompleteResult>();
+                var results = new List<AutoCompleteResult>();
+                results = Repo.TagsStartingWith(term).Select(t => new AutoCompleteResult { label = t.Name, value = t.ID.ToString() }).ToList();
 
-                Results = Repo.TagsStartingWith(term).Select(t => new AutoCompleteResult { label = t.Name, value = t.ID.ToString() }).ToList();
-
-                return Json(Results, JsonRequestBehavior.AllowGet);
+                return Json(results, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
@@ -98,31 +92,28 @@ namespace Flowbandit.Controllers
         {
             var tmpViewModel = new VideoVM(Repo, ID);
             return View(tmpViewModel);
-
         }
-
 
         [HttpPost]
         [Authorize]
         [ValidateInput(false)]
-        public ActionResult NewVideo(Video NewVideo, List<int> TagIDs = null)
+        public ActionResult NewVideo(Video newVideo, List<int> tagIds = null)
         {
             if (ModelState.IsValid && !GlobalInfo.IsAnon)
             {
-
-                NewVideo.FK_UserID = GlobalInfo.User.UserID;
+                newVideo.FK_UserID = GlobalInfo.User.UserID;
                 
-                if(NewVideo.ID == default(int))
+                if(newVideo.ID == default(int))
                 { 
-                    Repo.Add<Video>(NewVideo);
+                    Repo.Add<Video>(newVideo);
                 }
                 else
                 {
-                    Repo.Context.Entry(NewVideo).State = EntityState.Modified;
+                    Repo.Context.Entry(newVideo).State = EntityState.Modified;
                 }
 
                 Repo.SaveChanges();
-                return Json( new  { redirectUrl = Url.Action("Video", new { ID = NewVideo.ID }) });
+                return Json( new  { redirectUrl = Url.Action("Video", new { ID = newVideo.ID }) });
             }
             return RedirectToAction("Index", new { ID = 0 });
         }

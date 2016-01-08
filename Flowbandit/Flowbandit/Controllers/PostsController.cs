@@ -85,7 +85,8 @@ namespace Flowbandit.Controllers
                 {
                     Repo.Context.Entry(NewPost).State = EntityState.Modified;
                 }
-                    Repo.SaveChanges();
+                
+                Repo.SaveChanges();
                 return RedirectToAction("Post", new { ID = NewPost.ID });
             }
             return RedirectToAction("Index", new { ID = 0 });

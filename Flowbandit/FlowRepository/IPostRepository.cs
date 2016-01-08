@@ -13,7 +13,5 @@ namespace FlowRepository
         List<Tag> TagsStartingWith(string term);
 
         Post VisiblePostByIDWithCommentsTagsUsers(int ID);
-
-
     }
 }
