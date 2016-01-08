@@ -1,5 +1,6 @@
 ﻿@model Flowbandit.Models.VideoVM
 
+
 <h1 class="page-header">
     Dashboard
     <small>Subheading</small>
@@ -23,7 +24,7 @@
                     <div class="col-lg-6">
                         <form role="form" id="newvideoform" method="post" action="@Url.Action("NewVideo")" enctype="multipart/form-data">
                             <input type="hidden" name="NewVideo.ID" value="@Model.VideoID">
-                            <input type="hidden" name="NewVideo.Created" value="@DateTime.Now.ToString()">
+                            <input type="hidden" name="NewVideo.Created" value="@Model.Created">
                             <div class="form-group">
                                 <label>Title</label>
                                 <input class="form-control" name="NewVideo.Name" value="@Model.VideoName" placeholder="Title, Make it catchy">

@@ -6,8 +6,6 @@ using System.Web;
 
 namespace Flowbandit.Models
 {
-
-
     public class VideoVM : BaseModel
     {
         public Video CurrentVideo;
@@ -16,7 +14,6 @@ namespace Flowbandit.Models
         {
             get
             {
-
                 return CurrentVideo != null ? CurrentVideo.ID : default(int);
             }
         }
@@ -41,7 +38,8 @@ namespace Flowbandit.Models
         {
             get
             {
-                return CurrentVideo.Created.ToString();
+                //TODO: Refactor this logic into an extension method
+                return (CurrentVideo.Created == DateTime.MinValue ? DateTime.Now : CurrentVideo.Created).ToString();
             }
         }
 

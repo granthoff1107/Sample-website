@@ -15,7 +15,6 @@ namespace Flowbandit.Models
 
         #region Comment Properties
 
-
         protected List<IComment> _comments;
         public List<IComment> Comments
         {
@@ -42,14 +41,14 @@ namespace Flowbandit.Models
         {
             get
             {
-                return (base.Data as IPostRepository); 
+                return (base.Data as IPostRepository);
             }
         }
 
         #endregion // Comment Properties
 
         #region Post Properties
-      
+
         public int PostID
         {
             get
@@ -114,11 +113,8 @@ namespace Flowbandit.Models
         {
             get
             {
-                if(CurrentPost != null)
-                { 
-                    return CurrentPost.Created.ToString();
-                }
-                return DateTime.Now.ToString();
+                //TODO: Refactor this logic into an extension method
+                return (CurrentPost.Created == default(DateTime) ? DateTime.Now : CurrentPost.Created).ToString();
             }
         }
 
@@ -138,7 +134,7 @@ namespace Flowbandit.Models
             }
         }
 
-#endregion //Post Properties
+        #endregion //Post Properties
 
         public PostVM(IPostRepository Data, int ID)
             : base(Data)
