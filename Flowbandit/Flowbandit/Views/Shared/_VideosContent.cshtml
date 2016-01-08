@@ -5,24 +5,27 @@
 <div id="#video-container" class="row text-center">
     @for (int c = 0; c < Model.FeaturedVideos.Count; ++c)
     {
-        var Video = Model.FeaturedVideos[c];
+        
+        var video = Model.FeaturedVideos[c];
 
+        var descriptionText = WebHelper.StripHtml(video.Description);
+        
         @*<textarea class="hidden fulldescnohmml" >@Video.Description</textarea>*@
         <div class="col-lg-3 col-md-4 col-sm-6 hero-feature">
 
             <div class="thumbnail videothumbnail">
-                <a href="@Url.Action("Video", new { ID = Video.ID })">
-                    <img class="videoThumbnailImg" src="@Video.ThumbnailUrl" alt="">
+                <a href="@Url.Action("Video", new { ID = video.ID })">
+                    <img class="videoThumbnailImg" src="@video.ThumbnailUrl" alt="">
                 </a>
                 <div class="caption">
-                    <h3>@Video.Name</h3>
-                    @foreach (var tag in Video.TagsToVideos)
+                    <h3>@video.Name</h3>
+                    @foreach (var tag in video.TagsToVideos)
                     {
                         <span><a href="#">@tag.Tag.Name</a></span>
                     }
-                    <p>@Video.Description</p>
+                    <p>@descriptionText.Substring(0, Math.Min(500, descriptionText.Length))...</p>
                     <p>
-                        <a href="@Url.Action("Video", new { ID = Video.ID })" class="btn btn-primary">Check it out Now!</a>
+                        <a href="@Url.Action("Video", new { ID = video.ID })" class="btn btn-primary">Check it out Now!</a>
                     </p>
                 </div>
             </div>
