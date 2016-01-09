@@ -14,7 +14,6 @@ namespace Flowbandit.Controllers
     {
         //
         // GET: /Accounts/
-
         public AccountsController()
         {
             var tmpRepo = new UserRepository();
