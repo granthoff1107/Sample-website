@@ -8,10 +8,9 @@ namespace Flowbandit.Models
 {
     public class DashboardVM : BaseModel
     {
-        public DashboardVM(IRepository Data)
-            : base(Data)
+        public DashboardVM()
+            : base()
         {
-
         }
     }
 }

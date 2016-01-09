@@ -14,7 +14,7 @@ namespace Flowbandit.Controllers
 
         public ActionResult Index()
         {
-            var tmpViewModel = new ContactVM(Data);
+            var tmpViewModel = new ContactVM();
             return View(tmpViewModel);
         }
 

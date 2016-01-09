@@ -10,7 +10,7 @@ using System.Web.Security;
 
 namespace Flowbandit.Controllers
 {
-    public class AccountsController : BaseController
+    public class AccountsController : BaseController<IUserRepository>
     {
         //
         // GET: /Accounts/
@@ -19,14 +19,6 @@ namespace Flowbandit.Controllers
         {
             var tmpRepo = new UserRepository();
             InitializerRepository(tmpRepo);
-        }
-
-        protected IUserRepository Repo
-        {
-            get
-            {
-              return GetRepoAs<IUserRepository>();
-            }
         }
 
         public ActionResult Index()
@@ -47,7 +39,7 @@ namespace Flowbandit.Controllers
                     //Also Have an additional password to be used as a key with the seed internally to the program
                     // This makes it way harder to break security protocol, and 1 will not lose all other passwords
 
-                    var tempuser = Repo.GetUserByUsername(LoginData.Username);
+                    var tempuser = _repository.GetUserByUsername(LoginData.Username);
                     //var tempuser = Data.MK3Model.Employees2.Where(x => x.Username == username).SingleOrDefault();
 
                     if (tempuser != null)

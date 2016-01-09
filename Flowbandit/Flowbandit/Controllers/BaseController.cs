@@ -9,12 +9,19 @@ using Flowbandit.Models;
 
 namespace Flowbandit.Controllers
 {
+    public class BaseController<TRepository> : BaseController
+        where TRepository : IRepository
+    {
+        protected TRepository _repository;
+
+        protected void InitializerRepository(TRepository DataRepo)
+        {
+            _repository = DataRepo;
+        }
+    }
+
     public class BaseController : Controller
     {
-        //
-        // GET: /Base/
-        protected IRepository Data;
-
         protected string RenderRazorViewToString(string viewName, object model)
         {
             ViewData.Model = model;
@@ -28,22 +35,15 @@ namespace Flowbandit.Controllers
             }
         }
 
-        protected T GetRepoAs<T>() where T : IRepository
-        {
-
-            return (T)(Data);
-
-        }
-
-        protected string SavePostedFile(HttpPostedFileBase InputFile, string BaseFolder)
+        protected string SavePostedFile(HttpPostedFileBase inputFile, string baseFolder)
         {
             string RelativePath = string.Empty;
             string FullPath = string.Empty;
 
-            if (InputFile != null && InputFile.ContentLength > 0)
+            if (inputFile != null && inputFile.ContentLength > 0)
             {
-                FullPath = GetFullPathWithTS(InputFile, BaseFolder);
-                InputFile.SaveAs(FullPath);
+                FullPath = GetFullPathWithTimestamp(inputFile, baseFolder);
+                inputFile.SaveAs(FullPath);
             }
 
             if(FullPath != string.Empty)
@@ -70,26 +70,21 @@ namespace Flowbandit.Controllers
             }
         }
 
-        private static string GetFullPathWithTS(HttpPostedFileBase InputFile, string BaseFolder)
+        private static string GetFullPathWithTimestamp(HttpPostedFileBase inputFile, string baseFolder)
         {
-            string NewFileName = Path.GetFileNameWithoutExtension(InputFile.FileName) + "_" + DateTimeToUnixTimestamp(DateTime.Now);
-            string Extension = Path.GetExtension(InputFile.FileName);
-            return Path.Combine(GlobalInfo.DownloadsBaseURL, BaseFolder, String.Concat(NewFileName, Extension));
+            string NewFileName = Path.GetFileNameWithoutExtension(inputFile.FileName) + "_" + DateTimeToUnixTimestamp(DateTime.Now);
+            string Extension = Path.GetExtension(inputFile.FileName);
+            return Path.Combine(GlobalInfo.DownloadsBaseURL, baseFolder, String.Concat(NewFileName, Extension));
         }
 
-        protected static string ToRelativePath(string FullPath)
+        protected static string ToRelativePath(string fullPath)
         {
-            return Path.GetFullPath(FullPath).Replace(GlobalInfo.RootDir, string.Empty);
+            return Path.GetFullPath(fullPath).Replace(GlobalInfo.RootDir, string.Empty);
         }
 
         public static double DateTimeToUnixTimestamp(DateTime dateTime)
         {
             return Math.Floor((double)(dateTime - new DateTime(1970, 1, 1).ToLocalTime()).TotalSeconds);
-        }
-
-        protected void InitializerRepository(IRepository DataRepo)
-        {
-            Data = DataRepo;
         }
 
         protected override ViewResult View(IView view, object model)

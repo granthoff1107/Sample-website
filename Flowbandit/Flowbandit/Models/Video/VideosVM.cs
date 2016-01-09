@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Flowbandit.Models
 {
-    public class VideosVM : BaseModel
+    public class VideosVM : BaseModel<IVideoRepository>
     {
         public List<Video> FeaturedVideos;
         public int TotalPages = 0;
@@ -17,7 +17,6 @@ namespace Flowbandit.Models
             var tmpCount = Data.All<Video>().Count();
 
             TotalPages = this.GetTotalPageCountFromItems(tmpCount, GlobalInfo.VIDEOSPERPAGE);
-
         }
     }
 }

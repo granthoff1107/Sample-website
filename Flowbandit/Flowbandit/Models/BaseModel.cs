@@ -7,11 +7,20 @@ using System.Web;
 
 namespace Flowbandit.Models
 {
+    public class BaseModel<TRepository> : BaseModel 
+        where TRepository : IRepository
+    {
+        public TRepository DataRepository;
+
+        public BaseModel(TRepository repository)
+        {
+            this.DataRepository = repository;
+        }
+    }
+
     public class BaseModel
     {
         public const string WEBSITENAME = "Flow Bandit";
-
-        public IRepository Data;
 
         public int UserID
         {
@@ -20,7 +29,7 @@ namespace Flowbandit.Models
                 return LoginHelper.UserID;
             }
         }
-       
+
         public string isAnon
         {
             get
@@ -29,9 +38,8 @@ namespace Flowbandit.Models
             }
         }
 
-        public BaseModel(IRepository Data)
+        public BaseModel()
         {
-            this.Data = Data;
         }
 
         protected int GetTotalPageCountFromItems(int tmpCount, int resultsPerPage)
@@ -51,6 +59,5 @@ namespace Flowbandit.Models
 
             return totalPages;
         }
-
     }
 }

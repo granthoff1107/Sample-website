@@ -7,9 +7,8 @@ using FlowRepository;
 
 namespace Flowbandit.Models
 {
-    public class AllPostsVM : BaseModel
+    public class AllPostsVM : BaseModel<IPostRepository>
     {
-       
         public int PageNumber = 0;
         public List<Post> Posts = new List<Post>();
         public int TotalPages = 0;

@@ -11,10 +11,9 @@ namespace Flowbandit.Controllers
     {
         //
         // GET: /Dashboard/
-
         public ActionResult Index()
         {
-            var tmpViewModel = new DashboardVM(Data);
+            var tmpViewModel = new DashboardVM();
             return View(tmpViewModel);
         }
 

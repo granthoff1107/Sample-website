@@ -8,10 +8,9 @@ namespace Flowbandit.Models
 {
     public class ContactVM : BaseModel
     {
-        public ContactVM(IRepository Data) 
-            : base(Data)
+        public ContactVM() 
+            : base()
         {
-
         }
     }
 }

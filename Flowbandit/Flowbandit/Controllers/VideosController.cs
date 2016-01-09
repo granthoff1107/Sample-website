@@ -9,7 +9,7 @@ using System.Data.Entity;
 
 namespace Flowbandit.Controllers
 {
-    public class VideosController : BaseController
+    public class VideosController : BaseController<IVideoRepository>
     {
         //
         // GET: /Video/
@@ -20,30 +20,30 @@ namespace Flowbandit.Controllers
             InitializerRepository(tmpRepo);
         }
 
-        protected IVideoRepository Repo
-        {
-            get
-            {
-                return GetRepoAs<IVideoRepository>();
-            }
-        }
+        //protected IVideoRepository Repo
+        //{
+        //    get
+        //    {
+        //        return GetRepoAs<IVideoRepository>();
+        //    }
+        //}
 
         public ActionResult Index()
         {
-            var tmpViewModel = new VideosVM(Repo);
+            var tmpViewModel = new VideosVM(_repository);
             return View(tmpViewModel);
         }
 
         public ActionResult GetVideos(int pageNumber)
         {
-            var tmpViewModel = new VideosVM(Repo, pageNumber);
+            var tmpViewModel = new VideosVM(_repository, pageNumber);
             var res = RenderRazorViewToString("_VideosContent", tmpViewModel);
             return Json(new { htmldata = res }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Video(int ID)
         {
-            var tmpViewModel = new VideoVM(Repo, ID);
+            var tmpViewModel = new VideoVM(_repository, ID);
             return View(tmpViewModel);
         }
 
@@ -57,8 +57,8 @@ namespace Flowbandit.Controllers
                 }
 
                 NewComment.Created = DateTime.Now;
-                Repo.Add<VideoComment>(NewComment);
-                Repo.SaveChanges();
+                _repository.Add<VideoComment>(NewComment);
+                _repository.SaveChanges();
                 return RedirectToAction("Video", new { ID = NewComment.FK_VideoID });
             }
             return RedirectToAction("Index", new { ID = 0 });
@@ -72,7 +72,7 @@ namespace Flowbandit.Controllers
                 var urlhelper = new UrlHelper(this.ControllerContext.RequestContext);
 
                 var results = new List<AutoCompleteResult>();
-                results = Repo.TagsStartingWith(term).Select(t => new AutoCompleteResult { label = t.Name, value = t.ID.ToString() }).ToList();
+                results = _repository.TagsStartingWith(term).Select(t => new AutoCompleteResult { label = t.Name, value = t.ID.ToString() }).ToList();
 
                 return Json(results, JsonRequestBehavior.AllowGet);
             }
@@ -90,32 +90,33 @@ namespace Flowbandit.Controllers
 
         public ActionResult EditVideo(int ID)
         {
-            var tmpViewModel = new VideoVM(Repo, ID);
+            var tmpViewModel = new VideoVM(_repository, ID);
             return View(tmpViewModel);
         }
 
         [HttpPost]
         [Authorize]
         [ValidateInput(false)]
-        public ActionResult NewVideo(Video newVideo, List<int> tagIds = null)
+        public JsonResult NewVideo(Video newVideo, List<int> tagIds = null)
         {
             if (ModelState.IsValid && !GlobalInfo.IsAnon)
             {
                 newVideo.FK_UserID = GlobalInfo.User.UserID;
                 
                 if(newVideo.ID == default(int))
-                { 
-                    Repo.Add<Video>(newVideo);
+                {
+                    _repository.Add<Video>(newVideo);
                 }
                 else
                 {
-                    Repo.Context.Entry(newVideo).State = EntityState.Modified;
+                    _repository.Context.Entry(newVideo).State = EntityState.Modified;
                 }
 
-                Repo.SaveChanges();
+                _repository.SaveChanges();
                 return Json( new  { redirectUrl = Url.Action("Video", new { ID = newVideo.ID }) });
             }
-            return RedirectToAction("Index", new { ID = 0 });
+
+            return Json(new { redirectUrl = Url.Action("Index") });
         }
 
     }

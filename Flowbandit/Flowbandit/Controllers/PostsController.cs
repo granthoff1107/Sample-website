@@ -9,7 +9,7 @@ using System.Data.Entity;
 
 namespace Flowbandit.Controllers
 {
-    public class PostsController : BaseController
+    public class PostsController : BaseController<IPostRepository>
     {
         //
         // GET: /Post/
@@ -19,30 +19,22 @@ namespace Flowbandit.Controllers
             InitializerRepository(tmpRepo);
         }
 
-        protected IPostRepository Repo
-        {
-            get
-            {
-                return GetRepoAs<IPostRepository>();
-            }
-        }
-
         public ActionResult GetPosts(int pageNumber)
         {
-            var tmpViewModel = new AllPostsVM(Repo, pageNumber);
+            var tmpViewModel = new AllPostsVM(_repository, pageNumber);
             var res = RenderRazorViewToString("_PostsContent", tmpViewModel);
             return Json(new { htmldata = res }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Index(int PageNumber = 0)
         {
-            var tmpViewModel = new AllPostsVM(Repo, PageNumber);
+            var tmpViewModel = new AllPostsVM(_repository, PageNumber);
             return View(tmpViewModel);
         }
 
         public ActionResult Post(int ID)
         {
-            var tmpViewModel = new PostVM(Repo, ID);
+            var tmpViewModel = new PostVM(_repository, ID);
             return View(tmpViewModel);
         }
 
@@ -55,14 +47,14 @@ namespace Flowbandit.Controllers
         [HttpGet]
         public ActionResult EditPost(int ID)
         {
-            var tmpViewModel = new PostVM(Repo, ID);
+            var tmpViewModel = new PostVM(_repository, ID);
             return View(tmpViewModel);
         }
         
         [HttpPost]
         [Authorize]
         [ValidateInput(false)]
-        public ActionResult NewPost(Post NewPost, HttpPostedFileBase CoverPhoto = null, List<int> TagIDs = null)
+        public JsonResult NewPost(Post NewPost, HttpPostedFileBase CoverPhoto = null, List<int> TagIDs = null)
         {
             if(ModelState.IsValid && !GlobalInfo.IsAnon)
             {
@@ -79,17 +71,17 @@ namespace Flowbandit.Controllers
                 NewPost.FK_UserID = GlobalInfo.User.UserID;
                 if (NewPost.ID == default(int))
                 {
-                    Repo.Add<Post>(NewPost);
+                    _repository.Add<Post>(NewPost);
                 }
                 else
                 {
-                    Repo.Context.Entry(NewPost).State = EntityState.Modified;
+                    _repository.Context.Entry(NewPost).State = EntityState.Modified;
                 }
-                
-                Repo.SaveChanges();
-                return RedirectToAction("Post", new { ID = NewPost.ID });
+
+                _repository.SaveChanges();
+                return Json(new { redirectUrl = Url.Action("Post", new { ID = NewPost.ID }) }); 
             }
-            return RedirectToAction("Index", new { ID = 0 });
+            return Json(new { redirectUrl = Url.Action("Index") });
         }
 
         public ActionResult Comment(PostComment NewComment)
@@ -102,10 +94,10 @@ namespace Flowbandit.Controllers
                 }
 
                 NewComment.Created = DateTime.Now;
-                Repo.Add<PostComment>(NewComment);
-                Repo.SaveChanges();
+                _repository.Add<PostComment>(NewComment);
+                _repository.SaveChanges();
 
-                return Json(new { redirectUrl = Url.Action("Post", new { ID = NewComment.FK_PostID }) });
+                return RedirectToAction("Post", new { NewComment.FK_PostID });
             }
             return RedirectToAction("Index", new { ID = 0 });
         }
@@ -118,7 +110,7 @@ namespace Flowbandit.Controllers
 
                 var Results = new List<AutoCompleteResult>();
 
-                Results = Repo.TagsStartingWith(term).Select(t => new AutoCompleteResult { label = t.Name, value = t.ID.ToString() }).ToList();
+                Results = _repository.TagsStartingWith(term).Select(t => new AutoCompleteResult { label = t.Name, value = t.ID.ToString() }).ToList();
 
                 return Json(Results, JsonRequestBehavior.AllowGet);
             }

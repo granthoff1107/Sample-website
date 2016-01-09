@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Flowbandit.Models
 {
-    public class PostVM : BaseModel
+    public class PostVM : BaseModel<IPostRepository>
     {
         /// <summary>
         /// Includes comments and tags
@@ -37,13 +37,13 @@ namespace Flowbandit.Models
             }
         }
 
-        protected new IPostRepository Data
-        {
-            get
-            {
-                return (base.Data as IPostRepository);
-            }
-        }
+        //protected new IPostRepository Data
+        //{
+        //    get
+        //    {
+        //        return (base.Data as IPostRepository);
+        //    }
+        //}
 
         #endregion // Comment Properties
 

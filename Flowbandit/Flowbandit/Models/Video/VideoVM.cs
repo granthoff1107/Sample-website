@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Flowbandit.Models
 {
-    public class VideoVM : BaseModel
+    public class VideoVM : BaseModel<IVideoRepository>
     {
         public Video CurrentVideo;
 
