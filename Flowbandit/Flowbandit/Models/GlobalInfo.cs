@@ -16,6 +16,8 @@ namespace Flowbandit.Models
         public const string ContactEmail = "youremail@Flowbandit.com";
         public const string ContactPhone = "212-555-5555";
 
+        public const int DISPLAY_TEXT_MAX_LENGTH = 500;
+
         public const int RESULTSPERPAGE = 5;
         public const int ANONID = 0;
 

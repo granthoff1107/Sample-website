@@ -5,7 +5,6 @@
 
 @foreach (var post in @Model.Posts)
 {
-    var PostText = WebHelper.StripHtml(post.Entry);
     var PostsUrl = Url.Action("Post", "Posts", new { ID = post.ID });
     <h2>
         <a href="@PostsUrl">@post.Title</a>
@@ -22,7 +21,7 @@
         <hr>
     }
 
-    <p>@PostText.Substring(0, Math.Min(500, PostText.Length))...</p>
+    <p>@post.Entry</p>
     <a class="btn btn-primary" href="@PostsUrl">
         Read More
         <span class="glyphicon glyphicon-chevron-right"></span>

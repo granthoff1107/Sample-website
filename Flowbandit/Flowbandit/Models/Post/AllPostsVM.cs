@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Flowbandit;
 using FlowRepository;
+using Flowbandit.Rules;
 
 namespace Flowbandit.Models
 {
@@ -18,6 +19,13 @@ namespace Flowbandit.Models
             this.PageNumber = PageNumber;
 
             Posts = Data.VisiblePostsByCreatedDate(PageNumber * GlobalInfo.RESULTSPERPAGE, GlobalInfo.RESULTSPERPAGE);
+
+            //TODO: Refactor this and VideosVM 
+            //Sanitize the posts for the view
+            foreach(var post in Posts)
+            {
+                post.Entry = string.Concat(HtmlDisplayRule.GetSanitizedText(post.Entry, GlobalInfo.DISPLAY_TEXT_MAX_LENGTH) + "...");
+            }
 
             var tmpCount = Data.All<Post>().Count();
 

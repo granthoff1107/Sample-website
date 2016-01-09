@@ -1,4 +1,5 @@
-﻿using FlowRepository;
+﻿using Flowbandit.Rules;
+using FlowRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,13 @@ namespace Flowbandit.Models
             : base(Data)
         {
             FeaturedVideos = Data.All<Video>().OrderByDescending(v => v.Created).ThenByDescending(v => v.ID).Skip(pageNumber * GlobalInfo.VIDEOSPERPAGE).Take(GlobalInfo.VIDEOSPERPAGE).ToList();
+
+            //Sanitize the posts for the view
+            foreach (var video in FeaturedVideos)
+            {
+                video.Description = string.Concat(HtmlDisplayRule.GetSanitizedText(video.Description, GlobalInfo.DISPLAY_TEXT_MAX_LENGTH) + "...");
+            }
+            
             var tmpCount = Data.All<Video>().Count();
 
             TotalPages = this.GetTotalPageCountFromItems(tmpCount, GlobalInfo.VIDEOSPERPAGE);
