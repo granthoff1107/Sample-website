@@ -34,28 +34,7 @@
                                 <textarea class="form-control tinyMce" name="NewPost.Entry" placeholder="Tell us your story... " rows="12">@Model.Entry</textarea>
                             </div>
 
-                            <div class="form-group">
-                                <label>Tags</label>
-                                <input class="form-control append-bottom" id="tagsac" placeholder="Tag Your Post">
-
-                                <table class="table table-bordered table-condensed">
-                                    <tbody id="suggestedtags">
-                                        <tr>
-                                            <th>Tags</th>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <span id="tagtemplate" class="label bg-light-blue suggesttag hidden">Juggling<a class="closetag" href="#">&nbsp;<i class="fa fa-times white"></i></a></span>
-                                                @foreach (var tag in Model.CurrentPost.TagsToPosts.Select(t => t.Tag))
-                                                {
-                                                    <span data-tagval="@tag.ID" class="label bg-light-blue suggesttag hidden">@tag.Name<a class="closetag" href="#">&nbsp;<i class="fa fa-times white"></i></a></span>
-                                                }
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-
-                            </div>
+                            @Html.Partial("_updateTags", Model.CurrentPost.TagsToPosts.Select(t => t.Tag))
 
                             <div class="row">
 

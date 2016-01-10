@@ -159,6 +159,7 @@
     <Compile Include="Models\Video\VideosVM.cs" />
     <Compile Include="Models\Video\VideoVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Rules\HtmlDisplayRule.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bower_components\bootstrap\dist\css\bootstrap-theme.css" />
@@ -566,14 +567,16 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Content\js\jquery-2.1.3.min.map" />
     <Content Include="Scripts\jquery.icheck.min.js.map" />
     <Content Include="Views\Posts\NewPost.cshtml" />
-    <Content Include="Views\Shared\_UpdatePost.cshtml" />
+    <Content Include="Views\Shared\_updatePost.cshtml" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce-small.woff" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce-small.ttf" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce-small.json" />
@@ -587,12 +590,13 @@
     <Content Include="Views\Videos\Video.cshtml" />
     <Content Include="Views\Shared\_Comment.cshtml" />
     <Content Include="Views\Videos\NewVideo.cshtml" />
-    <Content Include="Views\Shared\_UpdateVideo.cshtml" />
+    <Content Include="Views\Shared\_updateVideo.cshtml" />
     <Content Include="Views\Shared\_PostsContent.cshtml" />
     <Content Include="Views\Shared\_VideosContent.cshtml" />
     <Content Include="Views\Posts\EditPost.cshtml" />
     <Content Include="Views\Videos\EditVideo.cshtml" />
     <None Include="Properties\PublishProfiles\flowbandit.com - Web Deploy.pubxml" />
+    <Content Include="Views\Shared\_updateTags.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
