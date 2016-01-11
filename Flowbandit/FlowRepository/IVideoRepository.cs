@@ -11,7 +11,5 @@ namespace FlowRepository
         List<Video> GetMostRecentVideos(int PageNumber, int ResultsPerPage);
 
         Video FindVisibleVideoWithCommentsTagsUser(int ID);
-
-        List<Tag> TagsStartingWith(string term);
     }
 }

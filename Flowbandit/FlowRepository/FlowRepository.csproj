@@ -69,6 +69,7 @@
     </Compile>
     <Compile Include="IPostRepository.cs" />
     <Compile Include="IRepository.cs" />
+    <Compile Include="ITagRepository.cs" />
     <Compile Include="IUserRepository.cs" />
     <Compile Include="IVideoRepository.cs" />
     <Compile Include="Post.cs">
@@ -85,6 +86,7 @@
     <Compile Include="Tag.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
+    <Compile Include="TagRepository.cs" />
     <Compile Include="TagsToPost.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>

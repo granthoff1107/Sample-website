@@ -10,8 +10,6 @@ namespace FlowRepository
     {
         List<Post> VisiblePostsByCreatedDate(int Skip, int Take);
 
-        List<Tag> TagsStartingWith(string term);
-
         Post VisiblePostByIDWithCommentsTagsUsers(int ID);
     }
 }

@@ -20,11 +20,5 @@ namespace FlowRepository
         {
             return AllIncluding<Video>(p => p.VideoComments, p => p.TagsToVideos, p => p.User).FirstOrDefault(p => p.ID == id && p.Visible);
         }
-
-        //this should be refactored into its own repo with the one that exists in posts 
-        public List<Tag> TagsStartingWith(string term)
-        {
-            return All<Tag>().Where(t => t.Name.ToLower().StartsWith(term)).ToList();
-        }
     }
 }
