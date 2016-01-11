@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Flowbandit.Models;
 using FlowRepository;
 using System.Data.Entity;
+using Flowbandit.Controllers.Rules;
 
 namespace Flowbandit.Controllers
 {
@@ -43,14 +44,7 @@ namespace Flowbandit.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (!GlobalInfo.IsAnon)
-                {
-                    NewComment.FK_UserID = GlobalInfo.User.UserID;
-                }
-
-                NewComment.Created = DateTime.Now;
-                _repository.Add<VideoComment>(NewComment);
-                _repository.SaveChanges();
+                CommentControllerRule.Comment(_repository, NewComment);
                 return RedirectToAction("Video", new { ID = NewComment.FK_VideoID });
             }
             return RedirectToAction("Index", new { ID = 0 });

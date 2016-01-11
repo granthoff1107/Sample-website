@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using Flowbandit.Models;
 using FlowRepository;
 using System.Data.Entity;
+using Flowbandit.Controllers.Rules;
 
 namespace Flowbandit.Controllers
 {
@@ -99,16 +100,8 @@ namespace Flowbandit.Controllers
         {
             if (ModelState.IsValid )
             {
-                if (!GlobalInfo.IsAnon)
-                {
-                    NewComment.FK_UserID = GlobalInfo.User.UserID;
-                }
-
-                NewComment.Created = DateTime.Now;
-                _repository.Add<PostComment>(NewComment);
-                _repository.SaveChanges();
-
-                return RedirectToAction("Post", new { NewComment.FK_PostID });
+                CommentControllerRule.Comment(_repository, NewComment);
+                return RedirectToAction("Post", new { ID = NewComment.FK_PostID });
             }
             return RedirectToAction("Index", new { ID = 0 });
         }
