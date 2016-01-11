@@ -14,8 +14,7 @@ namespace Flowbandit.Models
         public VideosVM(IVideoRepository Data, int pageNumber = 0)
             : base(Data)
         {
-            FeaturedVideos = Data.All<Video>().OrderByDescending(v => v.Created).ThenByDescending(v => v.ID).Skip(pageNumber * GlobalInfo.VIDEOSPERPAGE).Take(GlobalInfo.VIDEOSPERPAGE).ToList();
-
+            FeaturedVideos = DataRepository.GetMostRecentVideos(pageNumber, GlobalInfo.VIDEOSPERPAGE);
             //Sanitize the posts for the view
             foreach (var video in FeaturedVideos)
             {

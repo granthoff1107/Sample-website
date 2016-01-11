@@ -8,7 +8,7 @@ namespace FlowRepository
 {
     public interface IVideoRepository : IRepository
     {
-        Dictionary<string, List<Video>> GetFeaturedVideos(int PageNumber, int ResultsPerPage);
+        List<Video> GetMostRecentVideos(int PageNumber, int ResultsPerPage);
 
         Video FindVisibleVideoWithCommentsTagsUser(int ID);
 

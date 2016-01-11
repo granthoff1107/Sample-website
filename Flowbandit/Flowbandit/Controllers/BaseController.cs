@@ -14,7 +14,7 @@ namespace Flowbandit.Controllers
     {
         protected TRepository _repository;
 
-        protected void InitializerRepository(TRepository DataRepo)
+        protected void InitializeRepository(TRepository DataRepo)
         {
             _repository = DataRepo;
         }

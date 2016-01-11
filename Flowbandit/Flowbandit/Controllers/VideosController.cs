@@ -17,16 +17,8 @@ namespace Flowbandit.Controllers
         public VideosController()
         {
             var tmpRepo = new VideoRepository();
-            InitializerRepository(tmpRepo);
+            InitializeRepository(tmpRepo);
         }
-
-        //protected IVideoRepository Repo
-        //{
-        //    get
-        //    {
-        //        return GetRepoAs<IVideoRepository>();
-        //    }
-        //}
 
         public ActionResult Index()
         {
@@ -63,7 +55,6 @@ namespace Flowbandit.Controllers
             }
             return RedirectToAction("Index", new { ID = 0 });
         }
-
 
         public ActionResult TagsAutocomplete(string term)
         {

@@ -8,7 +8,6 @@ namespace FlowRepository
 {
     public class UserRepository : DataRepository, IUserRepository
     {
-
         public User GetUserByUsername(string Username)
         {
             return All<User>().FirstOrDefault(u => u.Username.ToLower() == Username.ToLower());

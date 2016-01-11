@@ -16,7 +16,7 @@ namespace Flowbandit.Controllers
         public PostsController()
         {
             var tmpRepo = new PostRepository();
-            InitializerRepository(tmpRepo);
+            InitializeRepository(tmpRepo);
         }
 
         public ActionResult GetPosts(int pageNumber)
@@ -69,6 +69,8 @@ namespace Flowbandit.Controllers
                 }
 
                 NewPost.FK_UserID = GlobalInfo.User.UserID;
+                NewPost.Last_Modified = DateTime.Now;
+
                 if (NewPost.ID == default(int))
                 {
                     _repository.Add<Post>(NewPost);

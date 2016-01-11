@@ -6,26 +6,19 @@ using System.Threading.Tasks;
 
 namespace FlowRepository
 {
-
     public class VideoRepository : DataRepository, IVideoRepository
     {
-        public Dictionary<string, List<Video>> GetFeaturedVideos(int PageNumber, int ResultsPerPage)
+        public List<Video> GetMostRecentVideos(int pageNumber, int resultsPerPage)
         {
-            return All<TagsToVideo>().OrderByDescending(t => t.Video.Created)
-                                    .Skip(PageNumber * ResultsPerPage)
-                                    .Take(ResultsPerPage)
-                                    .GroupBy(t => t.Tag).ToDictionary(k => k.Key.Name, v => v.Select(vid => vid.Video).ToList());
-            //return All<TagsToVideo>().GroupBy(t => t.Tag)
-            //                        .OrderByDescending(t => t.Select(v => v.Video.Created).FirstOrDefault())
-            //                        .Select(v => new {key = v.Key.Name,  values = v.Take(VideosPerRow).Select(v1 => v1.Video).ToList() } )
-            //                        .Take(RowsPerPage).ToDictionary(k => k.key, v => v.values);
+            return All<Video>().OrderByDescending(v => v.Created)
+                               .ThenByDescending(v => v.ID)
+                               .Skip(pageNumber * resultsPerPage)
+                               .Take(resultsPerPage).ToList();
         }
 
-
-        public Video FindVisibleVideoWithCommentsTagsUser(int ID)
+        public Video FindVisibleVideoWithCommentsTagsUser(int id)
         {
-            return AllIncluding<Video>(p => p.VideoComments, p => p.TagsToVideos, p => p.User).FirstOrDefault(p => p.ID == ID && p.Visible);
-
+            return AllIncluding<Video>(p => p.VideoComments, p => p.TagsToVideos, p => p.User).FirstOrDefault(p => p.ID == id && p.Visible);
         }
 
         //this should be refactored into its own repo with the one that exists in posts 

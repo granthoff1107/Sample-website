@@ -17,7 +17,7 @@ namespace Flowbandit.Controllers
         public AccountsController()
         {
             var tmpRepo = new UserRepository();
-            InitializerRepository(tmpRepo);
+            InitializeRepository(tmpRepo);
         }
 
         public ActionResult Index()
@@ -46,7 +46,6 @@ namespace Flowbandit.Controllers
                         
                         if (tempuser.Password == LoginData.Password)
                         {
-                            
                             FBPrincipalSerializeModel serial = new FBPrincipalSerializeModel { UserID = tempuser.ID, PrivilegelevelID = tempuser.FK_PrivilegelevelID };
 
                             var authcookie = LoginHelper.SerializeObjectToCookie(LoginData.StayLoggedin, tempuser.Username, serial);

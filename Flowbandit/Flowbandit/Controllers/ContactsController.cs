@@ -9,14 +9,10 @@ namespace Flowbandit.Controllers
 {
     public class ContactsController : BaseController
     {
-        //
-        // GET: /Contact/
-
         public ActionResult Index()
         {
             var tmpViewModel = new ContactVM();
             return View(tmpViewModel);
         }
-
     }
 }
