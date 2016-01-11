@@ -101,6 +101,15 @@ namespace Flowbandit.Controllers
                 else
                 {
                     _repository.Context.Entry(newVideo).State = EntityState.Modified;
+
+                    //TODO Refactor this into a generic method, for this and posts
+                    var tagsToRemove = _repository.Context.TagsToVideos.Where(tv => tv.FK_VideoID == newVideo.ID);
+                    _repository.Context.TagsToVideos.RemoveRange(tagsToRemove);
+
+                    foreach(var tagId in tagIds)
+                    {
+                        newVideo.TagsToVideos.Add(new TagsToVideo { FK_VideoID = newVideo.ID, FK_TagID = tagId });
+                    }
                 }
 
                 _repository.SaveChanges();

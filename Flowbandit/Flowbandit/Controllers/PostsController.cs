@@ -54,7 +54,7 @@ namespace Flowbandit.Controllers
         [HttpPost]
         [Authorize]
         [ValidateInput(false)]
-        public JsonResult NewPost(Post NewPost, HttpPostedFileBase CoverPhoto = null, List<int> TagIDs = null)
+        public JsonResult NewPost(Post NewPost, HttpPostedFileBase CoverPhoto = null, List<int> tagIds = null)
         {
             if(ModelState.IsValid && !GlobalInfo.IsAnon)
             {
@@ -78,6 +78,15 @@ namespace Flowbandit.Controllers
                 else
                 {
                     _repository.Context.Entry(NewPost).State = EntityState.Modified;
+
+                    //TODO Refactor this into a generic method, for this and posts
+                    var tagsToRemove = _repository.Context.TagsToPosts.Where(tp => tp.FK_PostID == NewPost.ID);
+                    _repository.Context.TagsToPosts.RemoveRange(tagsToRemove);
+
+                    foreach (var tagId in tagIds)
+                    {
+                        NewPost.TagsToPosts.Add(new TagsToPost { FK_PostID = NewPost.ID, FK_TagID = tagId });
+                    }
                 }
 
                 _repository.SaveChanges();
