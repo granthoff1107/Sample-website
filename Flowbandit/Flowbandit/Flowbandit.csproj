@@ -140,7 +140,9 @@
     <Compile Include="Controllers\FBPrincipal.cs" />
     <Compile Include="Controllers\FBPrincipalSerializeModel.cs" />
     <Compile Include="Controllers\PostsController.cs" />
-    <Compile Include="Controllers\Rules\CommentControllerRule.cs" />
+    <Compile Include="Controllers\Rules\CommentRule.cs" />
+    <Compile Include="Controllers\Rules\TagsRule.cs" />
+    <Compile Include="Controllers\TagsController.cs" />
     <Compile Include="Controllers\VideosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

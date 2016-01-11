@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace Flowbandit.Controllers.Rules
 {
-    public class CommentControllerRule
+    public class CommentRule
     {
         public static void Comment<T>(IRepository _repository, T NewComment)
            where T : class, IHasCommentProperties

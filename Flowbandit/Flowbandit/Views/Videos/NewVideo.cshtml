@@ -15,7 +15,7 @@
 
         $(function () {
             initTinyMce();
-            TagsAutoComplete('#tagsac', '@Url.Action("TagsAutocomplete", "Videos")', DefaultAddTagsToTable);
+            tagsAutoComplete('#tagsac', '@Url.Action("TagsAutocomplete", "Tags")', DefaultAddTagsToTable);
             ActivateCloseTag();
             OverrideSubmitFormWithTags("#newvideoform", ".suggesttag");
         });

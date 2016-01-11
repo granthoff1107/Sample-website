@@ -100,28 +100,10 @@ namespace Flowbandit.Controllers
         {
             if (ModelState.IsValid )
             {
-                CommentControllerRule.Comment(_repository, NewComment);
+                CommentRule.Comment(_repository, NewComment);
                 return RedirectToAction("Post", new { ID = NewComment.FK_PostID });
             }
             return RedirectToAction("Index", new { ID = 0 });
-        }
-
-        public ActionResult TagsAutocomplete(string term)
-        {
-            try
-            {
-                var urlhelper = new UrlHelper(this.ControllerContext.RequestContext);
-
-                var Results = new List<AutoCompleteResult>();
-
-                Results = _repository.TagsStartingWith(term).Select(t => new AutoCompleteResult { label = t.Name, value = t.ID.ToString() }).ToList();
-
-                return Json(Results, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                return new HttpStatusCodeResult(500, ex.Message);
-            }
         }
     }
 }

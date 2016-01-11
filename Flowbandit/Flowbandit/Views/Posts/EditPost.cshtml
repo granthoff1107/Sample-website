@@ -16,7 +16,7 @@
     <script type="text/javascript">
 
         $(function () {
-            TagsAutoComplete('#tagsac', '@Url.Action("TagsAutocomplete", "Posts")', DefaultAddTagsToTable);
+            tagsAutoComplete('#tagsac', '@Url.Action("TagsAutocomplete", "Tags")', DefaultAddTagsToTable);
             ActivateCloseTag();
             OverrideSubmitFormWithTags("#newpostform", ".suggesttag");
             initTinyMce();

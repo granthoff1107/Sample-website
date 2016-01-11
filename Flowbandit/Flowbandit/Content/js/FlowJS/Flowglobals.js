@@ -74,7 +74,7 @@ function OverrideSubmitFormWithTags(formSelector, tagSelector) {
     });
 }
 
-function TagsAutoComplete(InputSelector, URL, SelectDelegate) {
+function tagsAutoComplete(InputSelector, URL, SelectDelegate) {
     $(InputSelector).autocomplete({
         minLength: 2,
         source: function (request, response) {
