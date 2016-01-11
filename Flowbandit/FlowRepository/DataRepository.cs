@@ -100,11 +100,6 @@ namespace FlowRepository
                 }
                 throw new Exception(errorMessage, dbEx);
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-
         }
 
         public IQueryable<T> AllIncluding<T>(params Expression<Func<T, object>>[] include) where T : class
