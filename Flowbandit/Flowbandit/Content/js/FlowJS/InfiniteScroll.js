@@ -1,44 +1,70 @@
-﻿function scrollListener(url, contentDivSelector, pageNumberSelector, totalNumberOfPages, postCallBack) {
-    if (parseInt($(pageNumberSelector).val()) <= parseInt(totalNumberOfPages)) {
+﻿//TODO Stop pollution the global namespace
+isScrollExecuting = false;
+
+function scrollListener(infiniteScrollParams) {
+    if (areRemaningPages(infiniteScrollParams)) {
 
         //Make sure your not already at the bottom of the page
-        executeConditionalScroll(url, contentDivSelector, pageNumberSelector, postCallBack, totalNumberOfPages);
+        executeConditionalScroll(infiniteScrollParams);
 
         //unbinds itself every time it fires
         $(window).one("scroll", function () {
-            executeConditionalScroll(url, contentDivSelector, pageNumberSelector, postCallBack, totalNumberOfPages);
+            executeConditionalScroll(infiniteScrollParams);
 
             //rebinds itself after 200ms
-            setTimeout(function () { scrollListener(url, contentDivSelector, pageNumberSelector, totalNumberOfPages, postCallBack); }, 200);
+            setTimeout(function () { scrollListener(infiniteScrollParams); }, 200);
         });
     }
 };
 
-function executeConditionalScroll(url, contentDivSelector, pageNumberSelector, postCallBack, totalNumberOfPages) {
+function areRemaningPages(infiniteScrollParams)
+{
+    return parseInt($(infiniteScrollParams.pageNumberSelector).val()) <= parseInt(infiniteScrollParams.totalNumberOfPages);
+}
+
+function isWithingMinimumRequestHeight() {
+    var minHeight = 300;
+    if ($(window).width() <= 767)
+    {
+        minHeight = 900;
+    }
+    else if ($(window).width() <= 992)
+    {
+        minHeight = 600;
+    }
+
+    return $(window).scrollTop() >= $(document).height() - $(window).height() - minHeight;
+}
+
+function executeConditionalScroll(infiniteScrollParams) {
     //Hack during the first bottom check your might accidently ajax before the other ajax returns firing multiple events
     // there is still a bug because your firing twice
-    if (parseInt($(pageNumberSelector).val()) <= parseInt(totalNumberOfPages)) 
+    if (areRemaningPages(infiniteScrollParams) && false == isScrollExecuting)
     {
-        if ($(window).scrollTop() >= $(document).height() - $(window).height() - 100) {
+        var pageNumber = parseInt($(infiniteScrollParams.pageNumberSelector).val());
+        if (isWithingMinimumRequestHeight()) {
+
+            isScrollExecuting = true;
+
             $.ajax({
-                url: url,
-                data: { pageNumber: $(pageNumberSelector).val() },
+                url: infiniteScrollParams.url,
+                data: { pageNumber: pageNumber },
                 traditional: true,
                 dataType: 'json',
                 type: 'GET',
                 success: function (data) {
-
-                    var pageCount = parseInt($(pageNumberSelector).val());
-
+                    var pageCount = pageNumber;
                     pageCount++;
 
-                    $(pageNumberSelector).val(pageCount);
+                    $(infiniteScrollParams.pageNumberSelector).val(pageCount);
 
-                    $(contentDivSelector).append(data.htmldata)
+                    $(infiniteScrollParams.contentDivSelector).append(data.htmldata)
 
-                    if (postCallBack) {
-                        postCallBack();
+                    if (infiniteScrollParams.postCallBack) {
+                        infiniteScrollParams.postCallBack();
                     }
+
+                    isScrollExecuting = false;
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     console.log("error:" + thrownError.toString())

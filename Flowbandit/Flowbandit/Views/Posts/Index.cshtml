@@ -14,12 +14,19 @@
     <script src="~/Content/js/FlowJS/InfiniteScroll.js"></script>
     <script>
 
-        $(function () {
-            $('#postPageNumber').val(1);
+    $(function () {
+        $('#postPageNumber').val(1);
 
-            scrollListener('@Url.Action("GetPosts")', '#postcontent', '#postPageNumber', '@Model.TotalPages')
-        });
-    </script>
+        var postInfiniteScrollParams = {
+            url: '@Url.Action("GetPosts")',
+                contentDivSelector: '#postcontent',
+                pageNumberSelector: '#postPageNumber',
+                totalNumberOfPages: '@Model.TotalPages'
+        }
+
+        scrollListener(postInfiniteScrollParams)
+    });
+</script>
 }
 
 <input type="hidden" id="postPageNumber" value="1">

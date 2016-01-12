@@ -29,7 +29,15 @@
                 setVideoElements();
             });
 
-            scrollListener('@Url.Action("GetVideos")', '#videocontent', '#videoPageNumber', '@Model.TotalPages', setVideoElements )
+            var postInfiniteScrollParams = {
+                url: '@Url.Action("GetVideos")',
+                contentDivSelector: '#videocontent',
+                pageNumberSelector: '#videoPageNumber',
+                totalNumberOfPages: '@Model.TotalPages',
+                postCallBack: setVideoElements
+            }
+
+            scrollListener(postInfiniteScrollParams)
         });
     </script>
 }
