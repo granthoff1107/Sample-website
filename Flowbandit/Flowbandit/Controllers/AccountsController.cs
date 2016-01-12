@@ -62,14 +62,14 @@ namespace Flowbandit.Controllers
                 }
             }
 
-            return Redirect("~");
+            return Redirect(HttpContext.Request.UrlReferrer.ToString());
         }
 
       
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
-            return Redirect("~");
+            return Redirect(HttpContext.Request.UrlReferrer.ToString());
         }
 
     }
