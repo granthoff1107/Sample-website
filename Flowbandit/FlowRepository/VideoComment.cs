@@ -26,9 +26,9 @@ namespace FlowRepository
         public Nullable<int> FK_UserID { get; set; }
         public Nullable<int> FK_ParentID { get; set; }
     
-        public virtual User User { get; set; }
         public virtual Video Video { get; set; }
         public virtual ICollection<VideoComment> VideoComment1 { get; set; }
         public virtual VideoComment VideoComment2 { get; set; }
+        public virtual User User { get; set; }
     }
 }

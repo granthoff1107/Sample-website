@@ -10,23 +10,23 @@
         <EntityTypeShape EntityType="FlowCollectionModel.Tag" Width="1.5" PointX="5.25" PointY="17" IsExpanded="true" />
         <EntityTypeShape EntityType="FlowCollectionModel.TagsToPost" Width="1.5" PointX="7.5" PointY="11.875" IsExpanded="true" />
         <EntityTypeShape EntityType="FlowCollectionModel.TagsToVideo" Width="1.5" PointX="7.5" PointY="14.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="FlowCollectionModel.User" Width="1.5" PointX="3" PointY="6.375" IsExpanded="true" />
         <EntityTypeShape EntityType="FlowCollectionModel.Video" Width="1.5" PointX="5.25" PointY="12.125" IsExpanded="true" />
         <EntityTypeShape EntityType="FlowCollectionModel.VideoComment" Width="1.5" PointX="10.5" PointY="9.375" IsExpanded="true" />
-        <AssociationConnector Association="FlowCollectionModel.FK_Blog_Users" ManuallyRouted="false" />
         <AssociationConnector Association="FlowCollectionModel.FK_TagsToPost_Post" ManuallyRouted="false" />
-        <AssociationConnector Association="FlowCollectionModel.FK_Users_PrivilegeLevel" ManuallyRouted="false" />
         <AssociationConnector Association="FlowCollectionModel.FK_TagsToPost_Tag" ManuallyRouted="false" />
         <AssociationConnector Association="FlowCollectionModel.FK_TagsToVideo_Tag" ManuallyRouted="false" />
         <AssociationConnector Association="FlowCollectionModel.FK_TagsToVideo_Video" ManuallyRouted="false" />
-        <AssociationConnector Association="FlowCollectionModel.FK_Video_User" ManuallyRouted="false" />
-        <AssociationConnector Association="FlowCollectionModel.FK_VideoComment_User" ManuallyRouted="false" />
         <AssociationConnector Association="FlowCollectionModel.FK_VideoComment_Video" ManuallyRouted="false" />
         <AssociationConnector Association="FlowCollectionModel.FK_VideoComment_VideoComment" ManuallyRouted="false" />
         <EntityTypeShape EntityType="FlowCollectionModel.PostComment" Width="1.5" PointX="7.5" PointY="7.375" />
         <AssociationConnector Association="FlowCollectionModel.FK_Comment_Post" />
         <AssociationConnector Association="FlowCollectionModel.FK_Comment_Comment" />
+        <EntityTypeShape EntityType="FlowCollectionModel.User" Width="1.5" PointX="3" PointY="6.375" />
+        <AssociationConnector Association="FlowCollectionModel.FK_Blog_Users" />
         <AssociationConnector Association="FlowCollectionModel.FK_Comment_User" />
+        <AssociationConnector Association="FlowCollectionModel.FK_Users_PrivilegeLevel" />
+        <AssociationConnector Association="FlowCollectionModel.FK_Video_User" />
+        <AssociationConnector Association="FlowCollectionModel.FK_VideoComment_User" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

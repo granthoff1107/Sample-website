@@ -17,14 +17,14 @@ namespace FlowRepository
         public User()
         {
             this.Posts = new HashSet<Post>();
+            this.PostComments = new HashSet<PostComment>();
             this.Videos = new HashSet<Video>();
             this.VideoComments = new HashSet<VideoComment>();
-            this.PostComments = new HashSet<PostComment>();
         }
     
         public int ID { get; set; }
         public string Username { get; set; }
-        public string Password { get; set; }
+        public string PasswordHash { get; set; }
         public string Email { get; set; }
         public int FK_PrivilegelevelID { get; set; }
         public System.DateTime Created { get; set; }
@@ -32,9 +32,9 @@ namespace FlowRepository
         public string ImageUrl { get; set; }
     
         public virtual ICollection<Post> Posts { get; set; }
+        public virtual ICollection<PostComment> PostComments { get; set; }
         public virtual PrivilegeLevel PrivilegeLevel { get; set; }
         public virtual ICollection<Video> Videos { get; set; }
         public virtual ICollection<VideoComment> VideoComments { get; set; }
-        public virtual ICollection<PostComment> PostComments { get; set; }
     }
 }

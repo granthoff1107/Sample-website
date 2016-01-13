@@ -29,8 +29,8 @@ namespace FlowRepository
         public Nullable<int> FK_UserID { get; set; }
         public string CoverPhotoUrl { get; set; }
     
-        public virtual User User { get; set; }
         public virtual ICollection<TagsToPost> TagsToPosts { get; set; }
         public virtual ICollection<PostComment> PostComments { get; set; }
+        public virtual User User { get; set; }
     }
 }

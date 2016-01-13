@@ -30,7 +30,7 @@ namespace FlowRepository
         public Nullable<int> FK_UserID { get; set; }
     
         public virtual ICollection<TagsToVideo> TagsToVideos { get; set; }
-        public virtual User User { get; set; }
         public virtual ICollection<VideoComment> VideoComments { get; set; }
+        public virtual User User { get; set; }
     }
 }
