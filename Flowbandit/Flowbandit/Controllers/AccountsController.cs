@@ -1,5 +1,7 @@
 ﻿using Flowbandit.Models;
 using FlowRepository;
+using FlowRepository.Data.Contracts;
+using FlowRepository.Data.Rules;
 using FlowRepository.ExendedModels.Contracts;
 using FlowRepository.ExendedModels.Models;
 using Newtonsoft.Json;
@@ -40,17 +42,17 @@ namespace Flowbandit.Controllers
                     //Also Have an additional password to be used as a key with the seed internally to the program
                     // This makes it way harder to break security protocol, and 1 will not lose all other passwords
 
-                    var tempuser = _repository.GetUserByUsername(LoginData.Username);
+                    User user = _repository.GetUserByUsername(LoginData.Username);
                     //var tempuser = Data.MK3Model.Employees2.Where(x => x.Username == username).SingleOrDefault();
 
-                    if (tempuser != null)
+                    if (user != null)
                     {
-                        
-                        if (tempuser.Password == LoginData.Password)
+                        IHash hashRule = new HashRule();
+                        if (hashRule.VerifyHash(LoginData.Password, user.PasswordHash))
                         {
-                            FBPrincipalSerializeModel serial = new FBPrincipalSerializeModel { UserID = tempuser.ID, PrivilegelevelID = tempuser.FK_PrivilegelevelID };
+                            FBPrincipalSerializeModel serial = new FBPrincipalSerializeModel { UserID = user.ID, PrivilegelevelID = user.FK_PrivilegelevelID };
 
-                            var authcookie = LoginHelper.SerializeObjectToCookie(LoginData.StayLoggedin, tempuser.Username, serial);
+                            var authcookie = LoginHelper.SerializeObjectToCookie(LoginData.StayLoggedin, user.Username, serial);
 
                             //string domain = Request.Url.Scheme + System.Uri.SchemeDelimiter + Request.Url.Host + (Request.Url.IsDefaultPort ? "" : ":" + Request.Url.Port);
                             //authcookie.Domain = domain;
@@ -67,7 +69,16 @@ namespace Flowbandit.Controllers
             return Redirect(HttpContext.Request.UrlReferrer.ToString());
         }
 
-      
+        //public void UpdateUser(string username, string password)
+        //{
+        //    IHash hashRule = new HashRule();
+        //    var hash = hashRule.CreateHash(password);
+        //    var user = _repository.GetUserByUsername(username);
+        //    user.PasswordHash = hash;
+
+        //    _repository.SaveChanges();
+        //}
+
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
