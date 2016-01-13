@@ -38,14 +38,6 @@ namespace Flowbandit.Models
             }
         }
 
-        //protected new IPostRepository Data
-        //{
-        //    get
-        //    {
-        //        return (base.Data as IPostRepository);
-        //    }
-        //}
-
         #endregion // Comment Properties
 
         #region Post Properties
