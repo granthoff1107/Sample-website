@@ -52,23 +52,21 @@ function executeConditionalScroll(infiniteScrollParams) {
                 traditional: true,
                 dataType: 'json',
                 type: 'GET',
-                success: function (data) {
-                    var pageCount = pageNumber;
-                    pageCount++;
+            }).done(function (data) {
+                var pageCount = pageNumber;
+                pageCount++;
 
-                    $(infiniteScrollParams.pageNumberSelector).val(pageCount);
+                $(infiniteScrollParams.pageNumberSelector).val(pageCount);
 
-                    $(infiniteScrollParams.contentDivSelector).append(data.htmldata)
+                $(infiniteScrollParams.contentDivSelector).append(data.htmldata)
 
-                    if (infiniteScrollParams.postCallBack) {
-                        infiniteScrollParams.postCallBack();
-                    }
-
-                    isScrollExecuting = false;
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    console.log("error:" + thrownError.toString())
+                if (infiniteScrollParams.postCallBack) {
+                    infiniteScrollParams.postCallBack();
                 }
+            }).fail(function (xhr, ajaxOptions, thrownError) {
+                console.log("error:" + thrownError.toString())
+            }).always(function () {
+                isScrollExecuting = false;
             });
         }
     }
