@@ -1,10 +1,11 @@
-﻿using System;
+﻿using FlowRepository.ExendedModels.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlowRepository
+namespace FlowRepository.ExendedModels.Models
 {
     public class VideoRepository : DataRepository, IVideoRepository
     {

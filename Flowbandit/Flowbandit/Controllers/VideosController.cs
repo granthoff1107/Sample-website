@@ -7,6 +7,8 @@ using Flowbandit.Models;
 using FlowRepository;
 using System.Data.Entity;
 using Flowbandit.Controllers.Rules;
+using FlowRepository.ExendedModels.Contracts;
+using FlowRepository.ExendedModels.Models;
 
 namespace Flowbandit.Controllers
 {

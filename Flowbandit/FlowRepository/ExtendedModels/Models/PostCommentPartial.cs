@@ -9,6 +9,5 @@ namespace FlowRepository
 {
     public partial class PostComment : IHasCommentProperties
     {
-
     }
 }

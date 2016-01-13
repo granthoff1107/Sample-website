@@ -4,7 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace FlowRepository
+namespace FlowRepository.ExendedModels.Contracts
 {
     public interface IRepository : IDisposable
     {

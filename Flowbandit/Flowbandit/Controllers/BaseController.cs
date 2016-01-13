@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using FlowRepository;
 using System.IO;
 using Flowbandit.Models;
+using FlowRepository.ExendedModels.Contracts;
 
 namespace Flowbandit.Controllers
 {

@@ -1,5 +1,7 @@
 ﻿using Flowbandit.Models;
 using FlowRepository;
+using FlowRepository.ExendedModels.Contracts;
+using FlowRepository.ExendedModels.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

@@ -9,8 +9,9 @@ using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
+using FlowRepository.ExendedModels.Contracts;
 
-namespace FlowRepository
+namespace FlowRepository.ExendedModels.Models
 {
     public class DataRepository : IRepository
     {

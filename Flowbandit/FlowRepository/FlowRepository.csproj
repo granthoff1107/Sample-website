@@ -48,7 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataRepository.cs" />
+    <Compile Include="ExtendedModels\Models\DataRepository.cs" />
     <Compile Include="ExtendedModels\Contracts\IHasCommentProperties.cs" />
     <Compile Include="ExtendedModels\Models\PostCommentPartial.cs" />
     <Compile Include="ExtendedModels\Models\VideoCommentPartial.cs" />
@@ -67,18 +67,18 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FlowCollection.edmx</DependentUpon>
     </Compile>
-    <Compile Include="IPostRepository.cs" />
-    <Compile Include="IRepository.cs" />
-    <Compile Include="ITagRepository.cs" />
-    <Compile Include="IUserRepository.cs" />
-    <Compile Include="IVideoRepository.cs" />
+    <Compile Include="ExtendedModels\Contracts\IPostRepository.cs" />
+    <Compile Include="ExtendedModels\Contracts\IRepository.cs" />
+    <Compile Include="ExtendedModels\Contracts\ITagRepository.cs" />
+    <Compile Include="ExtendedModels\Contracts\IUserRepository.cs" />
+    <Compile Include="ExtendedModels\Contracts\IVideoRepository.cs" />
     <Compile Include="Post.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
     <Compile Include="PostComment.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
-    <Compile Include="PostRepository.cs" />
+    <Compile Include="ExtendedModels\Models\PostRepository.cs" />
     <Compile Include="PrivilegeLevel.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
@@ -86,7 +86,7 @@
     <Compile Include="Tag.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
-    <Compile Include="TagRepository.cs" />
+    <Compile Include="ExtendedModels\Models\TagRepository.cs" />
     <Compile Include="TagsToPost.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
@@ -96,14 +96,14 @@
     <Compile Include="User.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
-    <Compile Include="UserRepository.cs" />
+    <Compile Include="ExtendedModels\Models\UserRepository.cs" />
     <Compile Include="Video.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
     <Compile Include="VideoComment.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
-    <Compile Include="VideoRepository.cs" />
+    <Compile Include="ExtendedModels\Models\VideoRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="FlowCollection.edmx">
