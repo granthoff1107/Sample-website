@@ -32,21 +32,7 @@ namespace Flowbandit.Controllers
         public ActionResult Index(int PageNumber = 0)
         {
             var tmpViewModel = new AllPostsVM(_repository, PageNumber);
-            try
-            {
-                InnerException();
-            }
-            catch(Exception ex)
-            {
-                throw new Exception("Test Exception", ex);
-            }
-            
             return View(tmpViewModel);
-        }
-
-        protected void InnerException()
-        {
-            throw new InvalidOperationException("Inner Exception");
         }
 
         public ActionResult Post(int ID)
