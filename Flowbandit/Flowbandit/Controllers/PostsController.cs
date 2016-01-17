@@ -7,8 +7,8 @@ using Flowbandit.Models;
 using FlowRepository;
 using System.Data.Entity;
 using Flowbandit.Controllers.Rules;
-using FlowRepository.ExendedModels.Contracts;
-using FlowRepository.ExendedModels.Models;
+using FlowRepository.Repositories.Contracts.FlowRepository;
+using FlowRepository.Repositories.Models.FlowRepository;
 
 namespace Flowbandit.Controllers
 {
@@ -32,7 +32,21 @@ namespace Flowbandit.Controllers
         public ActionResult Index(int PageNumber = 0)
         {
             var tmpViewModel = new AllPostsVM(_repository, PageNumber);
+            try
+            {
+                InnerException();
+            }
+            catch(Exception ex)
+            {
+                throw new Exception("Test Exception", ex);
+            }
+            
             return View(tmpViewModel);
+        }
+
+        protected void InnerException()
+        {
+            throw new InvalidOperationException("Inner Exception");
         }
 
         public ActionResult Post(int ID)
@@ -61,6 +75,7 @@ namespace Flowbandit.Controllers
         {
             if(ModelState.IsValid && !GlobalInfo.IsAnon)
             {
+                //TODO Move this logic into the Base Repository
                 if (CoverPhoto != null)
                 {
                     var tmpRelative = SavePostedFile(CoverPhoto, "UserResources");
@@ -71,6 +86,7 @@ namespace Flowbandit.Controllers
                     }
                 }
 
+                //TODO Move this logic into the Post Repository
                 NewPost.FK_UserID = GlobalInfo.User.UserID;
                 NewPost.Last_Modified = DateTime.Now;
 

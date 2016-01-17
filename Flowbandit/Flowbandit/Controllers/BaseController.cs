@@ -6,23 +6,28 @@ using System.Web.Mvc;
 using FlowRepository;
 using System.IO;
 using Flowbandit.Models;
-using FlowRepository.ExendedModels.Contracts;
+using FlowRepository.Repositories.Contracts.FlowRepository;
+using FlowRepository.Repositories.Models.FlowLog;
 
 namespace Flowbandit.Controllers
 {
     public class BaseController<TRepository> : BaseController
-        where TRepository : IRepository
+        where TRepository : IFlowRepository
     {
         protected TRepository _repository;
 
         protected void InitializeRepository(TRepository DataRepo)
         {
             _repository = DataRepo;
+            _logRepository = new ErrorRepository();
         }
     }
 
     public class BaseController : Controller
     {
+        //This is depended consider changing this when you start using IOC container
+        protected IFlowLogRepository _logRepository;
+
         protected string RenderRazorViewToString(string viewName, object model)
         {
             ViewData.Model = model;
@@ -55,22 +60,6 @@ namespace Flowbandit.Controllers
             return RelativePath;
         }
 
-        public ActionResult SearchAutocomplete(string term)
-        {
-            try
-            {
-                var urlhelper = new UrlHelper(this.ControllerContext.RequestContext);
-
-                var Results = new List<AutoCompleteResult>();
-            
-                return Json(Results, JsonRequestBehavior.AllowGet);
-            }
-            catch (Exception ex)
-            {
-                return new HttpStatusCodeResult(500, ex.Message);
-            }
-        }
-
         private static string GetFullPathWithTimestamp(HttpPostedFileBase inputFile, string baseFolder)
         {
             string NewFileName = Path.GetFileNameWithoutExtension(inputFile.FileName) + "_" + DateTimeToUnixTimestamp(DateTime.Now);
@@ -83,19 +72,21 @@ namespace Flowbandit.Controllers
             return Path.GetFullPath(fullPath).Replace(GlobalInfo.RootDir, string.Empty);
         }
 
-        public static double DateTimeToUnixTimestamp(DateTime dateTime)
+        protected static double DateTimeToUnixTimestamp(DateTime dateTime)
         {
             return Math.Floor((double)(dateTime - new DateTime(1970, 1, 1).ToLocalTime()).TotalSeconds);
         }
 
-        protected override ViewResult View(IView view, object model)
+        protected override void OnException(ExceptionContext filterContext)
         {
-            return base.View(view, model);
-        }
+            //TODO: Get stack trace values from config file
+            _logRepository.AddError(filterContext.Exception, Request.Url.OriginalString, true);
 
-        protected override ViewResult View(string viewName, string masterName, object model)
-        {
-            return base.View(viewName, masterName, model);
+            if (filterContext.HttpContext.IsCustomErrorEnabled)
+            {
+                filterContext.ExceptionHandled = true;
+                this.View("Error").ExecuteResult(this.ControllerContext);
+            }
         }
 
     }

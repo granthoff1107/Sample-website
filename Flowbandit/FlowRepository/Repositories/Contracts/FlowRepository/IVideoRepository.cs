@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlowRepository.ExendedModels.Contracts
+namespace FlowRepository.Repositories.Contracts.FlowRepository
 {
-    public interface IVideoRepository : IRepository
+    public interface IVideoRepository : IFlowRepository
     {
         List<Video> GetMostRecentVideos(int PageNumber, int ResultsPerPage);
 

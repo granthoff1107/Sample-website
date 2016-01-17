@@ -5,7 +5,7 @@ using System.Web;
 using Flowbandit;
 using FlowRepository;
 using Flowbandit.Rules;
-using FlowRepository.ExendedModels.Contracts;
+using FlowRepository.Repositories.Contracts.FlowRepository;
 
 namespace Flowbandit.Models
 {

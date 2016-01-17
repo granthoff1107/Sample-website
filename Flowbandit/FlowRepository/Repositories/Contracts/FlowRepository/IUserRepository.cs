@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlowRepository.ExendedModels.Contracts
+namespace FlowRepository.Repositories.Contracts.FlowRepository
 {
-    public interface IUserRepository : IRepository
+    public interface IUserRepository : IFlowRepository
     {
         User GetUserByUsername(string Username);
     }

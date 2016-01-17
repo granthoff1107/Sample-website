@@ -1,6 +1,6 @@
 ﻿using Flowbandit.Controllers;
 using FlowRepository;
-using FlowRepository.ExendedModels.Contracts;
+using FlowRepository.Repositories.Contracts.FlowRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +8,8 @@ using System.Web;
 
 namespace Flowbandit.Models
 {
-    public class BaseModel<TRepository> : BaseModel 
-        where TRepository : IRepository
+    public class BaseModel<TRepository> : BaseModel
+        where TRepository : IFlowRepository
     {
         public TRepository DataRepository;
 

@@ -1,6 +1,6 @@
 ﻿using FlowRepository;
-using FlowRepository.ExendedModels.Contracts;
-using FlowRepository.ExendedModels.Models;
+using FlowRepository.Repositories.Contracts.FlowRepository;
+using FlowRepository.Repositories.Models.FlowRepository;
 using System;
 using System.Collections.Generic;
 using System.Linq;

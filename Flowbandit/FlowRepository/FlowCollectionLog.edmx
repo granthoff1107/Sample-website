@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="FlowCollectionLogModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Errors">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FK_ErrorType" Type="int" Nullable="false" />
+          <Property Name="ErrorMessage" Type="nvarchar(max)" />
+          <Property Name="StackTrace" Type="nvarchar(max)" />
+          <Property Name="UrlRoute" Type="varchar" MaxLength="2083" />
+          <Property Name="Timestamp" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="FK_ParentErrorID" Type="int" />
+        </EntityType>
+        <EntityType Name="ErrorTypes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Errors_Errors">
+          <End Role="Errors" Type="Self.Errors" Multiplicity="0..1" />
+          <End Role="Errors1" Type="Self.Errors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Errors">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Errors1">
+              <PropertyRef Name="FK_ParentErrorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Errors_ErrorTypes">
+          <End Role="ErrorTypes" Type="Self.ErrorTypes" Multiplicity="1" />
+          <End Role="Errors" Type="Self.Errors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ErrorTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Errors">
+              <PropertyRef Name="FK_ErrorType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FlowCollectionLogModelStoreContainer">
+          <EntitySet Name="Errors" EntityType="Self.Errors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ErrorTypes" EntityType="Self.ErrorTypes" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Errors_Errors" Association="Self.FK_Errors_Errors">
+            <End Role="Errors" EntitySet="Errors" />
+            <End Role="Errors1" EntitySet="Errors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Errors_ErrorTypes" Association="Self.FK_Errors_ErrorTypes">
+            <End Role="ErrorTypes" EntitySet="ErrorTypes" />
+            <End Role="Errors" EntitySet="Errors" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FlowCollectionLogModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Error">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FK_ErrorType" Type="Int32" Nullable="false" />
+          <Property Name="ErrorMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StackTrace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UrlRoute" Type="String" MaxLength="2083" FixedLength="false" Unicode="false" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="FK_ParentErrorID" Type="Int32" />
+          <NavigationProperty Name="Errors1" Relationship="Self.FK_Errors_Errors" FromRole="Errors" ToRole="Errors1" />
+          <NavigationProperty Name="Error1" Relationship="Self.FK_Errors_Errors" FromRole="Errors1" ToRole="Errors" />
+          <NavigationProperty Name="ErrorType" Relationship="Self.FK_Errors_ErrorTypes" FromRole="Errors" ToRole="ErrorTypes" />
+        </EntityType>
+        <EntityType Name="ErrorType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Errors" Relationship="Self.FK_Errors_ErrorTypes" FromRole="ErrorTypes" ToRole="Errors" />
+        </EntityType>
+        <Association Name="FK_Errors_Errors">
+          <End Role="Errors" Type="Self.Error" Multiplicity="0..1" />
+          <End Role="Errors1" Type="Self.Error" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Errors">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Errors1">
+              <PropertyRef Name="FK_ParentErrorID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Errors_ErrorTypes">
+          <End Role="ErrorTypes" Type="Self.ErrorType" Multiplicity="1" />
+          <End Role="Errors" Type="Self.Error" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ErrorTypes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Errors">
+              <PropertyRef Name="FK_ErrorType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="FlowCollectionLogEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Errors" EntityType="Self.Error" />
+          <EntitySet Name="ErrorTypes" EntityType="Self.ErrorType" />
+          <AssociationSet Name="FK_Errors_Errors" Association="Self.FK_Errors_Errors">
+            <End Role="Errors" EntitySet="Errors" />
+            <End Role="Errors1" EntitySet="Errors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Errors_ErrorTypes" Association="Self.FK_Errors_ErrorTypes">
+            <End Role="ErrorTypes" EntitySet="ErrorTypes" />
+            <End Role="Errors" EntitySet="Errors" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FlowCollectionLogModelStoreContainer" CdmEntityContainer="FlowCollectionLogEntities">
+          <EntitySetMapping Name="Errors">
+            <EntityTypeMapping TypeName="FlowCollectionLogModel.Error">
+              <MappingFragment StoreEntitySet="Errors">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FK_ErrorType" ColumnName="FK_ErrorType" />
+                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+                <ScalarProperty Name="StackTrace" ColumnName="StackTrace" />
+                <ScalarProperty Name="UrlRoute" ColumnName="UrlRoute" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="FK_ParentErrorID" ColumnName="FK_ParentErrorID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ErrorTypes">
+            <EntityTypeMapping TypeName="FlowCollectionLogModel.ErrorType">
+              <MappingFragment StoreEntitySet="ErrorTypes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

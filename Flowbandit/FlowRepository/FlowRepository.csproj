@@ -53,7 +53,15 @@
   <ItemGroup>
     <Compile Include="Data\Rules\HashRule.cs" />
     <Compile Include="Data\Contracts\IHash.cs" />
-    <Compile Include="ExtendedModels\Models\DataRepository.cs" />
+    <Compile Include="Error.cs">
+      <DependentUpon>FlowCollectionLog.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ErrorType.cs">
+      <DependentUpon>FlowCollectionLog.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Repositories\Contracts\FlowLog\IFlowLogRepository.cs" />
+    <Compile Include="Repositories\Contracts\FlowRepository\IFlowRepository.cs" />
+    <Compile Include="Repositories\Models\Base\DataRepository.cs" />
     <Compile Include="ExtendedModels\Contracts\IHasCommentProperties.cs" />
     <Compile Include="ExtendedModels\Models\PostCommentPartial.cs" />
     <Compile Include="ExtendedModels\Models\VideoCommentPartial.cs" />
@@ -72,18 +80,34 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FlowCollection.edmx</DependentUpon>
     </Compile>
-    <Compile Include="ExtendedModels\Contracts\IPostRepository.cs" />
-    <Compile Include="ExtendedModels\Contracts\IRepository.cs" />
-    <Compile Include="ExtendedModels\Contracts\ITagRepository.cs" />
-    <Compile Include="ExtendedModels\Contracts\IUserRepository.cs" />
-    <Compile Include="ExtendedModels\Contracts\IVideoRepository.cs" />
+    <Compile Include="Repositories\Contracts\FlowRepository\IPostRepository.cs" />
+    <Compile Include="Repositories\Contracts\Base\IRepository.cs" />
+    <Compile Include="Repositories\Contracts\FlowRepository\ITagRepository.cs" />
+    <Compile Include="Repositories\Contracts\FlowRepository\IUserRepository.cs" />
+    <Compile Include="Repositories\Contracts\FlowRepository\IVideoRepository.cs" />
+    <Compile Include="FlowCollectionLog.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FlowCollectionLog.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FlowCollectionLog.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FlowCollectionLog.tt</DependentUpon>
+    </Compile>
+    <Compile Include="FlowCollectionLog.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FlowCollectionLog.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Post.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
     <Compile Include="PostComment.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
-    <Compile Include="ExtendedModels\Models\PostRepository.cs" />
+    <Compile Include="Repositories\Models\FlowLog\ErrorRepository.cs" />
+    <Compile Include="Repositories\Models\FlowRepository\PostRepository.cs" />
     <Compile Include="PrivilegeLevel.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
@@ -91,7 +115,7 @@
     <Compile Include="Tag.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
-    <Compile Include="ExtendedModels\Models\TagRepository.cs" />
+    <Compile Include="Repositories\Models\FlowRepository\TagRepository.cs" />
     <Compile Include="TagsToPost.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
@@ -101,14 +125,14 @@
     <Compile Include="User.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
-    <Compile Include="ExtendedModels\Models\UserRepository.cs" />
+    <Compile Include="Repositories\Models\FlowRepository\UserRepository.cs" />
     <Compile Include="Video.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
     <Compile Include="VideoComment.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
-    <Compile Include="ExtendedModels\Models\VideoRepository.cs" />
+    <Compile Include="Repositories\Models\FlowRepository\VideoRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="FlowCollection.edmx">
@@ -130,6 +154,23 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>FlowCollection.edmx</DependentUpon>
       <LastGenOutput>FlowCollection.cs</LastGenOutput>
+    </None>
+    <EntityDeploy Include="FlowCollectionLog.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>FlowCollectionLog.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="FlowCollectionLog.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>FlowCollectionLog.edmx</DependentUpon>
+      <LastGenOutput>FlowCollectionLog.Context.cs</LastGenOutput>
+    </None>
+    <None Include="FlowCollectionLog.edmx.diagram">
+      <DependentUpon>FlowCollectionLog.edmx</DependentUpon>
+    </None>
+    <None Include="FlowCollectionLog.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>FlowCollectionLog.edmx</DependentUpon>
+      <LastGenOutput>FlowCollectionLog.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

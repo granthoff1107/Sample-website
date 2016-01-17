@@ -2,8 +2,8 @@
 using FlowRepository;
 using FlowRepository.Data.Contracts;
 using FlowRepository.Data.Rules;
-using FlowRepository.ExendedModels.Contracts;
-using FlowRepository.ExendedModels.Models;
+using FlowRepository.Repositories.Contracts.FlowRepository;
+using FlowRepository.Repositories.Models.FlowRepository;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -29,44 +29,35 @@ namespace Flowbandit.Controllers
             return View();
         }
 
+        //Make this http post only, login data should not go through Query Parameters
+        [HttpPost]
         public ActionResult Login(LoginVM LoginData)
         {
-           
             if (ModelState.IsValid)
             {
-                try
+                //TODO: refactor logic into Accounts Repository
+                User user = _repository.GetUserByUsername(LoginData.Username);
+
+                if (user != null)
                 {
-                    // Refactor this, only store Encrypted Password in Database and the seed.
-                    // When logging only get the seed from the database,  use the seed with the encryption
-                    // only send the encrypted password to be matched by a stored procedure in the database.  
-                    //Also Have an additional password to be used as a key with the seed internally to the program
-                    // This makes it way harder to break security protocol, and 1 will not lose all other passwords
-
-                    User user = _repository.GetUserByUsername(LoginData.Username);
-                    //var tempuser = Data.MK3Model.Employees2.Where(x => x.Username == username).SingleOrDefault();
-
-                    if (user != null)
+                    IHash hashRule = new HashRule();
+                    if (hashRule.VerifyHash(LoginData.Password, user.PasswordHash))
                     {
-                        IHash hashRule = new HashRule();
-                        if (hashRule.VerifyHash(LoginData.Password, user.PasswordHash))
-                        {
-                            FBPrincipalSerializeModel serial = new FBPrincipalSerializeModel { UserID = user.ID, PrivilegelevelID = user.FK_PrivilegelevelID };
+                        FBPrincipalSerializeModel serial = new FBPrincipalSerializeModel { UserID = user.ID, PrivilegelevelID = user.FK_PrivilegelevelID };
 
-                            var authcookie = LoginHelper.SerializeObjectToCookie(LoginData.StayLoggedin, user.Username, serial);
+                        var authcookie = LoginHelper.SerializeObjectToCookie(LoginData.StayLoggedin, user.Username, serial);
 
-                            //string domain = Request.Url.Scheme + System.Uri.SchemeDelimiter + Request.Url.Host + (Request.Url.IsDefaultPort ? "" : ":" + Request.Url.Port);
-                            //authcookie.Domain = domain;
-                            Response.Cookies.Add(authcookie);
-                        }
+                        //string domain = Request.Url.Scheme + System.Uri.SchemeDelimiter + Request.Url.Host + (Request.Url.IsDefaultPort ? "" : ":" + Request.Url.Port);
+                        //authcookie.Domain = domain;
+                        Response.Cookies.Add(authcookie);
                     }
-                }
-                catch (Exception ex)
-                {
-                    //Logger.Instance.WriteToLog("Error Logging in:" + ex.Message);
                 }
             }
 
-            return Redirect(HttpContext.Request.UrlReferrer.ToString());
+            //TODO: This should always be set from posts however, for testing purposes we'll redirect to home page
+            var redirectUrl = (null != HttpContext.Request.UrlReferrer ? HttpContext.Request.UrlReferrer.ToString() : "~");
+
+            return Redirect(redirectUrl);
         }
 
         //public void UpdateUser(string username, string password)

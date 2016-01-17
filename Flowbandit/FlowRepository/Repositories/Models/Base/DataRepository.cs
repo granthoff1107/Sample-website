@@ -9,15 +9,18 @@ using System.Data.Entity.Core.Objects;
 using System.Data.Entity.Core;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
-using FlowRepository.ExendedModels.Contracts;
+using FlowRepository.Repositories.Contracts.FlowRepository;
+using FlowRepository.Repositories.Contracts.Base;
 
-namespace FlowRepository.ExendedModels.Models
+namespace FlowRepository.Repositories.Models.Base
 {
-    public class DataRepository : IRepository
+    public class DataRepository<TContext> : IRepository<TContext>
+        where TContext : DbContext, new()
     {
-        protected FlowCollectionEntities _context;
+        protected TContext _context;
 
-        public FlowCollectionEntities Context
+        //TODO: This should not be exposed
+        public TContext Context
         {
             get { return _context; }
         }
@@ -58,7 +61,7 @@ namespace FlowRepository.ExendedModels.Models
 
         public DataRepository()
         {
-            _context = new FlowCollectionEntities();
+            _context = new TContext();
         }
 
 

@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace FlowRepository.ExendedModels.Contracts
+namespace FlowRepository.Repositories.Contracts.Base
 {
-    public interface IRepository : IDisposable
+    public interface IRepository<TContext> : IDisposable
+        where TContext : DbContext
     {
-        FlowCollectionEntities Context { get; }
+        TContext Context { get; }
 
         IQueryable<T> All<T>() where T : class;
 

@@ -1,13 +1,14 @@
-﻿using FlowRepository.ExendedModels.Contracts;
+﻿using FlowRepository.Repositories.Contracts.FlowRepository;
+using FlowRepository.Repositories.Models.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlowRepository.ExendedModels.Models
+namespace FlowRepository.Repositories.Models.FlowRepository
 {
-    public class UserRepository : DataRepository, IUserRepository
+    public class UserRepository : DataRepository<FlowCollectionEntities>, IUserRepository
     {
         public User GetUserByUsername(string Username)
         {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FlowRepository.ExendedModels.Contracts
+namespace FlowRepository.Repositories.Contracts.FlowRepository
 {
-    public interface IPostRepository : IRepository
+    public interface IPostRepository : IFlowRepository
     {
         List<Post> VisiblePostsByCreatedDate(int Skip, int Take);
 
