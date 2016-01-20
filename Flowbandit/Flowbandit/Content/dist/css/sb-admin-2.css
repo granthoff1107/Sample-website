@@ -4,10 +4,6 @@
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
 
-body {
-    background-color: #f8f8f8;
-}
-
 #wrapper {
     width: 100%;
 }
@@ -15,7 +11,6 @@ body {
 #page-wrapper {
     padding: 0 15px;
     min-height: 568px;
-    background-color: #fff;
 }
 
 @media(min-width:768px) {
@@ -23,7 +18,7 @@ body {
         position: inherit;
         margin: 0 0 0 250px;
         padding: 0 30px;
-        border-left: 1px solid #e7e7e7;
+        border-left: 1px solid #222;
     }
 }
 
@@ -95,11 +90,12 @@ body {
 }
 
 .sidebar ul li {
-    border-bottom: 1px solid #e7e7e7;
+    border-bottom: 1px solid #222;
+    border-right: 1px solid #222;
 }
 
 .sidebar ul li a.active {
-    background-color: #eee;
+   background-color: #2D2D2D;
 }
 
 .sidebar .arrow {
