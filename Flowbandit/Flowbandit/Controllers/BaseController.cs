@@ -19,7 +19,7 @@ namespace Flowbandit.Controllers
         protected void InitializeRepository(TRepository DataRepo)
         {
             _repository = DataRepo;
-            _logRepository = new ErrorRepository();
+            _logRepository = new LogRepository();
         }
     }
 

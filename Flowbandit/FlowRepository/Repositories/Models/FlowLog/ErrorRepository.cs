@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FlowRepository.Repositories.Models.FlowLog
 {
-    public class ErrorRepository : DataRepository<FlowCollectionLogEntities>, IFlowLogRepository
+    public class LogRepository : DataRepository<FlowCollectionLogEntities>, IFlowLogRepository
     {
         /// <summary>
         /// Logs an exception thrown from the client and stores information based on configuration
@@ -23,9 +23,22 @@ namespace FlowRepository.Repositories.Models.FlowLog
             //Only Store the url information once on root
             error.UrlRoute = url;
 
-            Context.Errors.Add(error);
+            _context.Errors.Add(error);
 
             SaveChanges();
+        }
+
+        public void AddInfo(string message, string infoTypeName)
+        {
+            var infoType = GetOrAddInfoTypeByName(infoTypeName);
+            var info = new Info
+            {
+                Message = message,
+                InfoType = infoType,
+                Timestamp = DateTime.Now,
+            };
+
+            _context.Infoes.Add(info);
         }
 
         protected void AddErrorType(string name)
@@ -59,7 +72,7 @@ namespace FlowRepository.Repositories.Models.FlowLog
         protected ErrorType GetErrorType(Exception exception)
         {
             var errorTypeName = exception.GetType().Name;
-            var errorType = Context.ErrorTypes.FirstOrDefault(e => e.Name == errorTypeName);
+            var errorType = _context.ErrorTypes.FirstOrDefault(e => e.Name == errorTypeName);
 
             if(null == errorType)
             {
@@ -67,6 +80,18 @@ namespace FlowRepository.Repositories.Models.FlowLog
             }
 
             return errorType;
+        }
+
+        protected InfoType GetOrAddInfoTypeByName(string name)
+        {
+            var infoType =_context.InfoTypes.FirstOrDefault(x => x.Name == name);
+            if(null == infoType)
+            {
+                infoType = new InfoType { Name = name };
+                _context.InfoTypes.Add(infoType);
+            }
+
+            return infoType;
         }
     }
 }

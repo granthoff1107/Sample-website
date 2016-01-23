@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="FlowCollectionLogModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FlowCollectionLogModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Errors">
           <Key>
             <PropertyRef Name="Id" />
@@ -14,7 +14,7 @@
           <Property Name="ErrorMessage" Type="nvarchar(max)" />
           <Property Name="StackTrace" Type="nvarchar(max)" />
           <Property Name="UrlRoute" Type="varchar" MaxLength="2083" />
-          <Property Name="Timestamp" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime2" Precision="3" Nullable="false" />
           <Property Name="FK_ParentErrorID" Type="int" />
         </EntityType>
         <EntityType Name="ErrorTypes">
@@ -23,6 +23,22 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Info">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FK_InfoType" Type="int" Nullable="false" />
+          <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime2" Precision="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="InfoType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
         </EntityType>
         <Association Name="FK_Errors_Errors">
           <End Role="Errors" Type="Self.Errors" Multiplicity="0..1" />
@@ -48,9 +64,23 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Info_ErrorTypes">
+          <End Role="InfoType" Type="Self.InfoType" Multiplicity="1" />
+          <End Role="Info" Type="Self.Info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InfoType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Info">
+              <PropertyRef Name="FK_InfoType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="FlowCollectionLogModelStoreContainer">
           <EntitySet Name="Errors" EntityType="Self.Errors" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ErrorTypes" EntityType="Self.ErrorTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Info" EntityType="Self.Info" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InfoType" EntityType="Self.InfoType" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Errors_Errors" Association="Self.FK_Errors_Errors">
             <End Role="Errors" EntitySet="Errors" />
             <End Role="Errors1" EntitySet="Errors" />
@@ -59,9 +89,12 @@
             <End Role="ErrorTypes" EntitySet="ErrorTypes" />
             <End Role="Errors" EntitySet="Errors" />
           </AssociationSet>
+          <AssociationSet Name="FK_Info_ErrorTypes" Association="Self.FK_Info_ErrorTypes">
+            <End Role="InfoType" EntitySet="InfoType" />
+            <End Role="Info" EntitySet="Info" />
+          </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="FlowCollectionLogModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -74,7 +107,7 @@
           <Property Name="ErrorMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="StackTrace" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="UrlRoute" Type="String" MaxLength="2083" FixedLength="false" Unicode="false" />
-          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="FK_ParentErrorID" Type="Int32" />
           <NavigationProperty Name="Errors1" Relationship="Self.FK_Errors_Errors" FromRole="Errors" ToRole="Errors1" />
           <NavigationProperty Name="Error1" Relationship="Self.FK_Errors_Errors" FromRole="Errors1" ToRole="Errors" />
@@ -123,7 +156,43 @@
             <End Role="ErrorTypes" EntitySet="ErrorTypes" />
             <End Role="Errors" EntitySet="Errors" />
           </AssociationSet>
+          <EntitySet Name="Infoes" EntityType="FlowCollectionLogModel.Info" />
+          <EntitySet Name="InfoTypes" EntityType="FlowCollectionLogModel.InfoType" />
+          <AssociationSet Name="FK_Info_ErrorTypes" Association="FlowCollectionLogModel.FK_Info_ErrorTypes">
+            <End Role="InfoType" EntitySet="InfoTypes" />
+            <End Role="Info" EntitySet="Infoes" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Info">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FK_InfoType" Type="Int32" Nullable="false" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="InfoType" Relationship="FlowCollectionLogModel.FK_Info_ErrorTypes" FromRole="Info" ToRole="InfoType" />
+        </EntityType>
+        <EntityType Name="InfoType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Infoes" Relationship="FlowCollectionLogModel.FK_Info_ErrorTypes" FromRole="InfoType" ToRole="Info" />
+        </EntityType>
+        <Association Name="FK_Info_ErrorTypes">
+          <End Type="FlowCollectionLogModel.InfoType" Role="InfoType" Multiplicity="1" />
+          <End Type="FlowCollectionLogModel.Info" Role="Info" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InfoType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Info">
+              <PropertyRef Name="FK_InfoType" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -148,6 +217,24 @@
               <MappingFragment StoreEntitySet="ErrorTypes">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Infoes">
+            <EntityTypeMapping TypeName="FlowCollectionLogModel.Info">
+              <MappingFragment StoreEntitySet="Info">
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="FK_InfoType" ColumnName="FK_InfoType" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InfoTypes">
+            <EntityTypeMapping TypeName="FlowCollectionLogModel.InfoType">
+              <MappingFragment StoreEntitySet="InfoType">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

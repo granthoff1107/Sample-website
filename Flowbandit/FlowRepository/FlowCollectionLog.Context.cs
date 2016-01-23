@@ -27,5 +27,7 @@ namespace FlowRepository
     
         public virtual DbSet<Error> Errors { get; set; }
         public virtual DbSet<ErrorType> ErrorTypes { get; set; }
+        public virtual DbSet<Info> Infoes { get; set; }
+        public virtual DbSet<InfoType> InfoTypes { get; set; }
     }
 }

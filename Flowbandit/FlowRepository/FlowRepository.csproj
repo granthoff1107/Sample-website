@@ -59,6 +59,12 @@
     <Compile Include="ErrorType.cs">
       <DependentUpon>FlowCollectionLog.tt</DependentUpon>
     </Compile>
+    <Compile Include="Info.cs">
+      <DependentUpon>FlowCollectionLog.tt</DependentUpon>
+    </Compile>
+    <Compile Include="InfoType.cs">
+      <DependentUpon>FlowCollectionLog.tt</DependentUpon>
+    </Compile>
     <Compile Include="Repositories\Contracts\FlowLog\IFlowLogRepository.cs" />
     <Compile Include="Repositories\Contracts\FlowRepository\IFlowRepository.cs" />
     <Compile Include="Repositories\Models\Base\DataRepository.cs" />

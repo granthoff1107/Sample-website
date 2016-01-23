@@ -26,6 +26,7 @@ namespace FlowRepository.Repositories.Models.Base
         }
 
         #region IDisposable
+        
         bool disposed = false;
 
         // Public implementation of Dispose pattern callable by consumers. 
@@ -39,12 +40,13 @@ namespace FlowRepository.Repositories.Models.Base
         protected virtual void Dispose(bool disposing)
         {
             if (disposed)
+            {
                 return;
+            }
 
             if (disposing)
             {
                 // Free any other managed objects here. 
-                //
                 if (_context != null)
                 {
                     _context.Dispose();
@@ -52,9 +54,7 @@ namespace FlowRepository.Repositories.Models.Base
             }
 
             // Free any unmanaged objects here. 
-            //
             disposed = true;
-
         }
 
         #endregion //IDisposable
