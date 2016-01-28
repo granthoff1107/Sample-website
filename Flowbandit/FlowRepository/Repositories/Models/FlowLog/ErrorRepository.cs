@@ -44,7 +44,12 @@ namespace FlowRepository.Repositories.Models.FlowLog
         protected void AddErrorType(string name)
         {
             var errorType = new ErrorType { Name = name };
-            Context.ErrorTypes.Add(errorType);
+            _context.ErrorTypes.Add(errorType);
+            //Prevent bug from occuring by adding error type because you cannot save 
+            //an new assigned type in the context and on an error at the same time
+            //this normally would be fine but if the inner exception is the same new error
+            // it will cause duplicates
+            _context.SaveChanges();
         }
 
         protected Error GetErrorFromException(Exception exception, bool storeStackTrace)
@@ -89,6 +94,11 @@ namespace FlowRepository.Repositories.Models.FlowLog
             {
                 infoType = new InfoType { Name = name };
                 _context.InfoTypes.Add(infoType);
+                //Prevent bug from occuring by adding error type because you cannot save 
+                //an new assigned type in the context and on an error at the same time
+                //this normally would be fine but if the inner exception is the same new error
+                // it will cause duplicates
+                _context.SaveChanges();
             }
 
             return infoType;
