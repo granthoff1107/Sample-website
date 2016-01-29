@@ -16,7 +16,8 @@ namespace Flowbandit.Controllers
     {
         //
         // GET: /Video/
-        public VideosController(IVideoRepository repository) : base(repository)
+        public VideosController(IVideoRepository repository, IFlowLogRepository logRepository)
+            : base(repository, logRepository)
         {
         }
 

@@ -16,8 +16,8 @@ namespace Flowbandit.Controllers
     {
         //
         // GET: /Post/
-        public PostsController(IPostRepository repository)
-            : base(repository)
+        public PostsController(IPostRepository repository, IFlowLogRepository logRepository)
+            : base(repository, logRepository)
         {
         }
 

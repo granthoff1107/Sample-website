@@ -11,8 +11,8 @@ namespace Flowbandit.Controllers
 {
     public class TagsController : BaseController<ITagRepository>
     {
-        public TagsController(ITagRepository repository)
-            : base(repository)
+        public TagsController(ITagRepository repository, IFlowLogRepository logRepository)
+            : base(repository, logRepository)
         {
         }
 

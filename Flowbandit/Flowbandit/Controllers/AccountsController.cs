@@ -18,8 +18,8 @@ namespace Flowbandit.Controllers
     {
         //
         // GET: /Accounts/
-        public AccountsController(IUserRepository repository)
-            : base(repository)
+        public AccountsController(IUserRepository repository, IFlowLogRepository logRepository)
+            : base(repository, logRepository)
         {
         }
 
@@ -32,6 +32,7 @@ namespace Flowbandit.Controllers
         [HttpPost]
         public ActionResult Login(LoginVM LoginData)
         {
+            _logRepository.AddInfo(string.Concat("attemped login for user", LoginData.Username, "from IP:", Request.UserHostAddress), "Login");
             if (ModelState.IsValid)
             {
                 //TODO: refactor logic into Accounts Repository

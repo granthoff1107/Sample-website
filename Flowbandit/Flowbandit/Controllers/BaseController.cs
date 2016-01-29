@@ -16,10 +16,10 @@ namespace Flowbandit.Controllers
     {
         protected TRepository _repository;
 
-        public BaseController(TRepository repository)
+        public BaseController(TRepository repository, IFlowLogRepository logRepository)
         {
             _repository = repository;
-            _logRepository = new LogRepository();
+            _logRepository = logRepository;
         }
     }
 

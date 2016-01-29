@@ -39,6 +39,7 @@ namespace FlowRepository.Repositories.Models.FlowLog
             };
 
             _context.Infoes.Add(info);
+            SaveChanges();
         }
 
         protected void AddErrorType(string name)
