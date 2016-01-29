@@ -16,10 +16,9 @@ namespace Flowbandit.Controllers
     {
         //
         // GET: /Post/
-        public PostsController()
+        public PostsController(IPostRepository repository)
+            : base(repository)
         {
-            var tmpRepo = new PostRepository();
-            InitializeRepository(tmpRepo);
         }
 
         public ActionResult GetPosts(int pageNumber)

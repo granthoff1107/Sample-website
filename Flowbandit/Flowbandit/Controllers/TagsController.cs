@@ -11,10 +11,9 @@ namespace Flowbandit.Controllers
 {
     public class TagsController : BaseController<ITagRepository>
     {
-        public TagsController()
+        public TagsController(ITagRepository repository)
+            : base(repository)
         {
-            var tmpRepo = new TagRepository();
-            InitializeRepository(tmpRepo);
         }
 
         public ActionResult TagsAutocomplete(string term)
