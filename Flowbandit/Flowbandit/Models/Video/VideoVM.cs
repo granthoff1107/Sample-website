@@ -64,7 +64,7 @@ namespace Flowbandit.Models
         {
             get
             {
-                return CurrentVideo != null ? CurrentVideo.Visible : true;
+                return CurrentVideo != null && CurrentVideo.ID != 0 ? CurrentVideo.Visible : true;
             }
         }
 

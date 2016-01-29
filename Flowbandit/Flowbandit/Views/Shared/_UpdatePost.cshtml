@@ -36,6 +36,10 @@
 
                             @Html.Partial("_updateTags", Model.CurrentPost.TagsToPosts.Select(t => t.Tag))
 
+                            @{
+                                string isChecked = Model.isVisible ? "checked='checked'" : "";
+                            }
+
                             <div class="row">
 
                                 <div class="col-lg-3">
@@ -49,7 +53,7 @@
                                     <div class="form-group">
                                         <div class="checkbox">
                                             <label>
-                                                <input type="checkbox" checked="checked" name="NewPost.Visible" value="@Model.isVisible.ToString().ToLower()">&nbsp;Is Visible
+                                                <input type="checkbox" @isChecked name="NewPost.Visible" value="true">&nbsp;Is Visible
                                             </label>
                                         </div>
                                     </div>
