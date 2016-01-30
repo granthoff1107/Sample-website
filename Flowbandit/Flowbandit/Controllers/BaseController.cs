@@ -16,17 +16,20 @@ namespace Flowbandit.Controllers
     {
         protected override void Dispose(bool disposing)
         {
-            _logRepository.Dispose();
-            _repository.Dispose();
+            if (disposing)
+            {
+                _repository.Dispose();
+            }
+            
             base.Dispose(disposing);
         }
 
         protected TRepository _repository;
 
-        public BaseController(TRepository repository, IFlowLogRepository logRepository)
+        public BaseController(TRepository repository, IFlowLogRepository logRepository) : base(logRepository)
         {
             _repository = repository;
-            _logRepository = logRepository;
+           
         }
     }
 
@@ -34,6 +37,20 @@ namespace Flowbandit.Controllers
     {
         //This is depended consider changing this when you start using IOC container
         protected IFlowLogRepository _logRepository;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _logRepository.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        public BaseController(IFlowLogRepository logRepository)
+        {
+            _logRepository = logRepository;
+        }
 
         protected string RenderRazorViewToString(string viewName, object model)
         {
@@ -94,6 +111,12 @@ namespace Flowbandit.Controllers
                 filterContext.ExceptionHandled = true;
                 this.View("Error").ExecuteResult(this.ControllerContext);
             }
+        }
+
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            _logRepository.AddInfo("", Request.UserHostAddress, Request.Url.OriginalString, "Request Info");
+            base.OnActionExecuting(filterContext);
         }
 
     }

@@ -114,7 +114,7 @@
     <Compile Include="PostComment.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
-    <Compile Include="Repositories\Models\FlowLog\ErrorRepository.cs" />
+    <Compile Include="Repositories\Models\FlowLog\LogRepository.cs" />
     <Compile Include="Repositories\Models\FlowRepository\PostRepository.cs" />
     <Compile Include="PrivilegeLevel.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>

@@ -32,7 +32,7 @@ namespace Flowbandit.Controllers
         [HttpPost]
         public ActionResult Login(LoginVM LoginData)
         {
-            _logRepository.AddInfo(string.Concat("attemped login for user", LoginData.Username, "from IP:", Request.UserHostAddress), "Login");
+            _logRepository.AddInfo(string.Concat("attemped login for user", LoginData.Username), Request.UserHostAddress, Request.Url.OriginalString, "Login");
             if (ModelState.IsValid)
             {
                 //TODO: refactor logic into Accounts Repository

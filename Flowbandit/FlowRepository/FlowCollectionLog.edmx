@@ -32,6 +32,8 @@
           <Property Name="FK_InfoType" Type="int" Nullable="false" />
           <Property Name="Message" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Timestamp" Type="datetime2" Precision="3" Nullable="false" />
+          <Property Name="IPAddress" Type="varchar" MaxLength="39" />
+          <Property Name="UrlRoute" Type="varchar" MaxLength="2083" />
         </EntityType>
         <EntityType Name="InfoType">
           <Key>
@@ -156,13 +158,21 @@
             <End Role="ErrorTypes" EntitySet="ErrorTypes" />
             <End Role="Errors" EntitySet="Errors" />
           </AssociationSet>
-          <EntitySet Name="Infoes" EntityType="FlowCollectionLogModel.Info" />
           <EntitySet Name="InfoTypes" EntityType="FlowCollectionLogModel.InfoType" />
+          <EntitySet Name="Infoes" EntityType="FlowCollectionLogModel.Info" />
           <AssociationSet Name="FK_Info_ErrorTypes" Association="FlowCollectionLogModel.FK_Info_ErrorTypes">
             <End Role="InfoType" EntitySet="InfoTypes" />
             <End Role="Info" EntitySet="Infoes" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="InfoType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Infoes" Relationship="FlowCollectionLogModel.FK_Info_ErrorTypes" FromRole="InfoType" ToRole="Info" />
+        </EntityType>
         <EntityType Name="Info">
           <Key>
             <PropertyRef Name="Id" />
@@ -171,15 +181,9 @@
           <Property Name="FK_InfoType" Type="Int32" Nullable="false" />
           <Property Name="Message" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IPAddress" Type="String" MaxLength="39" FixedLength="false" Unicode="false" />
+          <Property Name="UrlRoute" Type="String" MaxLength="2083" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="InfoType" Relationship="FlowCollectionLogModel.FK_Info_ErrorTypes" FromRole="Info" ToRole="InfoType" />
-        </EntityType>
-        <EntityType Name="InfoType">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Infoes" Relationship="FlowCollectionLogModel.FK_Info_ErrorTypes" FromRole="InfoType" ToRole="Info" />
         </EntityType>
         <Association Name="FK_Info_ErrorTypes">
           <End Type="FlowCollectionLogModel.InfoType" Role="InfoType" Multiplicity="1" />
@@ -220,20 +224,22 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Infoes">
-            <EntityTypeMapping TypeName="FlowCollectionLogModel.Info">
-              <MappingFragment StoreEntitySet="Info">
-                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
-                <ScalarProperty Name="Message" ColumnName="Message" />
-                <ScalarProperty Name="FK_InfoType" ColumnName="FK_InfoType" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="InfoTypes">
             <EntityTypeMapping TypeName="FlowCollectionLogModel.InfoType">
               <MappingFragment StoreEntitySet="InfoType">
                 <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Infoes">
+            <EntityTypeMapping TypeName="FlowCollectionLogModel.Info">
+              <MappingFragment StoreEntitySet="Info">
+                <ScalarProperty Name="UrlRoute" ColumnName="UrlRoute" />
+                <ScalarProperty Name="IPAddress" ColumnName="IPAddress" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="FK_InfoType" ColumnName="FK_InfoType" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

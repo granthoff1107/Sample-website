@@ -28,13 +28,15 @@ namespace FlowRepository.Repositories.Models.FlowLog
             SaveChanges();
         }
 
-        public void AddInfo(string message, string infoTypeName)
+        public void AddInfo(string message, string ipAddress, string urlRoute, string infoTypeName)
         {
             var infoType = GetOrAddInfoTypeByName(infoTypeName);
             var info = new Info
             {
                 Message = message,
                 InfoType = infoType,
+                IPAddress = ipAddress,
+                UrlRoute = urlRoute,
                 Timestamp = DateTime.Now,
             };
 

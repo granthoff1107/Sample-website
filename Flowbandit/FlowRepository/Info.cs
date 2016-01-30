@@ -18,6 +18,8 @@ namespace FlowRepository
         public int FK_InfoType { get; set; }
         public string Message { get; set; }
         public System.DateTime Timestamp { get; set; }
+        public string IPAddress { get; set; }
+        public string UrlRoute { get; set; }
     
         public virtual InfoType InfoType { get; set; }
     }

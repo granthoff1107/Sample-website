@@ -10,7 +10,7 @@ namespace FlowRepository.Repositories.Contracts.FlowRepository
     public interface IFlowLogRepository : IRepository<FlowCollectionLogEntities>
     {
         void AddError(Exception exception, string Url = null,  bool storeStackTrace = true);
-        void AddInfo(string message, string infoTypeName);
+        void AddInfo(string message, string ipAddress, string urlRoute, string infoTypeName);
     }
 }
 
