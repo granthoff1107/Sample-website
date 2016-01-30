@@ -14,6 +14,13 @@ namespace Flowbandit.Controllers
     public class BaseController<TRepository> : BaseController
         where TRepository : IFlowRepository
     {
+        protected override void Dispose(bool disposing)
+        {
+            _logRepository.Dispose();
+            _repository.Dispose();
+            base.Dispose(disposing);
+        }
+
         protected TRepository _repository;
 
         public BaseController(TRepository repository, IFlowLogRepository logRepository)
