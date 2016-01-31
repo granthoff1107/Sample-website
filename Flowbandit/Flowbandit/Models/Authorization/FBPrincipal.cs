@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Web;
 
-namespace Flowbandit.Controllers
+namespace Flowbandit.Models.Authorization
 {
     public class FBPrincipal : IPrincipal
     {

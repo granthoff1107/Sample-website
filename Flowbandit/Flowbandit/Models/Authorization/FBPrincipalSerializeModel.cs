@@ -4,7 +4,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text;
 
-namespace Flowbandit.Controllers
+namespace Flowbandit.Models.Authorization
 {
     class FBPrincipalSerializeModel
     {

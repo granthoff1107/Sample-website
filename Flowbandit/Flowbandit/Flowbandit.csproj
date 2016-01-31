@@ -174,8 +174,8 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\ContactsController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
-    <Compile Include="Controllers\FBPrincipal.cs" />
-    <Compile Include="Controllers\FBPrincipalSerializeModel.cs" />
+    <Compile Include="Models\Authorization\FBPrincipal.cs" />
+    <Compile Include="Models\Authorization\FBPrincipalSerializeModel.cs" />
     <Compile Include="Controllers\PostsController.cs" />
     <Compile Include="Controllers\Rules\CommentRule.cs" />
     <Compile Include="Controllers\Rules\TagsRule.cs" />
@@ -186,6 +186,7 @@
     </Compile>
     <Compile Include="Models\Accounts\LoginHelper.cs" />
     <Compile Include="Models\Accounts\LoginVM.cs" />
+    <Compile Include="Models\Authorization\FBAuthorizeLevelAttribute.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\Contact\ContactVM.cs" />
     <Compile Include="Models\Dashboard\DashboardVM.cs" />
@@ -608,7 +609,9 @@
     <Content Include="Scripts\tinymce\themes\modern\theme.min.js" />
     <Content Include="Scripts\tinymce\tinymce.js" />
     <Content Include="Scripts\tinymce\tinymce.min.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

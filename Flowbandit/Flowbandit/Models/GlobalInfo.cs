@@ -1,4 +1,4 @@
-﻿using Flowbandit.Controllers;
+﻿using Flowbandit.Models.Authorization;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,7 +70,7 @@ namespace Flowbandit.Models
         }
 
 
-        public enum PriviledgeLevel
+        public enum PrivilegeLevel
         {
             Owner = 1,
             Admin = 2,

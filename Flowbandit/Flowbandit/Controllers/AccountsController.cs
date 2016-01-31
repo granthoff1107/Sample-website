@@ -1,4 +1,5 @@
 ﻿using Flowbandit.Models;
+using Flowbandit.Models.Authorization;
 using FlowRepository;
 using FlowRepository.Data.Contracts;
 using FlowRepository.Data.Rules;

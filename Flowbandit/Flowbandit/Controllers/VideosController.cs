@@ -9,6 +9,7 @@ using System.Data.Entity;
 using Flowbandit.Controllers.Rules;
 using FlowRepository.Repositories.Contracts.FlowRepository;
 using FlowRepository.Repositories.Models.FlowRepository;
+using Flowbandit.Models.Authorization;
 
 namespace Flowbandit.Controllers
 {
@@ -51,13 +52,13 @@ namespace Flowbandit.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [FBAuthorizeLevel(MaximumLevel = ADMIN_LEVEL)]
         public ActionResult NewVideo()
         {
             return View();
         }
 
-        [Authorize]
+        [FBAuthorizeLevel(MaximumLevel = ADMIN_LEVEL)]
         public ActionResult EditVideo(int ID)
         {
             var tmpViewModel = new VideoVM(_repository, ID);
@@ -65,7 +66,7 @@ namespace Flowbandit.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [FBAuthorizeLevel(MaximumLevel = ADMIN_LEVEL)]
         [ValidateInput(false)]
         public JsonResult NewVideo(Video newVideo, List<int> tagIds = null)
         {

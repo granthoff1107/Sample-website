@@ -9,11 +9,13 @@ using System.Data.Entity;
 using Flowbandit.Controllers.Rules;
 using FlowRepository.Repositories.Contracts.FlowRepository;
 using FlowRepository.Repositories.Models.FlowRepository;
+using Flowbandit.Models.Authorization;
 
 namespace Flowbandit.Controllers
 {
     public class PostsController : BaseController<IPostRepository>
     {
+
         //
         // GET: /Post/
         public PostsController(IPostRepository repository, IFlowLogRepository logRepository)
@@ -41,14 +43,14 @@ namespace Flowbandit.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [FBAuthorizeLevel(MaximumLevel = ADMIN_LEVEL)]
         public ActionResult NewPost()
         {
             return View();
         }
 
         [HttpGet]
-        [Authorize]
+        [FBAuthorizeLevel(MaximumLevel = ADMIN_LEVEL)]
         public ActionResult EditPost(int ID)
         {
             var tmpViewModel = new PostVM(_repository, ID);
@@ -56,7 +58,7 @@ namespace Flowbandit.Controllers
         }
         
         [HttpPost]
-        [Authorize]
+        [FBAuthorizeLevel(MaximumLevel = ADMIN_LEVEL)]
         [ValidateInput(false)]
         public JsonResult NewPost(Post NewPost, HttpPostedFileBase CoverPhoto = null, List<int> tagIds = null)
         {

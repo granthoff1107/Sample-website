@@ -35,6 +35,12 @@ namespace Flowbandit.Controllers
 
     public class BaseController : Controller
     {
+        protected const int OWNER_LEVEL = 1;
+        protected const int ADMIN_LEVEL = 2;
+        protected const int BASIC_LEVEL = 3;
+        protected const int ANONYMOUS_LEVEL = 4;
+
+
         //This is depended consider changing this when you start using IOC container
         protected IFlowLogRepository _logRepository;
 

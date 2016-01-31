@@ -1,4 +1,4 @@
-﻿using Flowbandit.Controllers;
+﻿using Flowbandit.Models.Authorization;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
