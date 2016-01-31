@@ -44,16 +44,6 @@ namespace FlowRepository.Repositories.Models.FlowLog
             SaveChanges();
         }
 
-        protected void AddErrorType(string name)
-        {
-            var errorType = new ErrorType { Name = name };
-            _context.ErrorTypes.Add(errorType);
-            //Prevent bug from occuring by adding error type because you cannot save 
-            //an new assigned type in the context and on an error at the same time
-            //this normally would be fine but if the inner exception is the same new error
-            // it will cause duplicates
-            _context.SaveChanges();
-        }
 
         protected Error GetErrorFromException(Exception exception, bool storeStackTrace)
         {
@@ -67,7 +57,7 @@ namespace FlowRepository.Repositories.Models.FlowLog
                 error.StackTrace = exception.StackTrace;
             }
 
-            error.ErrorType = GetErrorType(exception);
+            error.ErrorType = GetOrAddErrorType(exception.GetType().Name);
 
             if(null != exception.InnerException)
             {
@@ -77,19 +67,26 @@ namespace FlowRepository.Repositories.Models.FlowLog
             return error;
         }
 
-        protected ErrorType GetErrorType(Exception exception)
+        //TODO create error type and info types as enumeration tables that inherit from the same interface so we don't have to duplicate logic
+        protected ErrorType GetOrAddErrorType(string name)
         {
-            var errorTypeName = exception.GetType().Name;
-            var errorType = _context.ErrorTypes.FirstOrDefault(e => e.Name == errorTypeName);
+            var errorType = _context.ErrorTypes.FirstOrDefault(e => e.Name == name);
 
             if(null == errorType)
             {
-                AddErrorType(errorTypeName);
+                errorType = new ErrorType { Name = name };
+                _context.ErrorTypes.Add(errorType);
+                //Prevent bug from occuring by adding error type because you cannot save 
+                //an new assigned type in the context and on an error at the same time
+                //this normally would be fine but if the inner exception is the same new error
+                // it will cause duplicates
+                _context.SaveChanges();
             }
 
             return errorType;
         }
 
+        //TODO create error type and info types as enumeration tables that inherit from the same interface so we don't have to duplicate logic
         protected InfoType GetOrAddInfoTypeByName(string name)
         {
             var infoType =_context.InfoTypes.FirstOrDefault(x => x.Name == name);
