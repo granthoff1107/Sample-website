@@ -56,7 +56,7 @@ namespace Flowbandit.Controllers
         }
         
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize]
         [ValidateInput(false)]
         public JsonResult NewPost(Post NewPost, HttpPostedFileBase CoverPhoto = null, List<int> tagIds = null)
         {

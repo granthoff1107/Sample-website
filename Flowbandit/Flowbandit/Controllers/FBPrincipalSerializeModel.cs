@@ -10,5 +10,6 @@ namespace Flowbandit.Controllers
     {
         public int UserID { get; set; }
         public int PrivilegelevelID { get; set; }
+        public string PrivilegeLevel { get; set; }
     }
 }

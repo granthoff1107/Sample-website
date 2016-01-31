@@ -42,7 +42,7 @@ namespace Flowbandit.Models
             {
                 var authTicket = FormsAuthentication.Decrypt(authCookie.Value);
                 var serial = JsonConvert.DeserializeObject<FBPrincipalSerializeModel>(authTicket.UserData);
-                HttpContext.Current.User = new FBPrincipal(authTicket.Name, serial.UserID, serial.PrivilegelevelID);
+                HttpContext.Current.User = new FBPrincipal(authTicket.Name, serial.UserID, serial.PrivilegelevelID, serial.PrivilegeLevel);
             }
         }
 

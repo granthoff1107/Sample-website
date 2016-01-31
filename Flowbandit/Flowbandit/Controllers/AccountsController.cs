@@ -43,7 +43,8 @@ namespace Flowbandit.Controllers
                     IHash hashRule = new HashRule();
                     if (hashRule.VerifyHash(LoginData.Password, user.PasswordHash))
                     {
-                        FBPrincipalSerializeModel serial = new FBPrincipalSerializeModel { UserID = user.ID, PrivilegelevelID = user.FK_PrivilegelevelID };
+                        var priviledgeLevel = (null != user.PrivilegeLevel ? user.PrivilegeLevel.Name : "");
+                        FBPrincipalSerializeModel serial = new FBPrincipalSerializeModel { UserID = user.ID, PrivilegelevelID = user.FK_PrivilegelevelID, PrivilegeLevel = priviledgeLevel };
 
                         var authcookie = LoginHelper.SerializeObjectToCookie(LoginData.StayLoggedin, user.Username, serial);
 

@@ -13,24 +13,22 @@ namespace Flowbandit.Controllers
 
         public bool IsInRole(string role)
         {
-            //if (roles.Any(r => role.Contains(r)))
-            //{
-            //    return true;
-            //}
-            return false;
+            return string.Compare(role, PrivilegeLevel, true) == 0;
         }
 
-        public FBPrincipal(string Username, int UserID, int PrivilegeLevelID)
+        public FBPrincipal(string username, int userId, int privilegeLevelId, string privilegeLevel)
         {
-            this.Identity = new GenericIdentity(Username);
+            this.Identity = new GenericIdentity(username);
 
-            this.UserID = UserID;
-            this.PrivilegelevelID = PrivilegelevelID;
-            this.Username = Username;
+            this.UserID = userId;
+            this.PrivilegeLevelID = privilegeLevelId;
+            this.Username = username;
+            this.PrivilegeLevel = privilegeLevel;
         }
 
         public int UserID { get; set; }
-        public int PrivilegelevelID { get; set; }
+        public int PrivilegeLevelID { get; set; }
+        public string PrivilegeLevel { get; set; }
         public string Username { get; set; }
 
     }
