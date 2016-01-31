@@ -14,7 +14,7 @@ namespace Flowbandit.Models
         {
             get
             {
-                return GlobalInfo.User.UserID;
+                return (null != GlobalInfo.User ? GlobalInfo.User.UserID : 0);
             }
         }
 
@@ -30,7 +30,7 @@ namespace Flowbandit.Models
         {
             get
             {
-                return GlobalInfo.User.Username;
+                return (null != GlobalInfo.User ? GlobalInfo.User.Username : "ANON");
             }
         }
 
@@ -44,11 +44,6 @@ namespace Flowbandit.Models
                 var serial = JsonConvert.DeserializeObject<FBPrincipalSerializeModel>(authTicket.UserData);
                 HttpContext.Current.User = new FBPrincipal(authTicket.Name, serial.UserID, serial.PrivilegelevelID);
             }
-        }
-
-        public static void SetAnonUser()
-        {
-            HttpContext.Current.User = new FBPrincipal("ANON", GlobalInfo.ANONID, (int)GlobalInfo.PriviledgeLevel.Anon);
         }
 
 

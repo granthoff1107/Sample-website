@@ -38,10 +38,6 @@ namespace Flowbandit
             {
                 LoginHelper.SetUserFromCookie(authCookie);
             }
-            else
-            {
-                LoginHelper.SetAnonUser();
-            }
         }
     }
 }

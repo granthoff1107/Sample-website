@@ -41,12 +41,14 @@ namespace Flowbandit.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult NewPost()
         {
             return View();
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult EditPost(int ID)
         {
             var tmpViewModel = new PostVM(_repository, ID);
@@ -54,11 +56,11 @@ namespace Flowbandit.Controllers
         }
         
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [ValidateInput(false)]
         public JsonResult NewPost(Post NewPost, HttpPostedFileBase CoverPhoto = null, List<int> tagIds = null)
         {
-            if(ModelState.IsValid && !GlobalInfo.IsAnon)
+            if(ModelState.IsValid)
             {
                 //TODO Move this logic into the Base Repository
                 if (CoverPhoto != null)

@@ -51,11 +51,13 @@ namespace Flowbandit.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public ActionResult NewVideo()
         {
             return View();
         }
 
+        [Authorize]
         public ActionResult EditVideo(int ID)
         {
             var tmpViewModel = new VideoVM(_repository, ID);
@@ -67,7 +69,7 @@ namespace Flowbandit.Controllers
         [ValidateInput(false)]
         public JsonResult NewVideo(Video newVideo, List<int> tagIds = null)
         {
-            if (ModelState.IsValid && !GlobalInfo.IsAnon)
+            if (ModelState.IsValid)
             {
                 newVideo.FK_UserID = GlobalInfo.User.UserID;
                 
