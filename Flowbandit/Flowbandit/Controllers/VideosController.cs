@@ -52,13 +52,13 @@ namespace Flowbandit.Controllers
         }
 
         [HttpGet]
-        [FBAuthorizeLevel(MaximumLevel = ADMIN_LEVEL)]
+        [FBAuthorizeLevel(MaximumLevel = ADMIN_LEVEL, RedirectUrl = "~/Videos/")]
         public ActionResult NewVideo()
         {
             return View();
         }
 
-        [FBAuthorizeLevel(MaximumLevel = ADMIN_LEVEL)]
+        [FBAuthorizeLevel(MaximumLevel = ADMIN_LEVEL, RedirectUrl = "~/Videos/Video/{ID}")]
         public ActionResult EditVideo(int ID)
         {
             var tmpViewModel = new VideoVM(_repository, ID);
@@ -93,10 +93,11 @@ namespace Flowbandit.Controllers
                 }
 
                 _repository.SaveChanges();
-                return Json( new  { redirectUrl = Url.Action("Video", new { ID = newVideo.ID }) });
+
+                return GetJsonRedirectResult(Url.Action("Video", new { ID = newVideo.ID }));
             }
 
-            return Json(new { redirectUrl = Url.Action("Index") });
+            return  GetJsonRedirectResult(Url.Action("Index"));
         }
 
     }

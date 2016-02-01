@@ -43,14 +43,14 @@ namespace Flowbandit.Controllers
         }
 
         [HttpGet]
-        [FBAuthorizeLevel(MaximumLevel = ADMIN_LEVEL)]
+        [FBAuthorizeLevel(MaximumLevel = ADMIN_LEVEL, RedirectUrl = "~/Posts/")]
         public ActionResult NewPost()
         {
             return View();
         }
 
         [HttpGet]
-        [FBAuthorizeLevel(MaximumLevel = ADMIN_LEVEL)]
+        [FBAuthorizeLevel(MaximumLevel = ADMIN_LEVEL, RedirectUrl = "~/Posts/Post/{ID}")]
         public ActionResult EditPost(int ID)
         {
             var tmpViewModel = new PostVM(_repository, ID);
@@ -98,9 +98,9 @@ namespace Flowbandit.Controllers
                 }
 
                 _repository.SaveChanges();
-                return Json(new { redirectUrl = Url.Action("Post", new { ID = NewPost.ID }) }); 
+                return  GetJsonRedirectResult(Url.Action("Post", new { ID = NewPost.ID })); 
             }
-            return Json(new { redirectUrl = Url.Action("Index") });
+            return  GetJsonRedirectResult(Url.Action("Index"));
         }
 
         public ActionResult Comment(PostComment NewComment)

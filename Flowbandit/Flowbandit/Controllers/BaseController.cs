@@ -8,6 +8,7 @@ using System.IO;
 using Flowbandit.Models;
 using FlowRepository.Repositories.Contracts.FlowRepository;
 using FlowRepository.Repositories.Models.FlowLog;
+using Flowbandit.Controllers.Rules;
 
 namespace Flowbandit.Controllers
 {
@@ -125,5 +126,9 @@ namespace Flowbandit.Controllers
             base.OnActionExecuting(filterContext);
         }
 
+        public JsonResult GetJsonRedirectResult(string url)
+        {
+            return JsonResultFactory.GetJsonRedirectResult(url);
+        }
     }
 }
