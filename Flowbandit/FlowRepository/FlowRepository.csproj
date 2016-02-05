@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Rules\EmailSender.cs" />
     <Compile Include="Data\Rules\HashRule.cs" />
     <Compile Include="Data\Contracts\IHash.cs" />
     <Compile Include="Error.cs">
@@ -120,6 +121,7 @@
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Models\UserRepository\NewUserDTO.cs" />
     <Compile Include="Tag.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>

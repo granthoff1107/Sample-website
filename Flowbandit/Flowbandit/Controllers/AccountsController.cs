@@ -3,6 +3,7 @@ using Flowbandit.Models.Authorization;
 using FlowRepository;
 using FlowRepository.Data.Contracts;
 using FlowRepository.Data.Rules;
+using FlowRepository.Models.UserRepository;
 using FlowRepository.Repositories.Contracts.FlowRepository;
 using FlowRepository.Repositories.Models.FlowRepository;
 using Newtonsoft.Json;
@@ -17,11 +18,13 @@ namespace Flowbandit.Controllers
 {
     public class AccountsController : BaseController<IUserRepository>
     {
-        //
-        // GET: /Accounts/
-        public AccountsController(IUserRepository repository, IFlowLogRepository logRepository)
+
+        protected EmailSender _mailSender;
+
+        public AccountsController(IUserRepository repository, IFlowLogRepository logRepository, EmailSender mailSender)
             : base(repository, logRepository)
         {
+            _mailSender = mailSender;
         }
 
         public ActionResult Index()
@@ -62,15 +65,24 @@ namespace Flowbandit.Controllers
             return Redirect(redirectUrl);
         }
 
-        //public void UpdateUser(string username, string password)
-        //{
-        //    IHash hashRule = new HashRule();
-        //    var hash = hashRule.CreateHash(password);
-        //    var user = _repository.GetUserByUsername(username);
-        //    user.PasswordHash = hash;
+        //TODO Allow anyone to register once the site is secure
+        [FBAuthorizeLevel(MaximumLevel = ADMIN_LEVEL)]
+        public JsonResult CreateUser(NewUserDTO user)
+        {
+            if(ModelState.IsValid)
+            {
+                _repository.CreateUser(user);
+                _mailSender.SendEmail(user.Email, "Thanks for registering", "Click The link to verify your email address", "noreply@flowbandit.com");
+            }
 
-        //    _repository.SaveChanges();
-        //}
+            return Json(new { Success = (null != user).ToString() });
+        }
+
+        [HttpGet]
+        public ActionResult ProfilePage(int id)
+        {
+            return View();
+        }
 
         public ActionResult Logout()
         {

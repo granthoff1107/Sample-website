@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlowRepository.Models.UserRepository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace FlowRepository.Repositories.Contracts.FlowRepository
 {
     public interface IUserRepository : IFlowRepository
     {
-        User GetUserByUsername(string Username);
+        User GetUserByUsername(string username);
+        User CreateUser(NewUserDTO user);
     }
 }
