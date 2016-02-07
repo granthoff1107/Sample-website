@@ -68,6 +68,7 @@
     <Compile Include="InfoType.cs">
       <DependentUpon>FlowCollectionLog.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Const\Consts.cs" />
     <Compile Include="Repositories\Contracts\FlowLog\IFlowLogRepository.cs" />
     <Compile Include="Repositories\Contracts\FlowRepository\IFlowRepository.cs" />
     <Compile Include="Repositories\Models\Base\DataRepository.cs" />
@@ -136,6 +137,12 @@
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
     <Compile Include="Repositories\Models\FlowRepository\UserRepository.cs" />
+    <Compile Include="UserVerification.cs">
+      <DependentUpon>FlowCollection.tt</DependentUpon>
+    </Compile>
+    <Compile Include="VerificationType.cs">
+      <DependentUpon>FlowCollection.tt</DependentUpon>
+    </Compile>
     <Compile Include="Video.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>

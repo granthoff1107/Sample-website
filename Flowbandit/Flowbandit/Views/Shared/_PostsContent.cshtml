@@ -6,25 +6,28 @@
 @foreach (var post in @Model.Posts)
 {
     var PostsUrl = Url.Action("Post", "Posts", new { ID = post.ID });
-    <h2>
-        <a href="@PostsUrl">@post.Title</a>
-    </h2>
-    <p class="lead">
-        by <a href="index.php">@post.User.Username</a>
-    </p>
-    <p><span class="glyphicon glyphicon-time"></span> Posted on @post.Created.ToString()</p>
-    <hr>
+    
+    <div>
+        <h2>
+            <a href="@PostsUrl">@post.Title</a>
+        </h2>
+        <p class="lead">
+            by <a href="index.php">@post.User.Username</a>
+        </p>
+        <p><span class="glyphicon glyphicon-time"></span> Posted on @post.Created.ToString()</p>
+        <hr>
 
-    if (!string.IsNullOrEmpty(post.CoverPhotoUrl))
-    {
+        @if (!string.IsNullOrEmpty(post.CoverPhotoUrl))
+        {
         <img class="img-responsive" src="@post.CoverPhotoUrl" alt="">
         <hr>
-    }
+        }
 
-    <p>@post.Entry</p>
-    <a class="btn btn-primary" href="@PostsUrl">
-        Read More
-        <span class="glyphicon glyphicon-chevron-right"></span>
-    </a>
-    <hr>
+        <p>@post.Entry</p>
+        <a class="btn btn-primary" href="@PostsUrl">
+            Read More
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </a>
+        <hr>
+    </div>
 }

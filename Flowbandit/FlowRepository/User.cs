@@ -18,6 +18,7 @@ namespace FlowRepository
         {
             this.Posts = new HashSet<Post>();
             this.PostComments = new HashSet<PostComment>();
+            this.UserVerifications = new HashSet<UserVerification>();
             this.Videos = new HashSet<Video>();
             this.VideoComments = new HashSet<VideoComment>();
         }
@@ -28,12 +29,12 @@ namespace FlowRepository
         public string Email { get; set; }
         public int FK_PrivilegelevelID { get; set; }
         public System.DateTime Created { get; set; }
-        public bool Verified { get; set; }
         public string ImageUrl { get; set; }
     
         public virtual ICollection<Post> Posts { get; set; }
         public virtual ICollection<PostComment> PostComments { get; set; }
         public virtual PrivilegeLevel PrivilegeLevel { get; set; }
+        public virtual ICollection<UserVerification> UserVerifications { get; set; }
         public virtual ICollection<Video> Videos { get; set; }
         public virtual ICollection<VideoComment> VideoComments { get; set; }
     }

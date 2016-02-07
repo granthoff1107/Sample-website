@@ -5,26 +5,30 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="b779e7c503b54a49a2c7d5e6ded6f2ff" Name="Diagram1">
-        <EntityTypeShape EntityType="FlowCollectionModel.Post" Width="1.5" PointX="5.25" PointY="8.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="FlowCollectionModel.PrivilegeLevel" Width="1.5" PointX="0.75" PointY="7.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="FlowCollectionModel.Tag" Width="1.5" PointX="5.25" PointY="17" IsExpanded="true" />
-        <EntityTypeShape EntityType="FlowCollectionModel.TagsToPost" Width="1.5" PointX="7.5" PointY="11.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="FlowCollectionModel.TagsToVideo" Width="1.5" PointX="7.5" PointY="14.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="FlowCollectionModel.Video" Width="1.5" PointX="5.25" PointY="12.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="FlowCollectionModel.VideoComment" Width="1.5" PointX="10.5" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlowCollectionModel.Post" Width="1.5" PointX="5" PointY="4.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlowCollectionModel.PrivilegeLevel" Width="1.5" PointX="2.75" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlowCollectionModel.Tag" Width="1.5" PointX="6.875" PointY="9.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlowCollectionModel.TagsToPost" Width="1.5" PointX="7" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlowCollectionModel.TagsToVideo" Width="1.5" PointX="4.5" PointY="9.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlowCollectionModel.Video" Width="1.5" PointX="2.5" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FlowCollectionModel.VideoComment" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="true" />
         <AssociationConnector Association="FlowCollectionModel.FK_TagsToPost_Post" ManuallyRouted="false" />
         <AssociationConnector Association="FlowCollectionModel.FK_TagsToPost_Tag" ManuallyRouted="false" />
         <AssociationConnector Association="FlowCollectionModel.FK_TagsToVideo_Tag" ManuallyRouted="false" />
         <AssociationConnector Association="FlowCollectionModel.FK_TagsToVideo_Video" ManuallyRouted="false" />
         <AssociationConnector Association="FlowCollectionModel.FK_VideoComment_Video" ManuallyRouted="false" />
         <AssociationConnector Association="FlowCollectionModel.FK_VideoComment_VideoComment" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="FlowCollectionModel.PostComment" Width="1.5" PointX="7.5" PointY="7.375" />
+        <EntityTypeShape EntityType="FlowCollectionModel.PostComment" Width="1.5" PointX="7.25" PointY="3.375" />
         <AssociationConnector Association="FlowCollectionModel.FK_Comment_Post" />
         <AssociationConnector Association="FlowCollectionModel.FK_Comment_Comment" />
-        <EntityTypeShape EntityType="FlowCollectionModel.User" Width="1.5" PointX="3" PointY="6.375" />
+        <EntityTypeShape EntityType="FlowCollectionModel.UserVerification" Width="1.5" PointX="5" PointY="1" />
+        <EntityTypeShape EntityType="FlowCollectionModel.VerificationType" Width="1.5" PointX="7.25" PointY="1" />
+        <AssociationConnector Association="FlowCollectionModel.FK_UserVerification_VerificationType" />
+        <EntityTypeShape EntityType="FlowCollectionModel.User" Width="1.5" PointX="2.75" PointY="2.375" />
         <AssociationConnector Association="FlowCollectionModel.FK_Blog_Users" />
         <AssociationConnector Association="FlowCollectionModel.FK_Comment_User" />
         <AssociationConnector Association="FlowCollectionModel.FK_Users_PrivilegeLevel" />
+        <AssociationConnector Association="FlowCollectionModel.FK_UserVerification_User" />
         <AssociationConnector Association="FlowCollectionModel.FK_Video_User" />
         <AssociationConnector Association="FlowCollectionModel.FK_VideoComment_User" />
       </Diagram>

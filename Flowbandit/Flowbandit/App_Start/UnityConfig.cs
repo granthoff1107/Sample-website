@@ -5,6 +5,7 @@ using FlowRepository.Repositories.Contracts.FlowRepository;
 using FlowRepository.Repositories.Models.FlowRepository;
 using FlowRepository.Repositories.Models.FlowLog;
 using FlowRepository.Data.Rules;
+using System.Web.Configuration;
 
 namespace Flowbandit
 {
@@ -17,7 +18,7 @@ namespace Flowbandit
             // register all your components with the container here
             // it is NOT necessary to register your controllers
 
-            container.RegisterInstance<EmailSender>(new EmailSender("","",""));
+            container.RegisterInstance<EmailSender>(GetEmailSender());
 
 
             container.RegisterType<IUserRepository, UserRepository>();
@@ -29,6 +30,14 @@ namespace Flowbandit
             
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
+        }
+
+        static EmailSender GetEmailSender()
+        {
+            var smtpAddress = WebConfigurationManager.AppSettings["smtpServer"];
+            var smtpUsername = WebConfigurationManager.AppSettings["smtpUsername"];
+            var smtpPassword = WebConfigurationManager.AppSettings["smtpPassword"];
+            return new EmailSender(smtpAddress, smtpUsername, smtpPassword);
         }
     }
 }

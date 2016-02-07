@@ -71,8 +71,25 @@
           <Property Name="Email" Type="nvarchar" MaxLength="256" Nullable="false" />
           <Property Name="FK_PrivilegelevelID" Type="int" Nullable="false" />
           <Property Name="Created" Type="datetime2" Precision="7" Nullable="false" />
-          <Property Name="Verified" Type="bit" Nullable="false" />
           <Property Name="ImageUrl" Type="nvarchar" MaxLength="2083" />
+        </EntityType>
+        <EntityType Name="UserVerification">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FK_UserId" Type="int" Nullable="false" />
+          <Property Name="VerifiedGuid" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime2" Precision="3" Nullable="false" />
+          <Property Name="FK_VerficationId" Type="int" Nullable="false" />
+          <Property Name="isVerified" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VerificationType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
         </EntityType>
         <EntityType Name="Video">
           <Key>
@@ -212,6 +229,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserVerification_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="UserVerification" Type="Self.UserVerification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserVerification">
+              <PropertyRef Name="FK_UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserVerification_VerificationType">
+          <End Role="VerificationType" Type="Self.VerificationType" Multiplicity="1" />
+          <End Role="UserVerification" Type="Self.UserVerification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VerificationType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserVerification">
+              <PropertyRef Name="FK_VerficationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Video_User">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
           <End Role="Video" Type="Self.Video" Multiplicity="*" />
@@ -270,6 +311,8 @@
           <EntitySet Name="TagsToPost" EntityType="Self.TagsToPost" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TagsToVideo" EntityType="Self.TagsToVideo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserVerification" EntityType="Self.UserVerification" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VerificationType" EntityType="Self.VerificationType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Video" EntityType="Self.Video" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VideoComment" EntityType="Self.VideoComment" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK_Blog_Users" Association="Self.FK_Blog_Users">
@@ -307,6 +350,14 @@
           <AssociationSet Name="FK_Users_PrivilegeLevel" Association="Self.FK_Users_PrivilegeLevel">
             <End Role="PrivilegeLevel" EntitySet="PrivilegeLevel" />
             <End Role="User" EntitySet="User" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserVerification_User" Association="Self.FK_UserVerification_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="UserVerification" EntitySet="UserVerification" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserVerification_VerificationType" Association="Self.FK_UserVerification_VerificationType">
+            <End Role="VerificationType" EntitySet="VerificationType" />
+            <End Role="UserVerification" EntitySet="UserVerification" />
           </AssociationSet>
           <AssociationSet Name="FK_Video_User" Association="Self.FK_Video_User">
             <End Role="User" EntitySet="User" />
@@ -528,6 +579,12 @@
             <End Role="PostComment" EntitySet="PostComments" />
             <End Role="PostComment1" EntitySet="PostComments" />
           </AssociationSet>
+          <EntitySet Name="UserVerifications" EntityType="FlowCollectionModel.UserVerification" />
+          <EntitySet Name="VerificationTypes" EntityType="FlowCollectionModel.VerificationType" />
+          <AssociationSet Name="FK_UserVerification_VerificationType" Association="FlowCollectionModel.FK_UserVerification_VerificationType">
+            <End Role="VerificationType" EntitySet="VerificationTypes" />
+            <End Role="UserVerification" EntitySet="UserVerifications" />
+          </AssociationSet>
           <EntitySet Name="Users" EntityType="FlowCollectionModel.User" />
           <AssociationSet Name="FK_Blog_Users" Association="FlowCollectionModel.FK_Blog_Users">
             <End Role="User" EntitySet="Users" />
@@ -540,6 +597,10 @@
           <AssociationSet Name="FK_Users_PrivilegeLevel" Association="FlowCollectionModel.FK_Users_PrivilegeLevel">
             <End Role="PrivilegeLevel" EntitySet="PrivilegeLevels" />
             <End Role="User" EntitySet="Users" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UserVerification_User" Association="FlowCollectionModel.FK_UserVerification_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="UserVerification" EntitySet="UserVerifications" />
           </AssociationSet>
           <AssociationSet Name="FK_Video_User" Association="FlowCollectionModel.FK_Video_User">
             <End Role="User" EntitySet="Users" />
@@ -591,6 +652,39 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="UserVerification">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FK_UserId" Type="Int32" Nullable="false" />
+          <Property Name="VerifiedGuid" Type="Guid" Nullable="false" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="FK_VerficationId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="VerificationType" Relationship="FlowCollectionModel.FK_UserVerification_VerificationType" FromRole="UserVerification" ToRole="VerificationType" />
+          <Property Name="isVerified" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="User" Relationship="FlowCollectionModel.FK_UserVerification_User" FromRole="UserVerification" ToRole="User" />
+        </EntityType>
+        <EntityType Name="VerificationType">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="UserVerifications" Relationship="FlowCollectionModel.FK_UserVerification_VerificationType" FromRole="VerificationType" ToRole="UserVerification" />
+        </EntityType>
+        <Association Name="FK_UserVerification_VerificationType">
+          <End Type="FlowCollectionModel.VerificationType" Role="VerificationType" Multiplicity="1" />
+          <End Type="FlowCollectionModel.UserVerification" Role="UserVerification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VerificationType">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserVerification">
+              <PropertyRef Name="FK_VerficationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityType Name="User">
           <Key>
             <PropertyRef Name="ID" />
@@ -601,11 +695,11 @@
           <Property Name="Email" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="FK_PrivilegelevelID" Type="Int32" Nullable="false" />
           <Property Name="Created" Type="DateTime" Nullable="false" Precision="7" />
-          <Property Name="Verified" Type="Boolean" Nullable="false" />
           <Property Name="ImageUrl" Type="String" MaxLength="2083" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Posts" Relationship="FlowCollectionModel.FK_Blog_Users" FromRole="User" ToRole="Post" />
           <NavigationProperty Name="PostComments" Relationship="FlowCollectionModel.FK_Comment_User" FromRole="User" ToRole="PostComment" />
           <NavigationProperty Name="PrivilegeLevel" Relationship="FlowCollectionModel.FK_Users_PrivilegeLevel" FromRole="User" ToRole="PrivilegeLevel" />
+          <NavigationProperty Name="UserVerifications" Relationship="FlowCollectionModel.FK_UserVerification_User" FromRole="User" ToRole="UserVerification" />
           <NavigationProperty Name="Videos" Relationship="FlowCollectionModel.FK_Video_User" FromRole="User" ToRole="Video" />
           <NavigationProperty Name="VideoComments" Relationship="FlowCollectionModel.FK_VideoComment_User" FromRole="User" ToRole="VideoComment" />
         </EntityType>
@@ -642,6 +736,18 @@
             </Principal>
             <Dependent Role="User">
               <PropertyRef Name="FK_PrivilegelevelID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_UserVerification_User">
+          <End Type="FlowCollectionModel.User" Role="User" Multiplicity="1" />
+          <End Type="FlowCollectionModel.UserVerification" Role="UserVerification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="UserVerification">
+              <PropertyRef Name="FK_UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -761,11 +867,30 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="UserVerifications">
+            <EntityTypeMapping TypeName="FlowCollectionModel.UserVerification">
+              <MappingFragment StoreEntitySet="UserVerification">
+                <ScalarProperty Name="isVerified" ColumnName="isVerified" />
+                <ScalarProperty Name="FK_VerficationId" ColumnName="FK_VerficationId" />
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="VerifiedGuid" ColumnName="VerifiedGuid" />
+                <ScalarProperty Name="FK_UserId" ColumnName="FK_UserId" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VerificationTypes">
+            <EntityTypeMapping TypeName="FlowCollectionModel.VerificationType">
+              <MappingFragment StoreEntitySet="VerificationType">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="FlowCollectionModel.User">
               <MappingFragment StoreEntitySet="User">
                 <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
-                <ScalarProperty Name="Verified" ColumnName="Verified" />
                 <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="FK_PrivilegelevelID" ColumnName="FK_PrivilegelevelID" />
                 <ScalarProperty Name="Email" ColumnName="Email" />

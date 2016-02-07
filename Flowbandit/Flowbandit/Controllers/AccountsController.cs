@@ -3,6 +3,7 @@ using Flowbandit.Models.Authorization;
 using FlowRepository;
 using FlowRepository.Data.Contracts;
 using FlowRepository.Data.Rules;
+using FlowRepository.Models.Const;
 using FlowRepository.Models.UserRepository;
 using FlowRepository.Repositories.Contracts.FlowRepository;
 using FlowRepository.Repositories.Models.FlowRepository;
@@ -71,11 +72,32 @@ namespace Flowbandit.Controllers
         {
             if(ModelState.IsValid)
             {
-                _repository.CreateUser(user);
-                _mailSender.SendEmail(user.Email, "Thanks for registering", "Click The link to verify your email address", "noreply@flowbandit.com");
+                var newUser = _repository.CreateUser(user, BASIC_LEVEL);
+                if(null != newUser)
+                { 
+                    var verficationUrl = GenerateValidateEmailUrl(newUser.UserVerifications.First().VerifiedGuid, newUser.Username);
+                    _mailSender.SendEmail(user.Email, "Thanks for registering", "Click The link to verify your email address: " + verficationUrl, "noreply@flowbandit.com");
+                }
             }
 
+            //TODO: Send something more meaning full from here
             return Json(new { Success = (null != user).ToString() });
+        }
+
+        protected string GenerateValidateEmailUrl(Guid guid, string username)
+        {
+            return Url.Action("UserVerification", "Accounts", new { guid = guid.ToString(), username = username}, Request.Url.Scheme);
+        }
+
+        public ActionResult UserVerification(Guid guid, string username)
+        {
+            if (_repository.VerifyUser(username, guid, FlowCollectionConsts.VERIFICATION_TYPE_EMAIL))
+            {
+                return RedirectToAction("ProfilePage");
+            }
+
+            //TODO Redirect Appropiately Or throw 
+            return Redirect("~");
         }
 
         [HttpGet]

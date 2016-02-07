@@ -10,6 +10,7 @@ namespace FlowRepository.Repositories.Contracts.FlowRepository
     public interface IUserRepository : IFlowRepository
     {
         User GetUserByUsername(string username);
-        User CreateUser(NewUserDTO user);
+        User CreateUser(NewUserDTO newUser, int PriviledgeLevelID);
+        bool VerifyUser(string username, Guid guid, string verificationName);
     }
 }

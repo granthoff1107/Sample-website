@@ -33,6 +33,8 @@ namespace FlowRepository
         public virtual DbSet<Video> Videos { get; set; }
         public virtual DbSet<VideoComment> VideoComments { get; set; }
         public virtual DbSet<PostComment> PostComments { get; set; }
+        public virtual DbSet<UserVerification> UserVerifications { get; set; }
+        public virtual DbSet<VerificationType> VerificationTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
     }
 }
