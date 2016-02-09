@@ -1,5 +1,5 @@
 ﻿.dropdown-login {
-    margin-left: -170px;
+    margin-left: -175px;
 }
 /*!
  * iCheck v1.0.1, http://git.io/arlzeA
@@ -305,4 +305,30 @@ label{
 
 .bg-light-grey {
     background-color: #f4f4f4 !important;
+}
+
+.no-padding{
+    padding: 0px !important;
+}
+
+.no-padding-left {
+    padding-left: 0 !important;
+}
+.no-padding-right {
+    padding-right: 0 !important;
+}
+
+.padding-top-only{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+#formRegister .form-group input{
+    margin-bottom: 5px;
+}
+
+.loginPanel .dropdown-menu {
+    width:250px;
+    padding:15px;
 }

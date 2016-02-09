@@ -11,11 +11,35 @@
             <span class="icon-bar"></span>
         </button>
         <ul class="nav navbar-top-links navbar-right pull-right">
-            <!-- /.dropdown -->
+            <!-- /.dropdown --> 
+            <li class="dropdown loginPanel" id="menusignup">
+                <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Sign Up</a>
+                <!-- -->
+                <div class="dropdown-menu dropdown-login form-group clearfix">
+                    <form id="formRegister" action="@Url.Action("CreateUser", "Accounts")" method="post" class="form">
+                        <div class="form-group">
+                            <input name="email" class="form-control" id="inputEmail" type="email" placeholder="Email" required="">
+                            <input name="username" class="form-control" id="inputUsername" type="text" placeholder="Username" pattern="^[a-z,A-Z,0-9,_]{6,15}$" data-valid-min="6" title="Choose a username" required=""><br>
+                        </div>
+                        <div class="form-group">
+                            <input name="password" class="form-control" id="inputpassword" type="password" placeholder="Password" required="">
+                            <input name="verify" class="form-control" id="inputVerify" type="password" placeholder="Confirm Password" required="">
+                        </div>
+                        
+                        <div style="overflow-y: auto;">
+                            <span class="pull-left" style="vertical-align: -webkit-baseline-middle;">
+                                <a class="no-padding"><span class="small">I Accept the Terms</span></a>
+                                <input type="checkbox" name="LoginData.StayLoggedin" value="true">
+                            </span>
+                            <button type="submit" id="btnRegister" class="btn btn-primary pull-right">Sign Up</button>
+                        </div>
+                    </form>
+                </div>
+            </li>
             <li class="dropdown loginPanel" id="menuLogin">
-                <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Login</a>
-                <div class="dropdown-menu dropdown-login form-group clearfix" style="padding:17px;">
-                    <form id="formLogin" style="width:200px;" action="@Url.Action("Login", "Accounts")" method="post" class="form">
+                <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Sign In</a>
+                <div class="dropdown-menu dropdown-login form-group clearfix">
+                    <form id="formLogin" action="@Url.Action("Login", "Accounts")" method="post" class="form">
                         <label>Login</label>
                         <div class="form-group">
                             <input name="LoginData.Username" class="form-control" id="username" type="text" placeholder="Username" pattern="^[a-z,A-Z,0-9,_]{6,15}$" data-valid-min="6" title="Enter your username" required="">
@@ -33,19 +57,12 @@
                             <button type="submit" id="btnLogin" class="btn btn-primary pull-right">Login</button>
                         </div>
                     </form>
-                    <form id="formRegister" class="form collapse">
-                        <input name="email" id="inputEmail" type="email" placeholder="Email" required="">
-                        <input name="username" id="inputUsername" type="text" placeholder="Username" pattern="^[a-z,A-Z,0-9,_]{6,15}$" data-valid-min="6" title="Choose a username" required=""><br>
-                        <input name="password" id="inputpassword" type="password" placeholder="Password" required="">
-                        <input name="verify" id="inputVerify" type="password" placeholder="Password (again)" required=""><br>
-                        <button type="button" id="btnRegister" class="btn">Sign Up</button>
-                    </form>
-                    @*<a data-toggle="modal" role="button" href="#forgotPasswordModal">Forgot username or password?</a>
-                    <a data-toggle="modal" role="button" href="#contactModal"><small>Need help? Contact us</small></a>*@
+                    @*<a data-toggle="modal" role="button" href="#forgotPasswordModal">Forgot password?</a>
+                        <a data-toggle="modal" role="button" href="#contactModal"><small>Need help? Contact us</small></a>*@
                 </div>
             </li>
 
-            <li class="dropdown membersPanel">
+            <li class="dropdown membersPanel hidden">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> @LoginHelper.Username <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     <li>
@@ -65,7 +82,7 @@
             </li>
             <!-- /.dropdown -->
         </ul>
-       
+
         @* <a class="navbar-brand" href="#">@BaseModel.WEBSITENAME</a>*@
     </div>
     <!-- /.navbar-header -->

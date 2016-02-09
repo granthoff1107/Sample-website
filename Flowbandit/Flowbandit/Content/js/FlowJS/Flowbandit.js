@@ -21,24 +21,20 @@ function initTinyMce() {
     });
 }
 
-function ShowMembersPanel() {
+function showMembersPanel() {
     $('.loginPanel').addClass("hidden")
     $('.membersPanel').removeClass("hidden")
 }
 
-function ShowLoginPanel() {
+function showLoginPanel() {
     $('.loginPanel').removeClass("hidden")
     $('.membersPanel').addClass("hidden")
 }
 
-function SetLoginPanel(isAnon) {
-    if (isAnon) {
-        ShowLoginPanel();
-    }
-    else {
-        ShowMembersPanel();
-    }
+function setLoginPanel(isAnon) {
+    (isAnon ? showLoginPanel : showMembersPanel)()
 }
+
 
 function setElementsHeight(selector) {
 
