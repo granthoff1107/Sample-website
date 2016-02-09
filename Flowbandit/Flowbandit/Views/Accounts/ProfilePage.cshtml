@@ -1,9 +1,17 @@
-﻿@{
+﻿@model Flowbandit.Models.Accounts.ProfileDTO
+
+@{
     ViewBag.Title = "ProfilePage";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="container">
+    
+    @if(Model.IsInitialLogin)
+    {
+        <h2>@Model.THANKS_FOR_REGISTERING_MESSAGE</h2>
+    }
+
     <div class="row">
         <div class="col-md-6">
             <hr>

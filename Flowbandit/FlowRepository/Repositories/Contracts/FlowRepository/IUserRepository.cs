@@ -11,6 +11,6 @@ namespace FlowRepository.Repositories.Contracts.FlowRepository
     {
         User GetUserByUsername(string username);
         User CreateUser(NewUserDTO newUser, int PriviledgeLevelID);
-        bool VerifyUser(string username, Guid guid, string verificationName);
+        int VerifyUser(string username, Guid guid, string verificationName);
     }
 }

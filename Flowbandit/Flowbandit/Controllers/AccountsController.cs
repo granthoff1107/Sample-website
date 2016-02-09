@@ -1,4 +1,5 @@
 ﻿using Flowbandit.Models;
+using Flowbandit.Models.Accounts;
 using Flowbandit.Models.Authorization;
 using FlowRepository;
 using FlowRepository.Data.Contracts;
@@ -19,7 +20,6 @@ namespace Flowbandit.Controllers
 {
     public class AccountsController : BaseController<IUserRepository>
     {
-
         protected EmailSender _mailSender;
 
         public AccountsController(IUserRepository repository, IFlowLogRepository logRepository, EmailSender mailSender)
@@ -91,9 +91,10 @@ namespace Flowbandit.Controllers
 
         public ActionResult UserVerification(Guid guid, string username)
         {
-            if (_repository.VerifyUser(username, guid, FlowCollectionConsts.VERIFICATION_TYPE_EMAIL))
+            var userId = _repository.VerifyUser(username, guid, FlowCollectionConsts.VERIFICATION_TYPE_EMAIL);
+            if (userId > 0)
             {
-                return RedirectToAction("ProfilePage");
+                return RedirectToAction("ProfilePage", new { id = userId, isInitialLogin = true });
             }
 
             //TODO Redirect Appropiately Or throw 
@@ -101,9 +102,11 @@ namespace Flowbandit.Controllers
         }
 
         [HttpGet]
-        public ActionResult ProfilePage(int id)
+        public ActionResult ProfilePage(int id, bool isInitialLogin = false)
         {
-            return View();
+            //TODO Add Header for if this is there first time registering
+            var profile = new ProfileDTO(_repository, id, isInitialLogin);
+            return View(profile);
         }
 
         public ActionResult Logout()

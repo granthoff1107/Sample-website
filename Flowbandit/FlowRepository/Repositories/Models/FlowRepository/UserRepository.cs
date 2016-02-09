@@ -44,10 +44,14 @@ namespace FlowRepository.Repositories.Models.FlowRepository
 
 
         //TODO Consider adding a time limit to now allow verfications for forgot password after a few days
-        public bool VerifyUser(string username, Guid guid, string verificationName)
+        public int VerifyUser(string username, Guid guid, string verificationName)
         {
             var user = GetUserByUsernameQuery(username).Include(x => x.UserVerifications).FirstOrDefault();
 
+            if(user == null)
+            {
+                return 0;
+            }
             //Note once were using enumerations we won't need to load this data
             var verificationType = _context.VerificationTypes.FirstOrDefault(x => x.Name == verificationName);
             var userVerification = user.UserVerifications.Where(x => x.FK_VerficationId == verificationType.ID).OrderByDescending(x => x.Timestamp).FirstOrDefault();
@@ -57,10 +61,10 @@ namespace FlowRepository.Repositories.Models.FlowRepository
             {
                 userVerification.isVerified = true;
                 SaveChanges();
-                return true;
+                return user.ID;
             }
 
-            return false;
+            return 0;
 
         }
 
