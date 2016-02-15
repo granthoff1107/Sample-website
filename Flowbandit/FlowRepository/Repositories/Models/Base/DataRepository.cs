@@ -11,6 +11,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Validation;
 using FlowRepository.Repositories.Contracts.FlowRepository;
 using FlowRepository.Repositories.Contracts.Base;
+using FlowRepository.Models.Factoies;
 
 namespace FlowRepository.Repositories.Models.Base
 {
@@ -59,11 +60,21 @@ namespace FlowRepository.Repositories.Models.Base
 
         #endregion //IDisposable
 
+        #region Constructors
+
         public DataRepository()
         {
             _context = new TContext();
         }
 
+        public DataRepository(TContext context)
+        {
+            _context = context;
+        }
+
+        #endregion
+
+        #region IRepository Methods
 
         public IQueryable<T> All<T>() where T : class
         {
@@ -136,5 +147,13 @@ namespace FlowRepository.Repositories.Models.Base
             return (T)_ObjectContext.GetObjectByKey(entityKey);
 
         }
+
+        public T ConvertToRepository<T>()
+            where T : DataRepository<TContext>
+        {
+            return FlowCollectionRepositoryFactory.GetRepository<T, TContext>(_context);
+        }
+
+        #endregion
     }
 }

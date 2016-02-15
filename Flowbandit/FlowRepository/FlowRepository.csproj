@@ -69,6 +69,7 @@
       <DependentUpon>FlowCollectionLog.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Const\Consts.cs" />
+    <Compile Include="Models\Factoies\FlowCollectionRepositoryFactory.cs" />
     <Compile Include="Repositories\Contracts\FlowLog\IFlowLogRepository.cs" />
     <Compile Include="Repositories\Contracts\FlowRepository\IFlowRepository.cs" />
     <Compile Include="Repositories\Models\Base\DataRepository.cs" />
@@ -197,6 +198,7 @@
   <ItemGroup>
     <Content Include="LICENSE.txt" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

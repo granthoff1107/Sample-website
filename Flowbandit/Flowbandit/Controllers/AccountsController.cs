@@ -102,7 +102,7 @@ namespace Flowbandit.Controllers
         }
 
         [HttpGet]
-        public ActionResult ProfilePage(int id, bool isInitialLogin = false)
+        public ActionResult Profile(int id, bool isInitialLogin = false)
         {
             //TODO Add Header for if this is there first time registering
             var profile = new ProfileDTO(_repository, id, isInitialLogin);

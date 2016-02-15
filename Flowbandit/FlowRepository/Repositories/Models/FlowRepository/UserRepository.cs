@@ -15,6 +15,15 @@ namespace FlowRepository.Repositories.Models.FlowRepository
 {
     public class UserRepository : DataRepository<FlowCollectionEntities>, IUserRepository
     {
+        public UserRepository() : base()
+        {
+        }
+
+        public UserRepository(FlowCollectionEntities context)
+            : base(context)
+        {
+        }
+
         public User CreateUser(NewUserDTO newUser, int PriviledgeLevelID)
         {
             //TODO throw validation exception

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlowRepository.Repositories.Models.Base;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Text;
 namespace FlowRepository.Repositories.Contracts.Base
 {
     public interface IRepository<TContext> : IDisposable
-        where TContext : DbContext
+        where TContext : DbContext, new()
     {
         TContext Context { get; }
 
@@ -23,6 +24,8 @@ namespace FlowRepository.Repositories.Contracts.Base
         void Delete<T>(T Entity) where T : class;
 
         void SaveChanges();
+
+        T ConvertToRepository<T>() where T : DataRepository<TContext>;
 
     }
 }

@@ -8,8 +8,8 @@ namespace FlowRepository.Repositories.Contracts.FlowRepository
 {
     public interface IPostRepository : IFlowRepository
     {
-        List<Post> VisiblePostsByCreatedDate(int Skip, int Take);
+        List<Post> GetMostRecentPosts(int skip, int take, int? userId = null);
 
-        Post VisiblePostByIDWithCommentsTagsUsers(int ID);
+        Post VisiblePostByIDWithCommentsTagsUsers(int id);
     }
 }

@@ -19,7 +19,7 @@ namespace Flowbandit.Models
         {
             this.PageNumber = PageNumber;
 
-            Posts = Data.VisiblePostsByCreatedDate(PageNumber * GlobalInfo.RESULTSPERPAGE, GlobalInfo.RESULTSPERPAGE);
+            Posts = Data.GetMostRecentPosts(PageNumber * GlobalInfo.RESULTSPERPAGE, GlobalInfo.RESULTSPERPAGE);
 
             //TODO: Refactor this and VideosVM 
             //Sanitize the posts for the view

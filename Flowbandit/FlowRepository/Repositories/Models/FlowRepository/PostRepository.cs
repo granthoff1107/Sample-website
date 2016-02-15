@@ -10,19 +10,41 @@ namespace FlowRepository.Repositories.Models.FlowRepository
 {
     public class PostRepository : DataRepository<FlowCollectionEntities>, IPostRepository
     {
-        public List<Post> VisiblePostsByCreatedDate(int Skip, int Take)
+
+        public PostRepository() : base()
         {
-           return All<Post>().Where(p => p.Visible)
-                                            .OrderByDescending(p => p.Created)
-                                            .ThenByDescending(p => p.ID)
-                                            .Skip(Skip)
-                                            .Take(Take)
-                                            .ToList();
         }
 
-        public Post VisiblePostByIDWithCommentsTagsUsers(int ID)
+        public PostRepository(FlowCollectionEntities context)
+            : base(context)
         {
-            return AllIncluding<Post>(p => p.PostComments, p => p.TagsToPosts, p => p.User).FirstOrDefault(p => p.ID == ID && p.Visible);
+        }
+
+        public List<Post> GetMostRecentPosts(int skip, int take, int? userId = null)
+        {
+            var baseQuery = All<Post>().Where(p => p.Visible);
+
+            if(null != userId)
+            {
+                baseQuery = baseQuery.Where(x => x.FK_UserID == userId.Value);
+            }
+
+            return GetMostRecentQueryable(baseQuery, skip, take);
+                                            
+        }
+
+        public Post VisiblePostByIDWithCommentsTagsUsers(int id)
+        {
+            return AllIncluding<Post>(p => p.PostComments, p => p.TagsToPosts, p => p.User).FirstOrDefault(p => p.ID == id && p.Visible);
+        }
+
+        protected List<Post> GetMostRecentQueryable(IQueryable<Post> baseQuery, int skip, int take)
+        {
+            return baseQuery.OrderByDescending(p => p.Created)
+                                            .ThenByDescending(p => p.ID)
+                                            .Skip(skip)
+                                            .Take(take)
+                                            .ToList();
         }
     }
 }

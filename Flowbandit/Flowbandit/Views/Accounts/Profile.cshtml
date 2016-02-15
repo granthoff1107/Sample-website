@@ -1,0 +1,72 @@
+﻿@model Flowbandit.Models.Accounts.ProfileDTO
+
+@{
+    ViewBag.Title = "Profile";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model.IsInitialLogin)
+{
+    <h2>@Model.THANKS_FOR_REGISTERING_MESSAGE</h2>
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <hr>
+        <div class="form-group">
+            <img class="img-circle img-responsive img-center center-block" src="http://placehold.it/300x300" alt="">
+        </div>
+
+        <div class="form-group">
+            <label class="inline">Username: </label>
+            <span>bobbygo</span>
+        </div>
+        <div class="form-group">
+            <label class="inline">Member Since: </label><span>09/15/2006</span>
+        </div>
+        <div class="form-group">
+            <h2>About You</h2>
+            <p>
+                Hey since you're here might as well have a look around.
+                Explore what we have to offer.  Tell us what you like about a video, or tell us what you hate about a video
+            </p>
+        </div>
+        <div></div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <h3 class="inline">Most Recent Videos</h3>&nbsp;&nbsp;&nbsp;<a href="#" class="small">(see all)</a>
+        @foreach (var video in Model.RecentVideos)
+        {
+
+            <hr>
+            <a href="@Url.Action("Video", "Videos", new {ID = @video.ID})" style="text-decoration: none">
+                <div class="image-text-overlay center-block">
+                    <img style="max-width:100%" src="@video.ThumbnailUrl" alt="" />
+
+                    <h3><span>@video.Name</span></h3>
+
+                </div>
+            </a>
+
+        }
+    </div>
+    <div class='col-md-6'>
+        <h3 class ="inline">Most Recent Posts</h3>&nbsp;&nbsp;&nbsp;<a href="#" class="small">(see all)</a>
+        @foreach (var post in Model.RecentPosts)
+        {
+
+            <hr>
+            <div>
+                <a href="@Url.Action("Post", "Posts", new { ID = @post.ID })" style="text-decoration: none">
+                    <div class="image-text-overlay center-block">
+                        <p>Hey, I know I haven’t updated this blog in a while. I’ve been busy obtaining a new job in the city. I’ve had a crazy week off though. I got back from Nevada last Monday. American Airlines is complete shit they cancelled my flight and provided me with no information on how to fix it. What’s worse is they don’t even have a customer service line to call if you have a problem with their airline you have to email them. If you go through the effort of emailing them, at least with me they gave me a fre...</p>
+                        <h3><span>@post.Title </span></h3>
+                    </div>
+                </a>
+            </div>
+
+        }
+    </div>
+</div>

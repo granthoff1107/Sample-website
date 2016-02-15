@@ -8,8 +8,8 @@ namespace FlowRepository.Repositories.Contracts.FlowRepository
 {
     public interface IVideoRepository : IFlowRepository
     {
-        List<Video> GetMostRecentVideos(int PageNumber, int ResultsPerPage);
+        List<Video> GetMostRecentVideos(int skip, int take, int? userId = null);
 
-        Video FindVisibleVideoWithCommentsTagsUser(int ID);
+        Video FindVisibleVideoWithCommentsTagsUser(int id);
     }
 }
