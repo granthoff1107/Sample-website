@@ -1,5 +1,5 @@
-﻿using Flowbandit.Rules;
-using FlowRepository;
+﻿using FlowRepository;
+using FlowRepository.Data.Rules;
 using FlowRepository.Repositories.Contracts.FlowRepository;
 using FlowRepository.Repositories.Models.FlowRepository;
 using System;
@@ -29,7 +29,7 @@ namespace Flowbandit.Models.Accounts
 
             foreach (var post in RecentPosts)
             {
-                post.Entry = string.Concat(HtmlDisplayRule.GetSanitizedText(post.Entry, GlobalInfo.DISPLAY_TEXT_MAX_LENGTH) + "...");
+                post.Entry = post.Entry.Substring(0, Math.Min(post.Entry.Length, GlobalInfo.DISPLAY_TEXT_MAX_LENGTH)) + "...";
             }
         }
     }

@@ -1,5 +1,4 @@
-﻿using Flowbandit.Rules;
-using FlowRepository;
+﻿using FlowRepository;
 using FlowRepository.Repositories.Contracts.FlowRepository;
 using System;
 using System.Collections.Generic;
@@ -16,12 +15,12 @@ namespace Flowbandit.Models
             : base(Data)
         {
             FeaturedVideos = DataRepository.GetMostRecentVideos(pageNumber, GlobalInfo.VIDEOSPERPAGE);
-            //Sanitize the posts for the view
+
             foreach (var video in FeaturedVideos)
             {
-                video.Description = string.Concat(HtmlDisplayRule.GetSanitizedText(video.Description, GlobalInfo.DISPLAY_TEXT_MAX_LENGTH) + "...");
+                video.Description = video.Description.Substring(0, Math.Min(video.Description.Length, GlobalInfo.DISPLAY_TEXT_MAX_LENGTH)) + "...";
             }
-            
+
             var tmpCount = Data.All<Video>().Count();
 
             TotalPages = this.GetTotalPageCountFromItems(tmpCount, GlobalInfo.VIDEOSPERPAGE);

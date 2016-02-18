@@ -4,8 +4,8 @@ using System.Linq;
 using System.Web;
 using Flowbandit;
 using FlowRepository;
-using Flowbandit.Rules;
 using FlowRepository.Repositories.Contracts.FlowRepository;
+using FlowRepository.Data.Rules;
 
 namespace Flowbandit.Models
 {
@@ -21,11 +21,9 @@ namespace Flowbandit.Models
 
             Posts = Data.GetMostRecentPosts(PageNumber * GlobalInfo.RESULTSPERPAGE, GlobalInfo.RESULTSPERPAGE);
 
-            //TODO: Refactor this and VideosVM 
-            //Sanitize the posts for the view
             foreach(var post in Posts)
             {
-                post.Entry = string.Concat(HtmlDisplayRule.GetSanitizedText(post.Entry, GlobalInfo.DISPLAY_TEXT_MAX_LENGTH) + "...");
+                post.Entry = post.Entry.Substring(0, Math.Min(post.Entry.Length, GlobalInfo.DISPLAY_TEXT_MAX_LENGTH)) + "...";
             }
 
             var tmpCount = Data.All<Post>().Count();

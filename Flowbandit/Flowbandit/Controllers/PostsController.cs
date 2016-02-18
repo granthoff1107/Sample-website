@@ -81,20 +81,11 @@ namespace Flowbandit.Controllers
 
                 if (NewPost.ID == default(int))
                 {
-                    _repository.Add<Post>(NewPost);
+                    _repository.Add(NewPost);
                 }
                 else
                 {
-                    _repository.Context.Entry(NewPost).State = EntityState.Modified;
-
-                    //TODO Refactor this into a generic method, for this and posts
-                    var tagsToRemove = _repository.Context.TagsToPosts.Where(tp => tp.FK_PostID == NewPost.ID);
-                    _repository.Context.TagsToPosts.RemoveRange(tagsToRemove);
-
-                    foreach (var tagId in tagIds)
-                    {
-                        NewPost.TagsToPosts.Add(new TagsToPost { FK_PostID = NewPost.ID, FK_TagID = tagId });
-                    }
+                    _repository.EditPost(NewPost, tagIds);
                 }
 
                 _repository.SaveChanges();
