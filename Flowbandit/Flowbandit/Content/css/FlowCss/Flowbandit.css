@@ -88,6 +88,26 @@ span {
     margin-bottom: 20px !important;
 }
 
+.no-bottom{
+    margin-bottom: 0;
+}
+
+.width-100{
+    width:100%;
+}
+
+.overflow-y-auto{
+    overflow-y: auto;
+}
+
+.overflow-x-hidden{
+    overflow-x: hidden;
+}
+
+.vertical-align{
+    vertical-align: -webkit-baseline-middle;
+}
+
 .ui-autocomplete.source:hover {
     background: #454545;
 }
@@ -344,6 +364,10 @@ label{
    padding:10px;
    border-radius:10px;
    border: 1px solid black;
+}
+
+.image-text-overlay img{
+    max-width:100;
 }
 
 .image-text-overlay h3 { 
