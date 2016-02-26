@@ -45,12 +45,12 @@ namespace FlowRepository.Repositories.Models.FlowRepository
             return AllIncluding<Video>(p => p.VideoComments, p => p.TagsToVideos, p => p.User).FirstOrDefault(p => p.ID == id && p.Visible);
         }
 
-        protected List<Video> GetMostRecentVideos(IQueryable<Video> baseQuery, int skip, int take)
+        protected List<Video> GetMostRecentVideos(IQueryable<Video> baseQuery, int pageNumber, int resultsPerPage)
         {
             return baseQuery.OrderByDescending(p => p.Created)
                                             .ThenByDescending(p => p.ID)
-                                            .Skip(skip)
-                                            .Take(take)
+                                            .Skip(pageNumber * resultsPerPage)
+                                            .Take(resultsPerPage)
                                             .ToList();
         }
 

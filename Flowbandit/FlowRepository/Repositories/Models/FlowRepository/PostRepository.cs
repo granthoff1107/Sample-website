@@ -46,12 +46,12 @@ namespace FlowRepository.Repositories.Models.FlowRepository
             return AllIncluding<Post>(p => p.PostComments, p => p.TagsToPosts, p => p.User).FirstOrDefault(p => p.ID == id && p.Visible);
         }
 
-        protected List<Post> GetMostRecentPosts(IQueryable<Post> baseQuery, int skip, int take)
+        protected List<Post> GetMostRecentPosts(IQueryable<Post> baseQuery, int pageNumber, int resultsPerPage)
         {
             return baseQuery.OrderByDescending(p => p.Created)
                                             .ThenByDescending(p => p.ID)
-                                            .Skip(skip)
-                                            .Take(take)
+                                            .Skip(pageNumber * resultsPerPage)
+                                            .Take(resultsPerPage)
                                             .ToList();
         }
 
