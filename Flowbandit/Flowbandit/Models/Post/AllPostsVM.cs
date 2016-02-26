@@ -19,7 +19,7 @@ namespace Flowbandit.Models
         {
             this.PageNumber = PageNumber;
 
-            Posts = Data.GetMostRecentPosts(PageNumber * GlobalInfo.RESULTSPERPAGE, GlobalInfo.RESULTSPERPAGE);
+            Posts = Data.GetMostRecentPosts(PageNumber, GlobalInfo.RESULTSPERPAGE);
 
             foreach(var post in Posts)
             {

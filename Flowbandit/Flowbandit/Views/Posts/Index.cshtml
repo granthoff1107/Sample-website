@@ -10,25 +10,12 @@
 
 @section AdditionalScripts
 {
-
     <script src="~/Content/js/FlowJS/InfiniteScroll.js"></script>
-    <script>
-
-    $(function () {
-        $('#postPageNumber').val(1);
-
-        var postInfiniteScrollParams = {
-            url: '@Url.Action("GetPosts")',
-                contentDivSelector: '#postcontent',
-                pageNumberSelector: '#postPageNumber',
-                totalNumberOfPages: '@Model.TotalPages'
-        }
-
-        scrollListener(postInfiniteScrollParams)
-    });
-</script>
+    <script src="~/Content/js/FlowJS/posts.js"></script>
 }
 
+<input type="hidden" id="get-posts-url" value="@Url.Action("GetPosts")">
+<input type="hidden" id="total-pages" value="@Model.TotalPages">
 <input type="hidden" id="postPageNumber" value="1">
 
 <div class="row">

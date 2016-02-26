@@ -9,18 +9,9 @@
 {
     <script src="~/Scripts/tinymce/tinymce.js"></script>
     <script src="~/Content/js/FlowJS/Flowglobals.js"></script>
+    <script src="~/Content/js/FlowJS/editPost.js"></script>
+
     <link rel="stylesheet" href="~/Content/css/FlowCss/bootstrap-jQuery-autocomplete.css">
-
-    <script type="text/javascript">
-
-        $(function () {
-            tagsAutoComplete('#tagsac', '@Url.Action("TagsAutocomplete", "Tags")', DefaultAddTagsToTable);
-            ActivateCloseTag();
-            OverrideSubmitFormWithTags("#newpostform", ".suggesttag");
-            initTinyMce();
-        });
-          
-    </script>
 }
 
 <div class="row">

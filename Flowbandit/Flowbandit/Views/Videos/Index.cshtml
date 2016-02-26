@@ -9,39 +9,11 @@
 @section AdditionalScripts
 {
     <script src="~/Content/js/FlowJS/InfiniteScroll.js"></script>
-    <script>
-        $(function () {
-
-            $('#videoPageNumber').val(1);
-
-            var setVideoElements = function () { setElementsHeight('.videothumbnail'); };
-
-            //loads when the window loads body load doesn't fire for some reason
-            $(window).load(function () {
-                setVideoElements();
-            });
-
-            //Loads after infinite scroll fires
-            $('body').on('load', setVideoElements);
-
-            $(window).resize(function () {
-                clearHeight('.videothumbnail');
-                setVideoElements();
-            });
-
-            var postInfiniteScrollParams = {
-                url: '@Url.Action("GetVideos")',
-                contentDivSelector: '#videocontent',
-                pageNumberSelector: '#videoPageNumber',
-                totalNumberOfPages: '@Model.TotalPages',
-                postCallBack: setVideoElements
-            }
-
-            scrollListener(postInfiniteScrollParams)
-        });
-    </script>
+    <script src="~/Content/js/FlowJS/videos.js"></script>
 }
 
+<input type="hidden" id="get-video-url" value="@Url.Action("GetVideos")">
+<input type="hidden" id="total-pages" value="@Model.TotalPages">
 <input type="hidden" id="videoPageNumber" value="1">
     <header class="jumbotron hero-spacer">
         <h1>Featured Video's</h1>

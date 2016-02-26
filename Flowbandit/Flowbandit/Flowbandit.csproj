@@ -381,9 +381,13 @@
     <Content Include="Content\Images\RightBannerS.png" />
     <Content Include="Content\Images\RightBannerSS.png" />
     <Content Include="Content\index.html" />
+    <Content Include="Content\js\FlowJS\editPost.js" />
+    <Content Include="Content\js\FlowJS\editVideo.js" />
     <Content Include="Content\js\FlowJS\Flowbandit.js" />
     <Content Include="Content\js\FlowJS\Flowglobals.js" />
     <Content Include="Content\js\FlowJS\InfiniteScroll.js" />
+    <Content Include="Content\js\FlowJS\posts.js" />
+    <Content Include="Content\js\FlowJS\videos.js" />
     <Content Include="Content\Posts_index.html" />
     <Content Include="Content\js\jquery.js" />
     <Content Include="Content\Post_Index.html" />

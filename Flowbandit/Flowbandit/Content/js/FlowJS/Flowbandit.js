@@ -35,7 +35,6 @@ function setLoginPanel(isAnon) {
     (isAnon ? showLoginPanel : showMembersPanel)()
 }
 
-
 function setElementsHeight(selector) {
 
     // clear the previous set heights on the div
@@ -85,3 +84,8 @@ function AutoResizeAllVideos() {
 
     }).resize();
 }
+
+$(function () {
+    var loginVal = $.parseJSON($('#display-login').val());
+    setLoginPanel(loginVal);
+})

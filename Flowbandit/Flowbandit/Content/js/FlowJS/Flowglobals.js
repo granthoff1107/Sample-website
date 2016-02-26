@@ -18,7 +18,7 @@ function AddTagsToTable(tableSelector, templateSelector, value, name) {
 
 }
 
-function ActivateCloseTag() {
+function activateCloseTag() {
     $('body').on('click', '.closetag', function (e) {
         e.preventDefault();
         $(this).parent().remove();
@@ -41,7 +41,7 @@ $.fn.serializeObject = function () {
     return o;
 };
 
-function OverrideSubmitFormWithTags(formSelector, tagSelector) {
+function overrideSubmitFormWithTags(formSelector, tagSelector) {
     $(formSelector).on('submit', function (e) {
         e.preventDefault();
         
