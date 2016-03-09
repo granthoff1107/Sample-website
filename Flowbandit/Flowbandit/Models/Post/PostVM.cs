@@ -1,4 +1,5 @@
-﻿using FlowRepository;
+﻿using Flowbandit.Models.Generic;
+using FlowRepository;
 using FlowRepository.Repositories.Contracts.FlowRepository;
 using System;
 using System.Collections.Generic;
@@ -7,107 +8,19 @@ using System.Web;
 
 namespace Flowbandit.Models
 {
-    public class PostVM : BaseModel<IPostRepository>
+    public class PostVM : ContentBaseModel<IPostRepository, Post>
     {
-        /// <summary>
-        /// Includes comments and tags
-        /// </summary>
-        public Post CurrentPost;
-
-        #region Comment Properties
-
-        protected List<IComment> _comments;
-        public List<IComment> Comments
-        {
-            get
-            {
-                if (_comments == null)
-                {
-                    if (CurrentPost != null)
-                    {
-                        _comments = CurrentPost.PostComments.Where(p => p.FK_ParentID == null)
-                                                        .Select(c => new PostCommentDisplay(c)).ToList<IComment>();
-                    }
-                    else
-                    {
-                        _comments = new List<IComment>();
-                    }
-                }
-
-                return _comments;
-            }
-        }
-
-        #endregion // Comment Properties
-
         #region Post Properties
 
-        public int PostID
+        public int PostId
         {
             get
             {
-                if (CurrentPost != null)
+                if (_contentParent != null)
                 {
-                    return CurrentPost.ID;
+                    return _contentParent.Id;
                 }
                 return default(int);
-            }
-        }
-
-        public string PostName
-        {
-            get
-            {
-                if (CurrentPost != null)
-                {
-                    return CurrentPost.Title;
-                }
-                return string.Empty;
-            }
-        }
-
-        public string Author
-        {
-            get
-            {
-                if (CurrentPost != null)
-                {
-                    return CurrentPost.User.Username;
-                }
-                return string.Empty;
-            }
-        }
-
-        public int AuthorID
-        {
-            get
-            {
-                if (CurrentPost != null && CurrentPost.User != null)
-                {
-                    return CurrentPost.User.ID;
-                }
-                return default(int);
-            }
-        }
-
-        public string Entry
-        {
-            get
-            {
-                if (CurrentPost != null)
-                {
-                    return CurrentPost.Entry;
-                }
-                return string.Empty;
-            }
-        }
-
-        public string Created
-        {
-            get
-            {
-                //TODO: Refactor this logic into an extension method
-                return (CurrentPost.Created == default(DateTime) ? DateTime.Now : CurrentPost.Created).ToString();
             }
         }
 
@@ -115,30 +28,24 @@ namespace Flowbandit.Models
         {
             get
             {
-                return (CurrentPost != null && false == string.IsNullOrWhiteSpace(CurrentPost.CoverPhotoUrl)) ? @"~\" + CurrentPost.CoverPhotoUrl : string.Empty;
+                return (_contentParent != null && false == string.IsNullOrWhiteSpace(_contentParent.CoverPhotoUrl)) ? @"~\" + _contentParent.CoverPhotoUrl : string.Empty;
             }
         }
-
-        public bool isVisible
-        {
-            get
-            {
-                return (CurrentPost != null && CurrentPost.ID != 0) ? CurrentPost.Visible : true;
-            }
-        }
-
         #endregion //Post Properties
 
-        public PostVM(IPostRepository Data, int ID)
-            : base(Data)
+        public PostVM(IPostRepository postRepository, int id)
+            : base(postRepository, id)
         {
-            CurrentPost = Data.VisiblePostByIDWithCommentsTagsUsers(ID);
+        }
+
+        public PostVM(Post post)
+            : base(post)
+        {
         }
 
         public PostVM()
-            : base(null)
+            : base()
         {
-            CurrentPost = new Post();
         }
     }
 }

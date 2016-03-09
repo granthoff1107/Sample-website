@@ -20,14 +20,12 @@ namespace Flowbandit
 
             container.RegisterInstance<EmailSender>(GetEmailSender());
 
-
             container.RegisterType<IUserRepository, UserRepository>();
             container.RegisterType<IPostRepository, PostRepository>();
             container.RegisterType<ITagRepository, TagRepository>();
             container.RegisterType<IVideoRepository, VideoRepository>();
-            container.RegisterType<IFlowLogRepository, LogRepository>();
 
-            
+            container.RegisterType<IFlowLogRepository, LogRepository>();
 
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }

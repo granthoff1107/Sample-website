@@ -41,14 +41,15 @@ namespace Flowbandit.Controllers
             return View(tmpViewModel);
         }
 
-        public ActionResult Comment(VideoComment NewComment)
+        public ActionResult Comment(ContentComment newComment)
         {
             if (ModelState.IsValid)
             {
-                CommentRule.Comment(_repository, NewComment);
-                return RedirectToAction("Video", new { ID = NewComment.FK_VideoID });
+                _repository.AddComment(newComment, GlobalInfo.UserId);
+                _repository.SaveChanges();
             }
-            return RedirectToAction("Index", new { ID = 0 });
+
+            return Redirect(HttpContext.Request.UrlReferrer.ToString());
         }
 
         [HttpGet]
@@ -72,9 +73,10 @@ namespace Flowbandit.Controllers
         {
             if (ModelState.IsValid)
             {
-                newVideo.FK_UserID = GlobalInfo.User.UserID;
+                tagIds = tagIds ?? new List<int>();
+                newVideo.Content.UserId = GlobalInfo.User.UserID;
                 
-                if(newVideo.ID == default(int))
+                if(newVideo.Id == default(int))
                 {
                     _repository.Add(newVideo);
                 }
@@ -85,7 +87,7 @@ namespace Flowbandit.Controllers
 
                 _repository.SaveChanges();
 
-                return GetJsonRedirectResult(Url.Action("Video", new { ID = newVideo.ID }));
+                return GetJsonRedirectResult(Url.Action("Video", new { ID = newVideo.Id }));
             }
 
             return  GetJsonRedirectResult(Url.Action("Index"));

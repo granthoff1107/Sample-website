@@ -9,20 +9,21 @@ namespace Flowbandit.Models
 {
     public class VideosVM : BaseModel<IVideoRepository>
     {
-        public List<Video> FeaturedVideos;
+        public IEnumerable<VideoVM> FeaturedVideos;
         public int TotalPages = 0;
         public VideosVM(IVideoRepository Data, int pageNumber = 0)
             : base(Data)
         {
-            FeaturedVideos = DataRepository.GetMostRecentVideos(pageNumber, GlobalInfo.VIDEOSPERPAGE);
+            var videos = DataRepository.GetMostRecentVideos(pageNumber, GlobalInfo.VIDEOSPERPAGE, CurrentUser);
 
-            foreach (var video in FeaturedVideos)
+            foreach (var video in videos)
             {
-                video.Description = video.Description.Substring(0, Math.Min(video.Description.Length, GlobalInfo.DISPLAY_TEXT_MAX_LENGTH)) + "...";
+                video.Content.Entry = video.Content.Entry.Substring(0, Math.Min(video.Content.Entry.Length, GlobalInfo.DISPLAY_TEXT_MAX_LENGTH)) + "...";
             }
 
             var tmpCount = Data.All<Video>().Count();
 
+            FeaturedVideos = videos.Select(video => new VideoVM(video));
             TotalPages = this.GetTotalPageCountFromItems(tmpCount, GlobalInfo.VIDEOSPERPAGE);
         }
     }

@@ -12,14 +12,14 @@
     <div class="col-lg-8">
         <!-- Blog Post -->
         <!-- Title -->
-        <h1>@Model.PostName</h1>
+        <h1>@Model.Title</h1>
         <!-- Author -->
         <p class="lead">
-            by <a href="#">@Model.Author</a>
+            by <a href="#">@Model.Owner</a>
         </p>
-        @if (!LoginHelper.isAnon && LoginHelper.UserID == Model.AuthorID)
+        @if (!LoginHelper.isAnon && LoginHelper.UserID == Model.OwnerId)
         {
-            <form method="get" action="@Url.Action("EditPost", new {ID = Model.PostID})">
+            <form method="get" action="@Url.Action("EditPost", new {ID = Model.PostId})">
                 <button type="submit" id="editPost" class="btn btn-default">Edit Post</button>
             </form>
         }
@@ -42,7 +42,7 @@
         <div class="well">
             <h4>Leave a Comment:</h4>
             <form role="form" method="post" action="@Url.Action("Comment")">
-                <input type="hidden" name="NewComment.FK_PostID" value="@Model.PostID">
+                <input type="hidden" name="NewComment.ContentId" value="@Model.ContentId">
                 <div class="form-group">
                     <textarea class="form-control" name="NewComment.Comment" rows="6"></textarea>
                 </div>

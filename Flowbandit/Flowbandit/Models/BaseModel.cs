@@ -9,7 +9,7 @@ using System.Web;
 namespace Flowbandit.Models
 {
     public class BaseModel<TRepository> : BaseModel
-        where TRepository : IFlowRepository
+        where TRepository : class, IFlowRepository
     {
         public TRepository DataRepository;
 
@@ -23,7 +23,7 @@ namespace Flowbandit.Models
     {
         public const string WEBSITENAME = "Flow Bandit";
 
-        public int UserID
+        public int CurrentUser
         {
             get
             {

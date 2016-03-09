@@ -40,10 +40,10 @@
         @foreach (var video in Model.RecentVideos)
         {
             <hr>
-            <a href="@Url.Action("Video", "Videos", new {ID = @video.ID})" class="no-deco">
+            <a href="@Url.Action("Video", "Videos", new {ID = @video.VideoId})" class="no-deco">
                 <div class="image-text-overlay center-block">
                     <img src="@video.ThumbnailUrl" alt="" />
-                    <h3><span>@video.Name</span></h3>
+                    <h3><span>@video.Title</span></h3>
                 </div>
             </a>
         }
@@ -54,7 +54,7 @@
         {
             <hr>
             <div>
-                <a href="@Url.Action("Post", "Posts", new { ID = @post.ID })" class="no-deco">
+                <a href="@Url.Action("Post", "Posts", new { ID = @post.PostId })" class="no-deco">
                     <div class="image-text-overlay center-block">
                         <p>
                             @post.Entry

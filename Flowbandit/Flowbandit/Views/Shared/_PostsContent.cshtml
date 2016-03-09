@@ -3,24 +3,28 @@
 @model AllPostsVM
 
 
-@foreach (var post in @Model.Posts)
+@foreach (var post in @Model.FeaturedPosts)
 {
-    var PostsUrl = Url.Action("Post", "Posts", new { ID = post.ID });
+    var PostsUrl = Url.Action("Post", "Posts", new { ID = post.PostId });
     
     <div>
         <h2>
             <a href="@PostsUrl">@post.Title</a>
+            @if(false == post.isVisible)
+            {
+                <span class="small"> (hidden)</span>
+            }
         </h2>
         <p class="lead">
-            by <a href="index.php">@post.User.Username</a>
+            by <a href="index.php">@post.Owner</a>
         </p>
         <p><span class="glyphicon glyphicon-time"></span> Posted on @post.Created.ToString()</p>
         <hr>
 
-        @if (!string.IsNullOrEmpty(post.CoverPhotoUrl))
+        @if (!string.IsNullOrEmpty(post.VirtualPhotoCoverPath))
         {
-        <img class="img-responsive" src="@post.CoverPhotoUrl" alt="">
-        <hr>
+            <img class="img-responsive" src="@post.VirtualPhotoCoverPath" alt="">
+            <hr>
         }
 
         <p>@post.Entry</p>

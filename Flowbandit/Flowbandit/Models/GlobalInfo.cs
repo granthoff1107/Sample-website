@@ -61,6 +61,14 @@ namespace Flowbandit.Models
             }
         }
 
+        public static int? UserId
+        {
+            get
+            {
+                return User == null ? (int?)null : (int?)User.UserID;
+            }
+        }
+
         public static bool IsAnon
         {
             get

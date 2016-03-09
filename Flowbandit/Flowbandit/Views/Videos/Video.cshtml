@@ -21,14 +21,14 @@
     <div class="col-lg-8">
         <!-- Blog Post -->
         <!-- Title -->
-        <h1>@Model.VideoName</h1>
+        <h1>@Model.Title</h1>
         <!-- Author -->
         <p class="lead">
-            by <a href="#">@Model.Poster</a>
+            by <a href="#">@Model.Owner</a>
         </p>
-        @if (!LoginHelper.isAnon && LoginHelper.UserID == Model.CurrentVideo.User.ID)
+        @if (!LoginHelper.isAnon && LoginHelper.UserID == Model.OwnerId)
         {
-            <form method="get" action="@Url.Action("EditVideo", new {ID = Model.VideoID})">
+            <form method="get" action="@Url.Action("EditVideo", new {ID = Model.VideoId})">
                 <button type="submit" class="btn btn-default">Edit Video</button>
             </form>
         }
@@ -47,15 +47,14 @@
             <hr>
         }
         <!-- Post Content -->
-        <p> @Html.Raw(Model.Description)</p>
+        <p> @Html.Raw(Model.Entry)</p>
         <hr>
         <!-- Blog Comments -->
         <!-- Comments Form -->
         <div class="well">
             <h4>Leave a Comment:</h4>
             <form role="form" method="post" action="@Url.Action("Comment")">
-                <input type="hidden" name="NewComment.FK_VideoID" value="@Model.VideoID">
-                @*<input type="hidden" name="NewComment.Created" value="@DateTime.Now.ToString()">*@
+                <input type="hidden" name="NewComment.ContentId" value="@Model.ContentId">
                 <div class="form-group">
                     <textarea class="form-control" name="NewComment.Comment" rows="6"></textarea>
                 </div>

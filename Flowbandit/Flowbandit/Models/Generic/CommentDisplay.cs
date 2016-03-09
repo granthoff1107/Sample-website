@@ -6,7 +6,7 @@ using System.Web;
 
 namespace Flowbandit.Models
 {
-    public class PostCommentDisplay : IComment
+    public class CommentDisplay : IComment
     {
         public string Username
         {
@@ -24,7 +24,7 @@ namespace Flowbandit.Models
         {
             get
             {
-                return (Comment.FK_UserID == null);
+                return (Comment.UserId == null);
             }
         }
 
@@ -45,6 +45,7 @@ namespace Flowbandit.Models
         }
 
         string _ProfilePicUrl;
+       
         public string UserProfilePicUrl
         {
             get
@@ -62,7 +63,7 @@ namespace Flowbandit.Models
         {
             get
             {
-                return Comment.PostComment1.Count > 0;
+                return Comment.ContentComments1.Count > 0;
             }
         }
 
@@ -70,10 +71,9 @@ namespace Flowbandit.Models
         {
             get
             {
-
                 if (_children == null || hasChildren)
-                { 
-                    _children = Comment.PostComment1.Select(c => new PostCommentDisplay(c)).ToList<IComment>() ??  new List<PostCommentDisplay>().ToList<IComment>();
+                {
+                    _children = Comment.ContentComments1.Select(c => new CommentDisplay(c)).ToList<IComment>() ?? new List<CommentDisplay>().ToList<IComment>();
                 }
 
                 return _children;
@@ -82,9 +82,9 @@ namespace Flowbandit.Models
 
         protected List<IComment> _children;
 
-        protected PostComment Comment;
+        protected ContentComment Comment;
 
-        public PostCommentDisplay(PostComment Comment)
+        public CommentDisplay(ContentComment Comment)
         {
             this.Comment = Comment;
         }

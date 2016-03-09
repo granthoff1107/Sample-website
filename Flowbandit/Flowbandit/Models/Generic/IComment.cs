@@ -15,7 +15,5 @@ namespace Flowbandit.Models
         string UserProfilePicUrl { get; }
         bool hasChildren { get; }
         List<IComment> Children { get; }
-
-       
     }
 }

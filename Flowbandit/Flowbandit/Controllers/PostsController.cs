@@ -15,9 +15,6 @@ namespace Flowbandit.Controllers
 {
     public class PostsController : BaseController<IPostRepository>
     {
-
-        //
-        // GET: /Post/
         public PostsController(IPostRepository repository, IFlowLogRepository logRepository)
             : base(repository, logRepository)
         {
@@ -57,13 +54,17 @@ namespace Flowbandit.Controllers
             return View(tmpViewModel);
         }
         
+
+        //TODO Refactor to use DTO so controllers are not dependent on Database objects
         [HttpPost]
         [FBAuthorizeLevel(MaximumLevel = ADMIN_LEVEL)]
         [ValidateInput(false)]
-        public JsonResult NewPost(Post NewPost, HttpPostedFileBase CoverPhoto = null, List<int> tagIds = null)
+        public JsonResult NewPost(Post newPost, HttpPostedFileBase CoverPhoto = null, List<int> tagIds = null)
         {
             if(ModelState.IsValid)
             {
+                tagIds = tagIds ?? new List<int>();
+
                 //TODO Move this logic into the Base Repository
                 if (CoverPhoto != null)
                 {
@@ -71,37 +72,38 @@ namespace Flowbandit.Controllers
 
                     if (!string.IsNullOrEmpty(tmpRelative))
                     {
-                        NewPost.CoverPhotoUrl = tmpRelative;
+                        newPost.CoverPhotoUrl = tmpRelative;
                     }
                 }
 
                 //TODO Move this logic into the Post Repository
-                NewPost.FK_UserID = GlobalInfo.User.UserID;
-                NewPost.Last_Modified = DateTime.Now;
+                newPost.Content.UserId = GlobalInfo.User.UserID;
+                newPost.Content.LastModified = DateTime.Now;
 
-                if (NewPost.ID == default(int))
+                if (newPost.Id == default(int))
                 {
-                    _repository.Add(NewPost);
+                    _repository.Add(newPost);
                 }
                 else
                 {
-                    _repository.EditPost(NewPost, tagIds);
+                    _repository.EditPost(newPost, tagIds);
                 }
 
                 _repository.SaveChanges();
-                return  GetJsonRedirectResult(Url.Action("Post", new { ID = NewPost.ID })); 
+                return  GetJsonRedirectResult(Url.Action("Post", new { ID = newPost.Id })); 
             }
             return  GetJsonRedirectResult(Url.Action("Index"));
         }
 
-        public ActionResult Comment(PostComment NewComment)
+        public ActionResult Comment(ContentComment newComment)
         {
             if (ModelState.IsValid )
             {
-                CommentRule.Comment(_repository, NewComment);
-                return RedirectToAction("Post", new { ID = NewComment.FK_PostID });
+                _repository.AddComment(newComment, GlobalInfo.UserId);
+                _repository.SaveChanges();
             }
-            return RedirectToAction("Index", new { ID = 0 });
+            
+            return Redirect(HttpContext.Request.UrlReferrer.ToString());
         }
     }
 }
