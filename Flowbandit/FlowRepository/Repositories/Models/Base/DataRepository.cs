@@ -86,12 +86,12 @@ namespace FlowRepository.Repositories.Models.Base
             return _context.Set<T>();
         }
 
-        public void Add<T>(T Entity) where T : class
+        public virtual void Add<T>(T Entity) where T : class
         {
             Entities<T>().Add(Entity);
         }
 
-        public void Delete<T>(T Entity) where T : class
+        public virtual void Delete<T>(T Entity) where T : class
         {
             Entities<T>().Remove(Entity);
         }

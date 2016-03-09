@@ -10,82 +10,44 @@ using System.Threading.Tasks;
 
 namespace FlowRepository.Repositories.Models.FlowRepository
 {
-    public class VideoRepository : DataRepository<FlowCollectionEntities>, IVideoRepository
+    public class VideoRepository : ContentRepository, IVideoRepository
     {
-        public VideoRepository() : base()
+        #region Constructors
+
+        public VideoRepository()
+            : base()
         {
         }
 
-        public VideoRepository(FlowCollectionEntities context) : base (context)
+        public VideoRepository(FlowCollectionEntities context)
+            : base(context)
         {
+        } 
+
+        #endregion
+
+        #region IVideoRepostory Members
+
+        public List<Video> GetMostRecentVideos(int pageNumber, int resultsPerPage, int currentUser = 0, int? userId = null, bool shouldStripTags = true)
+        {
+            return this.GetMostRecentVisibleContent(All<Video>(), pageNumber, resultsPerPage, currentUser, userId, shouldStripTags);
         }
 
-        public List<Video> GetMostRecentVideos(int skip, int take, int? userId = null, bool shouldStripTags = true)
+        public Video FindVisibleVideoWithCommentsTagsUser(int id, int currentUser = 0)
         {
-            var baseQuery = All<Video>().Where(p => p.Visible);
-
-            if(null != userId)
-            {
-                baseQuery = baseQuery.Where(x => x.FK_UserID == userId.Value);
-            }
-
-            var videos = GetMostRecentVideos(baseQuery, skip, take);
-
-            if(shouldStripTags)
-            {
-                videos.ForEach(v => StripTags(v, false));
-            }
-
-            return videos;
-
-        }
-
-        public Video FindVisibleVideoWithCommentsTagsUser(int id)
-        {
-            return AllIncluding<Video>(p => p.VideoComments, p => p.TagsToVideos, p => p.User).FirstOrDefault(p => p.ID == id && p.Visible);
-        }
-
-        protected List<Video> GetMostRecentVideos(IQueryable<Video> baseQuery, int pageNumber, int resultsPerPage)
-        {
-            return baseQuery.OrderByDescending(p => p.Created)
-                                            .ThenByDescending(p => p.ID)
-                                            .Skip(pageNumber * resultsPerPage)
-                                            .Take(resultsPerPage)
-                                            .ToList();
-        }
-
-        public void Add(Video video)
-        {
-            this.SanitizeDescription(video);
-            base.Add(video);
+            return GetVisibleContentByIdWithCommentsTagsUsers<Video>(id, currentUser);
         }
 
         public void EditVideo(Video video, List<int> tagIds)
         {
-            _context.Entry(video).State = EntityState.Modified;
-
-            this.SanitizeDescription(video);
-
-            //TODO Refactor this into a generic method, for this and posts
-            var tagsToRemove = _context.TagsToVideos.Where(tv => tv.FK_VideoID == video.ID);
-            _context.TagsToVideos.RemoveRange(tagsToRemove);
-
-            foreach (var tagId in tagIds)
-            {
-                video.TagsToVideos.Add(new TagsToVideo { FK_VideoID = video.ID, FK_TagID = tagId });
-            }
+            this.Edit<Video>(video, tagIds);
         }
 
-        //Posting is done raw normally
-        protected void SanitizeDescription(Video video, bool isEncoded = false)
+        public List<Video> SearchTitles(string[] searchTerms, int pageNumber, int resultsPerPage, int currentUser = 0)
         {
-            video.Description = HtmlDisplayRule.SanitizeHtml(video.Description, isEncoded);
+            return this.SearchContent<Video>(searchTerms, pageNumber, resultsPerPage, currentUser);
         }
 
-        //Posting is encoded normally
-        protected void StripTags(Video video, bool isEncoded = true)
-        {
-            video.Description = HtmlDisplayRule.StripTags(video.Description, isEncoded);
-        }
+        #endregion
     }
 }

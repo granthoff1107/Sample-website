@@ -10,10 +10,12 @@ using System.Threading.Tasks;
 
 namespace FlowRepository.Repositories.Models.FlowRepository
 {
-    public class PostRepository : DataRepository<FlowCollectionEntities>, IPostRepository
+    public class PostRepository : ContentRepository, IPostRepository
     {
+        #region Constructors
 
-        public PostRepository() : base()
+        public PostRepository()
+            : base()
         {
         }
 
@@ -21,73 +23,32 @@ namespace FlowRepository.Repositories.Models.FlowRepository
             : base(context)
         {
         }
+ 
+        #endregion
 
-        public List<Post> GetMostRecentPosts(int skip, int take, int? userId = null, bool shouldStripTags = true)
+        #region IPostRepository Members
+
+        public List<Post> GetMostRecentPosts(int pageNumber, int resultsPerPage, int currentUser = 0, int? userId = null, bool shouldStripTags = true)
         {
-            var baseQuery = All<Post>().Where(p => p.Visible);
-
-            if(null != userId)
-            {
-                baseQuery = baseQuery.Where(x => x.FK_UserID == userId.Value);
-            }
-
-            var posts = GetMostRecentPosts(baseQuery, skip, take);
-
-            if(shouldStripTags)
-            {
-                posts.ForEach(p => StripTags(p));
-            }
-            
-            return posts;    
+            return this.GetMostRecentVisibleContent(All<Post>(), pageNumber, resultsPerPage, currentUser, userId, shouldStripTags);
         }
 
-        public Post VisiblePostByIDWithCommentsTagsUsers(int id)
+        public Post VisiblePostByIDWithCommentsTagsUsers(int id, int currentUser = 0)
         {
-            return AllIncluding<Post>(p => p.PostComments, p => p.TagsToPosts, p => p.User).FirstOrDefault(p => p.ID == id && p.Visible);
+            return GetVisibleContentByIdWithCommentsTagsUsers<Post>(id, currentUser);
         }
-
-        protected List<Post> GetMostRecentPosts(IQueryable<Post> baseQuery, int pageNumber, int resultsPerPage)
-        {
-            return baseQuery.OrderByDescending(p => p.Created)
-                                            .ThenByDescending(p => p.ID)
-                                            .Skip(pageNumber * resultsPerPage)
-                                            .Take(resultsPerPage)
-                                            .ToList();
-        }
-
 
         public void EditPost(Post post, List<int> tagIds)
         {
-            _context.Entry(post).State = EntityState.Modified;
-
-            this.SanitizeEntry(post);
-
-            //TODO Refactor this into a generic method, for this and videos
-            var tagsToRemove = _context.TagsToPosts.Where(tp => tp.FK_PostID == post.ID);
-            _context.TagsToPosts.RemoveRange(tagsToRemove);
-
-            foreach (var tagId in tagIds)
-            {
-                post.TagsToPosts.Add(new TagsToPost { FK_PostID = post.ID, FK_TagID = tagId });
-            }
+            this.Edit<Post>(post, tagIds);
         }
 
-        public void Add(Post post)
+        public List<Post> SearchPostTitles(string[] searchTerms, int pageNumber, int resultsPerPage, int currentUser = 0)
         {
-            this.SanitizeEntry(post);
-            base.Add(post);
+            return this.SearchContent<Post>(searchTerms, pageNumber, resultsPerPage, currentUser);
         }
 
-        //Posting is done raw normally
-        protected void SanitizeEntry(Post post, bool isEncoded = false)
-        {
-            post.Entry = HtmlDisplayRule.SanitizeHtml(post.Entry, isEncoded);
-        }
+        #endregion        
 
-        //Posting is encoded normally
-        protected void StripTags(Post post, bool isEncoded = true)
-        {
-            post.Entry = HtmlDisplayRule.StripTags(post.Entry, isEncoded);
-        }
     }
 }

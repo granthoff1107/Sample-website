@@ -16,14 +16,12 @@ namespace FlowRepository
     {
         public Tag()
         {
-            this.TagsToPosts = new HashSet<TagsToPost>();
-            this.TagsToVideos = new HashSet<TagsToVideo>();
+            this.TagsToContents = new HashSet<TagsToContent>();
         }
     
         public int ID { get; set; }
         public string Name { get; set; }
     
-        public virtual ICollection<TagsToPost> TagsToPosts { get; set; }
-        public virtual ICollection<TagsToVideo> TagsToVideos { get; set; }
+        public virtual ICollection<TagsToContent> TagsToContents { get; set; }
     }
 }

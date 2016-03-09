@@ -60,6 +60,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Content.cs">
+      <DependentUpon>FlowCollection.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ContentComment.cs">
+      <DependentUpon>FlowCollection.tt</DependentUpon>
+    </Compile>
     <Compile Include="Data\Rules\EmailSender.cs" />
     <Compile Include="Data\Rules\HashRule.cs" />
     <Compile Include="Data\Contracts\IHash.cs" />
@@ -70,6 +76,9 @@
     <Compile Include="ErrorType.cs">
       <DependentUpon>FlowCollectionLog.tt</DependentUpon>
     </Compile>
+    <Compile Include="ExtendedModels\Contracts\IHasContent.cs" />
+    <Compile Include="ExtendedModels\Models\Post.cs" />
+    <Compile Include="ExtendedModels\Models\Video.cs" />
     <Compile Include="Info.cs">
       <DependentUpon>FlowCollectionLog.tt</DependentUpon>
     </Compile>
@@ -79,11 +88,10 @@
     <Compile Include="Models\Const\Consts.cs" />
     <Compile Include="Models\Factoies\FlowCollectionRepositoryFactory.cs" />
     <Compile Include="Repositories\Contracts\FlowLog\IFlowLogRepository.cs" />
+    <Compile Include="Repositories\Contracts\FlowRepository\IContentRepository.cs" />
     <Compile Include="Repositories\Contracts\FlowRepository\IFlowRepository.cs" />
     <Compile Include="Repositories\Models\Base\DataRepository.cs" />
     <Compile Include="ExtendedModels\Contracts\IHasCommentProperties.cs" />
-    <Compile Include="ExtendedModels\Models\PostCommentPartial.cs" />
-    <Compile Include="ExtendedModels\Models\VideoCommentPartial.cs" />
     <Compile Include="FlowCollection.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -122,10 +130,8 @@
     <Compile Include="Post.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
-    <Compile Include="PostComment.cs">
-      <DependentUpon>FlowCollection.tt</DependentUpon>
-    </Compile>
     <Compile Include="Repositories\Models\FlowLog\LogRepository.cs" />
+    <Compile Include="Repositories\Models\FlowRepository\ContentRepository.cs" />
     <Compile Include="Repositories\Models\FlowRepository\PostRepository.cs" />
     <Compile Include="PrivilegeLevel.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
@@ -136,10 +142,7 @@
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
     <Compile Include="Repositories\Models\FlowRepository\TagRepository.cs" />
-    <Compile Include="TagsToPost.cs">
-      <DependentUpon>FlowCollection.tt</DependentUpon>
-    </Compile>
-    <Compile Include="TagsToVideo.cs">
+    <Compile Include="TagsToContent.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
     <Compile Include="User.cs">
@@ -153,9 +156,6 @@
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
     <Compile Include="Video.cs">
-      <DependentUpon>FlowCollection.tt</DependentUpon>
-    </Compile>
-    <Compile Include="VideoComment.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
     <Compile Include="Repositories\Models\FlowRepository\VideoRepository.cs" />

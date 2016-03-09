@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace FlowRepository
 {
-    public partial class PostComment : IHasCommentProperties
+    public partial class Video : IHasContent
     {
     }
 }

@@ -12,13 +12,13 @@ namespace FlowRepository
     using System;
     using System.Collections.Generic;
     
-    public partial class TagsToPost
+    public partial class TagsToContent
     {
-        public int FK_TagID { get; set; }
-        public int FK_PostID { get; set; }
-        public Nullable<bool> BS { get; set; }
+        public int ContentId { get; set; }
+        public int TagId { get; set; }
+        public Nullable<bool> bs { get; set; }
     
-        public virtual Post Post { get; set; }
         public virtual Tag Tag { get; set; }
+        public virtual Content Content { get; set; }
     }
 }

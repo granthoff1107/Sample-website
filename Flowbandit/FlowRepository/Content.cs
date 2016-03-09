@@ -12,26 +12,28 @@ namespace FlowRepository
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class Content
     {
-        public User()
+        public Content()
         {
-            this.UserVerifications = new HashSet<UserVerification>();
             this.ContentComments = new HashSet<ContentComment>();
-            this.Contents = new HashSet<Content>();
+            this.Posts = new HashSet<Post>();
+            this.TagsToContents = new HashSet<TagsToContent>();
+            this.Videos = new HashSet<Video>();
         }
     
-        public int ID { get; set; }
-        public string Username { get; set; }
-        public string PasswordHash { get; set; }
-        public string Email { get; set; }
-        public int FK_PrivilegelevelID { get; set; }
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Entry { get; set; }
         public System.DateTime Created { get; set; }
-        public string ImageUrl { get; set; }
+        public System.DateTime LastModified { get; set; }
+        public bool Visible { get; set; }
+        public int UserId { get; set; }
     
-        public virtual PrivilegeLevel PrivilegeLevel { get; set; }
-        public virtual ICollection<UserVerification> UserVerifications { get; set; }
+        public virtual User User { get; set; }
         public virtual ICollection<ContentComment> ContentComments { get; set; }
-        public virtual ICollection<Content> Contents { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
+        public virtual ICollection<TagsToContent> TagsToContents { get; set; }
+        public virtual ICollection<Video> Videos { get; set; }
     }
 }

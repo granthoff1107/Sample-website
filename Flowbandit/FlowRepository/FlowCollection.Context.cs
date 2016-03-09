@@ -25,16 +25,15 @@ namespace FlowRepository
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Post> Posts { get; set; }
         public virtual DbSet<PrivilegeLevel> PrivilegeLevels { get; set; }
         public virtual DbSet<Tag> Tags { get; set; }
-        public virtual DbSet<TagsToPost> TagsToPosts { get; set; }
-        public virtual DbSet<TagsToVideo> TagsToVideos { get; set; }
-        public virtual DbSet<Video> Videos { get; set; }
-        public virtual DbSet<VideoComment> VideoComments { get; set; }
-        public virtual DbSet<PostComment> PostComments { get; set; }
         public virtual DbSet<UserVerification> UserVerifications { get; set; }
         public virtual DbSet<VerificationType> VerificationTypes { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<ContentComment> ContentComments { get; set; }
+        public virtual DbSet<Post> Posts { get; set; }
+        public virtual DbSet<TagsToContent> TagsToContents { get; set; }
+        public virtual DbSet<Video> Videos { get; set; }
+        public virtual DbSet<Content> Contents { get; set; }
     }
 }

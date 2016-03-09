@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace FlowRepository.Repositories.Contracts.FlowRepository
 {
-    public interface IVideoRepository : IFlowRepository
+    public interface IVideoRepository : IContentRepository
     {
-        List<Video> GetMostRecentVideos(int skip, int take, int? userId = null, bool shouldStripTags = true);
+        List<Video> GetMostRecentVideos(int pageNumber, int resultsPerPage, int currentUser = 0, int? userId = null, bool shouldStripTags = true);
 
-        Video FindVisibleVideoWithCommentsTagsUser(int id);
-
-        void Add(Video Video);
+        Video FindVisibleVideoWithCommentsTagsUser(int id,  int currentUser = 0);
 
         void EditVideo(Video video, List<int> tagIds);
+
+        List<Video> SearchTitles(string[] searchTerms, int pageNumber, int resultsPerPage, int currentUser = 0);
     }
 }

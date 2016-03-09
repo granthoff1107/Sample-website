@@ -12,23 +12,23 @@ namespace FlowRepository
     using System;
     using System.Collections.Generic;
     
-    public partial class PostComment
+    public partial class ContentComment
     {
-        public PostComment()
+        public ContentComment()
         {
-            this.PostComment1 = new HashSet<PostComment>();
+            this.ContentComments1 = new HashSet<ContentComment>();
         }
     
-        public int ID { get; set; }
+        public int Id { get; set; }
         public string Comment { get; set; }
         public System.DateTime Created { get; set; }
-        public Nullable<int> FK_UserID { get; set; }
-        public Nullable<int> FK_ParentID { get; set; }
-        public int FK_PostID { get; set; }
+        public Nullable<int> UserId { get; set; }
+        public Nullable<int> ParentCommentId { get; set; }
+        public int ContentId { get; set; }
     
-        public virtual Post Post { get; set; }
-        public virtual ICollection<PostComment> PostComment1 { get; set; }
-        public virtual PostComment PostComment2 { get; set; }
         public virtual User User { get; set; }
+        public virtual ICollection<ContentComment> ContentComments1 { get; set; }
+        public virtual ContentComment ContentComment1 { get; set; }
+        public virtual Content Content { get; set; }
     }
 }

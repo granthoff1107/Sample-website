@@ -14,23 +14,10 @@ namespace FlowRepository
     
     public partial class Post
     {
-        public Post()
-        {
-            this.TagsToPosts = new HashSet<TagsToPost>();
-            this.PostComments = new HashSet<PostComment>();
-        }
-    
-        public int ID { get; set; }
-        public string Title { get; set; }
-        public System.DateTime Created { get; set; }
-        public System.DateTime Last_Modified { get; set; }
-        public string Entry { get; set; }
-        public bool Visible { get; set; }
-        public Nullable<int> FK_UserID { get; set; }
+        public int Id { get; set; }
+        public int ContentId { get; set; }
         public string CoverPhotoUrl { get; set; }
     
-        public virtual ICollection<TagsToPost> TagsToPosts { get; set; }
-        public virtual ICollection<PostComment> PostComments { get; set; }
-        public virtual User User { get; set; }
+        public virtual Content Content { get; set; }
     }
 }
