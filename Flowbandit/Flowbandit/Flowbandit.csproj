@@ -220,9 +220,9 @@
     <Compile Include="Models\Accounts\LoginHelper.cs" />
     <Compile Include="Models\Accounts\LoginVM.cs" />
     <Compile Include="Models\Authorization\FBAuthorizeLevelAttribute.cs" />
-    <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\Generic\BaseModel.cs" />
     <Compile Include="Models\Contact\ContactVM.cs" />
-    <Compile Include="Models\ContentBaseModel.cs" />
+    <Compile Include="Models\Generic\ContentsBaseModel.cs" />
     <Compile Include="Models\Dashboard\DashboardVM.cs" />
     <Compile Include="Models\Generic\ContentBaseModel.cs" />
     <Compile Include="Models\Generic\IComment.cs" />

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Flowbandit.Models
+namespace Flowbandit.Models.Generic
 {
     public class ContentsBaseModel<TRepository, TEntity> : BaseModel<TRepository>
         where TRepository : class, IFlowRepository, IContentRepository

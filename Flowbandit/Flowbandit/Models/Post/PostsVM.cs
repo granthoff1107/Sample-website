@@ -6,6 +6,7 @@ using Flowbandit;
 using FlowRepository;
 using FlowRepository.Repositories.Contracts.FlowRepository;
 using FlowRepository.Data.Rules;
+using Flowbandit.Models.Generic;
 
 namespace Flowbandit.Models
 {

@@ -1,4 +1,5 @@
-﻿using FlowRepository;
+﻿using Flowbandit.Models.Generic;
+using FlowRepository;
 using FlowRepository.Data.Rules;
 using FlowRepository.Repositories.Contracts.FlowRepository;
 using FlowRepository.Repositories.Models.FlowRepository;
