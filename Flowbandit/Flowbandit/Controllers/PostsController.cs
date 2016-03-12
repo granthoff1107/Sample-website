@@ -22,14 +22,14 @@ namespace Flowbandit.Controllers
 
         public ActionResult GetPosts(int pageNumber)
         {
-            var tmpViewModel = new AllPostsVM(_repository, pageNumber);
+            var tmpViewModel = new PostsVM(_repository, pageNumber);
             var res = RenderRazorViewToString("_PostsContent", tmpViewModel);
             return Json(new { htmldata = res }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Index(int PageNumber = 0)
         {
-            var tmpViewModel = new AllPostsVM(_repository, PageNumber);
+            var tmpViewModel = new PostsVM(_repository, PageNumber);
             return View(tmpViewModel);
         }
 

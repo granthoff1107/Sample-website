@@ -7,24 +7,13 @@ using System.Web;
 
 namespace Flowbandit.Models
 {
-    public class VideosVM : BaseModel<IVideoRepository>
+    public class VideosVM : ContentsBaseModel<IVideoRepository, Video>
     {
         public IEnumerable<VideoVM> FeaturedVideos;
-        public int TotalPages = 0;
-        public VideosVM(IVideoRepository Data, int pageNumber = 0)
-            : base(Data)
+        public VideosVM(IVideoRepository repository, int pageNumber = 0)
+            : base(repository, pageNumber, GlobalInfo.VIDEOSPERPAGE)
         {
-            var videos = DataRepository.GetMostRecentVideos(pageNumber, GlobalInfo.VIDEOSPERPAGE, CurrentUser);
-
-            foreach (var video in videos)
-            {
-                video.Content.Entry = video.Content.Entry.Substring(0, Math.Min(video.Content.Entry.Length, GlobalInfo.DISPLAY_TEXT_MAX_LENGTH)) + "...";
-            }
-
-            var tmpCount = Data.All<Video>().Count();
-
-            FeaturedVideos = videos.Select(video => new VideoVM(video));
-            TotalPages = this.GetTotalPageCountFromItems(tmpCount, GlobalInfo.VIDEOSPERPAGE);
+            FeaturedVideos = sanitizedEntities.Select(video => new VideoVM(video));
         }
     }
 }

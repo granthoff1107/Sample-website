@@ -222,11 +222,12 @@
     <Compile Include="Models\Authorization\FBAuthorizeLevelAttribute.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\Contact\ContactVM.cs" />
+    <Compile Include="Models\ContentBaseModel.cs" />
     <Compile Include="Models\Dashboard\DashboardVM.cs" />
     <Compile Include="Models\Generic\ContentBaseModel.cs" />
     <Compile Include="Models\Generic\IComment.cs" />
     <Compile Include="Models\GlobalInfo.cs" />
-    <Compile Include="Models\Post\AllPostsVM.cs" />
+    <Compile Include="Models\Post\PostsVM.cs" />
     <Compile Include="Models\Post\PostVM.cs" />
     <Compile Include="Models\Search\SearchResultsVM.cs" />
     <Compile Include="Models\Generic\CommentDisplay.cs" />

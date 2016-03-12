@@ -33,14 +33,13 @@ namespace Flowbandit.Controllers
             return View();
         }
 
-        //Make this http post only, login data should not go through Query Parameters
+        //post only login data should never go through Query Parameters
         [HttpPost]
         public ActionResult Login(LoginVM LoginData)
         {
             _logRepository.AddInfo(string.Concat("attemped login for user", LoginData.Username), Request.UserHostAddress, Request.Url.OriginalString, "Login");
             if (ModelState.IsValid)
             {
-                //TODO: refactor logic into Accounts Repository
                 User user = _repository.GetUserByUsername(LoginData.Username);
 
                 if (user != null)
@@ -52,9 +51,6 @@ namespace Flowbandit.Controllers
                         FBPrincipalSerializeModel serial = new FBPrincipalSerializeModel { UserID = user.ID, PrivilegelevelID = user.FK_PrivilegelevelID, PrivilegeLevel = priviledgeLevel };
 
                         var authcookie = LoginHelper.SerializeObjectToCookie(LoginData.StayLoggedin, user.Username, serial);
-
-                        //string domain = Request.Url.Scheme + System.Uri.SchemeDelimiter + Request.Url.Host + (Request.Url.IsDefaultPort ? "" : ":" + Request.Url.Port);
-                        //authcookie.Domain = domain;
                         Response.Cookies.Add(authcookie);
                     }
                 }
@@ -75,7 +71,7 @@ namespace Flowbandit.Controllers
                 var newUser = _repository.CreateUser(user, BASIC_LEVEL);
                 if(null != newUser)
                 { 
-                    var verficationUrl = GenerateValidateEmailUrl(newUser.UserVerifications.First().VerifiedGuid, newUser.Username);
+                    var verficationUrl = this.GenerateValidateEmailUrl(newUser.UserVerifications.First().VerifiedGuid, newUser.Username);
                     _mailSender.SendEmail(user.Email, "Thanks for registering", "Click The link to verify your email address: " + verficationUrl, "noreply@flowbandit.com");
                 }
             }
