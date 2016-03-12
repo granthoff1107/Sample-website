@@ -78,7 +78,6 @@ namespace Flowbandit.Controllers
 
                 //TODO Move this logic into the Post Repository
                 newPost.Content.UserId = GlobalInfo.User.UserID;
-                newPost.Content.LastModified = DateTime.Now;
 
                 if (newPost.Id == default(int))
                 {

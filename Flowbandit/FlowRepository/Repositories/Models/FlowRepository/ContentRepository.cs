@@ -29,30 +29,34 @@ namespace FlowRepository.Repositories.Models.FlowRepository
 
         #region Public Methods
 
-        public override void Add<T>(T Entity)
+        public override void Add<T>(T entity)
         {
             //HACK: Inheritiance will not allow overriding with additional constriants
-            if(Entity is IHasContent)
-            { 
-                this.SanitizeEntry((Entity as IHasContent).Content);
+            if(entity is IHasContent)
+            {
+                var content = (entity as IHasContent).Content;
+                content.LastModified = DateTime.Now;
+                this.SanitizeEntry(content);
             }
-            base.Add<T>(Entity);
+
+            base.Add<T>(entity);
         }
 
-        public void Edit<T>(T Entity, List<int> tagIds)
+        public void Edit<T>(T entity, List<int> tagIds)
             where T : class, IHasContent
         {
-            this.SanitizeEntry(Entity.Content);
-            _context.Entry(Entity).State = EntityState.Modified;
-            _context.Entry(Entity.Content).State = EntityState.Modified;
+            entity.Content.LastModified = DateTime.Now;
+            this.SanitizeEntry(entity.Content);
+            _context.Entry(entity).State = EntityState.Modified;
+            _context.Entry(entity.Content).State = EntityState.Modified;
 
             //TODO Refactor this into a generic method, for this and videos
-            var tagsToRemove = _context.TagsToContents.Where(tp => tp.ContentId == Entity.Content.Id);
+            var tagsToRemove = _context.TagsToContents.Where(tp => tp.ContentId == entity.Content.Id);
             _context.TagsToContents.RemoveRange(tagsToRemove);
 
             foreach (var tagId in tagIds)
             {
-                Entity.Content.TagsToContents.Add(new TagsToContent { ContentId = Entity.Content.Id, TagId = tagId });
+                entity.Content.TagsToContents.Add(new TagsToContent { ContentId = entity.Content.Id, TagId = tagId });
             }
         }
 
@@ -115,7 +119,6 @@ namespace FlowRepository.Repositories.Models.FlowRepository
         #endregion
 
         #region Protected Methods
-
 
         //Content is done raw normally
         protected void SanitizeEntry(Content content, bool isEncoded = false)
