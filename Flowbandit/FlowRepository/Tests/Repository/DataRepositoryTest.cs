@@ -16,11 +16,12 @@ namespace FlowRepository.Tests.Repository
     [TestClass]
     public class DataRepositoryTest : TestBase
     {
+        #region Test Methods 
+
         [TestMethod]
         public void All_Query_Test()
         {
-            var testContext = this.GetDefaultContext();
-            var dataRepo = new DataRepository<FlowCollectionEntities>(testContext);
+            var dataRepo = this.GetDataRepository();
 
             var postsList = dataRepo.All<Post>().ToList();
             postsList.ShouldAllBeEquivalentTo(testPosts);
@@ -29,29 +30,23 @@ namespace FlowRepository.Tests.Repository
         [TestMethod]
         public void Add_Query_Test()
         {
-            var testContext = this.GetDefaultContext();
-            var dataRepo = new DataRepository<FlowCollectionEntities>(testContext);
-
-            dataRepo.Add<Post>(TestPost);
+            var dataRepo = this.GetDataRepository();
+            dataRepo.Add<Post>(this.GetTestPost());
             PostMock.Verify(m => m.Add(It.IsAny<Post>()), Times.Once());
         }
 
         [TestMethod]
         public void Remove_Query_Test()
         {
-            var testContext = this.GetDefaultContext();
-            var dataRepo = new DataRepository<FlowCollectionEntities>(testContext);
-
-            dataRepo.Delete(TestPost);
+            var dataRepo = this.GetDataRepository();
+            dataRepo.Delete(this.GetTestPost());
             PostMock.Verify(m => m.Remove(It.IsAny<Post>()), Times.Once());
         }
 
         [TestMethod]
         public void SaveChanges_Test()
         {
-            var testContext = this.GetDefaultContext();
-            var dataRepo = new DataRepository<FlowCollectionEntities>(testContext);
-
+            var dataRepo = this.GetDataRepository();
             dataRepo.SaveChanges();
             MockContext.Verify(m => m.SaveChanges(), Times.Once());
         }
@@ -59,8 +54,7 @@ namespace FlowRepository.Tests.Repository
         [TestMethod]
         public void AllIncluding_Test()
         {
-            var testContext = this.GetDefaultContext();
-            var dataRepo = new DataRepository<FlowCollectionEntities>(testContext);
+            var dataRepo = this.GetDataRepository();
 
             //TODO: in order to properly test this method you need to mock the include function of IQueryable<post>
             // as a hack just test with a single include to check if atleast include is being called
@@ -68,18 +62,18 @@ namespace FlowRepository.Tests.Repository
 
             dataRepo.AllIncluding<Post>(includes);
             PostMock.Verify(m => m.Include(It.IsAny<string>()), Times.Exactly(includes.Length));
-        }
+        } 
 
-        protected Post TestPost
+        #endregion
+
+        #region Test Helper Methods
+
+        protected DataRepository<FlowCollectionEntities> GetDataRepository()
         {
-            get
-            {
-                int postId = 666;
-                return new Post { ContentId = postId, Id = postId, CoverPhotoUrl = "test" };
-            }
+            var testContext = this.GetDefaultContext();
+            return new DataRepository<FlowCollectionEntities>(testContext);
         }
+ 
+        #endregion
     }
-
-
-
 }

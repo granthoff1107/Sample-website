@@ -129,6 +129,11 @@ namespace FlowRepository.Repositories.Models.Base
             return RetVal;
         }
 
+        protected void SetModified<T>(T entity) where T : class
+        {
+            _context.Entry(entity).State = EntityState.Modified;
+        }
+
         protected ObjectContext _ObjectContext
         {
             get

@@ -36,6 +36,7 @@ namespace FlowRepository.Repositories.Models.FlowRepository
             {
                 var content = (entity as IHasContent).Content;
                 content.LastModified = DateTime.Now;
+                content.Created = DateTime.Now;
                 this.SanitizeEntry(content);
             }
 
@@ -46,11 +47,12 @@ namespace FlowRepository.Repositories.Models.FlowRepository
             where T : class, IHasContent
         {
             entity.Content.LastModified = DateTime.Now;
+            
+            //TODO Santization should not be in the repository that should be done externally from a service before hand
             this.SanitizeEntry(entity.Content);
-            _context.Entry(entity).State = EntityState.Modified;
-            _context.Entry(entity.Content).State = EntityState.Modified;
+            this.SetModified(entity);
+            this.SetModified(entity.Content);
 
-            //TODO Refactor this into a generic method, for this and videos
             var tagsToRemove = _context.TagsToContents.Where(tp => tp.ContentId == entity.Content.Id);
             _context.TagsToContents.RemoveRange(tagsToRemove);
 
@@ -115,7 +117,6 @@ namespace FlowRepository.Repositories.Models.FlowRepository
             Add(comment);
         }
         
-
         #endregion
 
         #region Protected Methods

@@ -159,6 +159,7 @@
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
     <Compile Include="Tests\General\TestBase.cs" />
+    <Compile Include="Tests\Repository\ContentRepositoryTest.cs" />
     <Compile Include="Tests\Repository\DataRepositoryTest.cs" />
     <Compile Include="User.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
