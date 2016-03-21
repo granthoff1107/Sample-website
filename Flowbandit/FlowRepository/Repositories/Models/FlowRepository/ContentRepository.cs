@@ -90,6 +90,8 @@ namespace FlowRepository.Repositories.Models.FlowRepository
                                             .Skip(pageNumber * resultsPerPage)
                                             .Take(resultsPerPage)
                                             .ToList();
+
+            //TODO this should happen externally in a service
             if (shouldStripTags)
             {
                 contents.ForEach(p => StripTags(p.Content));

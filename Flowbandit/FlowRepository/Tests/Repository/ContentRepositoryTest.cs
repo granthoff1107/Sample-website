@@ -61,6 +61,17 @@ namespace FlowRepository.Tests.Repository
             post.Content.TagsToContents.Select(x => x.TagId).ShouldBeEquivalentTo(tags);
         }
 
+        [TestMethod]
+        public void GetMostRecentVisibleContent_Test()
+        {
+            var dataRepo = this.GetRepository();
+
+            //two post should be hidden, by default we hide any post divisible by 5
+            var addedPosts = this.PopulateDefaultPost(ref nextFreeId, testUser2, 12);
+            var posts = dataRepo.GetMostRecentVisibleContent<Post>(dataRepo.All<Post>(), 0, 10, testUser.ID);
+
+            addedPosts.Where(x => x.Content.Visible).ShouldAllBeEquivalentTo(posts);
+        }
 
         #endregion
 

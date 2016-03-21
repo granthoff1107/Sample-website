@@ -15,12 +15,12 @@ namespace FlowRepository.Tests.General
         #region Members
 
         protected User testUser = null;
+        protected User testUser2 = null;
         protected List<Content> testPostContents = new List<Content>();
         protected List<Post> testPosts = new List<Post>();
         protected List<TagsToContent> testTagsToContent = new List<TagsToContent>();
 
-        //I don't care if it not fully proper, GetHashCode should be good enough for a random seed
-        protected static Random random = new Random(Guid.NewGuid().GetHashCode());
+        TestLoremGenerator loremGenerator = new TestLoremGenerator("../../Tests/Resources/IpsumLorem.txt");
 
         #endregion
 
@@ -35,21 +35,53 @@ namespace FlowRepository.Tests.General
 
         #region Data Population Methods
 
+        protected int nextFreeId = 1;
+
         protected void InitializeContext()
         {
-            testUser = new User { ID = 4, Username = "TestUser", Email = "TestEmail@fake.com", Created = new DateTime(1989, 11, 4), Contents = testPostContents };
+            testUser = new User { ID = 4, Username = "TestUser", Email = "TestEmail@fake.com", 
+                                  Created = new DateTime(1989, 11, 4), 
+                                  Contents = testPostContents.Where(x => x.UserId == 4).ToList() };
 
-            this.AddPost(1, "Some Really basic Post", "Basic Post", testUser, 1);
-            this.AddPost(2, "Another Some Really basic Post", "2 Basic Post", testUser, 2);
+            testUser2 = new User { ID = 5, Username = "TestUser2", Email = "TestEmail2@fake.com", 
+                                  Created = new DateTime(1999, 12, 5), 
+                                  Contents = testPostContents.Where(x => x.UserId == 5).ToList() };
+
+            this.PopulateDefaultPost(ref nextFreeId, testUser, 20);
+            this.PopulateDefaultPost(ref nextFreeId, testUser2, 20);
+            
         }
 
-        protected void AddPost(int id, string entry, string title, User user, int contentId, bool isVisible = true, DateTime? created = null, DateTime? lastModified = null)
+        protected IEnumerable<Post> PopulateDefaultPost(ref int id, User user, int numberOfPost, int entryLength = 250, int titleLength = 50)
+        {
+            var posts = new List<Post>();
+            for (int x = 0; x < numberOfPost; x++)
+            {
+                var isVisible = this.IsPostVisible(id);
+                var entry = loremGenerator.GetLorem(entryLength);
+                var title = id + loremGenerator.GetLorem(titleLength);
+                var date = DateTime.Now.AddSeconds(id);
+                var post = this.AddPost(id, entry, title, user, id++, isVisible, date, date);
+                posts.Add(post);
+            }
+
+            return posts;
+        }
+
+        protected bool IsPostVisible(int id)
+        {
+            return id % 5 != 0;
+        }
+
+        protected Post AddPost(int id, string entry, string title, User user, int contentId, bool isVisible = true, DateTime? created = null, DateTime? lastModified = null)
         {
             var post = this.CreateTestPost(id, entry, title, user, contentId, isVisible, created, lastModified);
 
             testPosts.Add(post);
             testPostContents.Add(post.Content);
             testTagsToContent.AddRange(post.Content.TagsToContents);
+
+            return post;
             
         }
 
