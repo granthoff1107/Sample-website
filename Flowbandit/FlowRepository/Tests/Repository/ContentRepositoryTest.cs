@@ -68,9 +68,23 @@ namespace FlowRepository.Tests.Repository
 
             //two post should be hidden, by default we hide any post divisible by 5
             var addedPosts = this.PopulateDefaultPost(ref nextFreeId, testUser2, 12);
-            var posts = dataRepo.GetMostRecentVisibleContent<Post>(dataRepo.All<Post>(), 0, 10, testUser.ID);
+            var posts = dataRepo.GetMostRecentVisibleContent(dataRepo.All<Post>(), 0, 10, testUser.ID);
 
             addedPosts.Where(x => x.Content.Visible).ShouldAllBeEquivalentTo(posts);
+        }
+        
+        [TestMethod]
+        public void GetVisibleContentById_Test()
+        {
+            var dataRepo = this.GetRepository();
+            var addedPosts = this.PopulateDefaultPost(ref nextFreeId, testUser2, 1);
+
+            var expectedPost = addedPosts.Single();
+            var actualPost = dataRepo.GetVisibleContentByIdWithCommentsTagsUsers<Post>(expectedPost.Id, expectedPost.Content.UserId);
+
+            PostMock.Verify(m => m.Include(It.IsAny<string>()), Times.Exactly(3));
+
+            expectedPost.ShouldBeEquivalentTo(actualPost);
         }
 
         #endregion

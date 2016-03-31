@@ -163,6 +163,8 @@ namespace FlowRepository.Tests.General
             dbSetMock.As<IQueryable<T>>().Setup(m => m.ElementType).Returns(entityQueryable.ElementType);
             dbSetMock.As<IQueryable<T>>().Setup(m => m.GetEnumerator()).Returns(entityQueryable.GetEnumerator());
 
+            dbSetMock.Setup(m => m.Include(It.IsAny<string>())).Returns(dbSetMock.Object);
+
             return dbSetMock;
         }
 
