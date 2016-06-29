@@ -99,7 +99,9 @@
       <DependentUpon>FlowCollectionLog.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Const\Consts.cs" />
-    <Compile Include="Models\Factoies\FlowCollectionRepositoryFactory.cs" />
+    <Compile Include="Models\Factories\FlowCollectionRepositoryFactory.cs" />
+    <Compile Include="Models\Pagination\PageInfo.cs" />
+    <Compile Include="Models\Pagination\PaginationInfo.cs" />
     <Compile Include="Repositories\Contracts\FlowLog\IFlowLogRepository.cs" />
     <Compile Include="Repositories\Contracts\FlowRepository\IContentRepository.cs" />
     <Compile Include="Repositories\Contracts\FlowRepository\IFlowRepository.cs" />
@@ -151,6 +153,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\UserRepository\NewUserDTO.cs" />
+    <Compile Include="Rules\Pagination\PaginationRule.cs" />
     <Compile Include="Tag.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>
@@ -162,6 +165,7 @@
     <Compile Include="Tests\General\TestLoremGenerator.cs" />
     <Compile Include="Tests\Repository\ContentRepositoryTest.cs" />
     <Compile Include="Tests\Repository\DataRepositoryTest.cs" />
+    <Compile Include="Tests\Repository\UserRepositoryTest.cs" />
     <Compile Include="User.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>

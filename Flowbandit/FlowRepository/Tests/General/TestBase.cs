@@ -19,6 +19,7 @@ namespace FlowRepository.Tests.General
         protected List<Content> testPostContents = new List<Content>();
         protected List<Post> testPosts = new List<Post>();
         protected List<TagsToContent> testTagsToContent = new List<TagsToContent>();
+        protected List<User> testUsers = new List<User>();
 
         TestLoremGenerator loremGenerator = new TestLoremGenerator("../../Tests/Resources/IpsumLorem.txt");
 
@@ -46,6 +47,9 @@ namespace FlowRepository.Tests.General
             testUser2 = new User { ID = 5, Username = "TestUser2", Email = "TestEmail2@fake.com", 
                                   Created = new DateTime(1999, 12, 5), 
                                   Contents = testPostContents.Where(x => x.UserId == 5).ToList() };
+
+            this.testUsers.Add(testUser);
+            this.testUsers.Add(testUser2);
 
             this.PopulateDefaultPost(ref nextFreeId, testUser, 20);
             this.PopulateDefaultPost(ref nextFreeId, testUser2, 20);
@@ -92,6 +96,7 @@ namespace FlowRepository.Tests.General
         private Mock<FlowCollectionEntities> _mockContext;
         private Mock<DbSet<Post>> _postMock;
         private Mock<DbSet<TagsToContent>> _tagsToContentMock;
+        private Mock<DbSet<User>> _userMock;
 
         #endregion
 
@@ -118,6 +123,18 @@ namespace FlowRepository.Tests.General
                     _postMock = this.GetMockDbSet(testPosts.AsQueryable());
                 }
                 return _postMock;
+            }
+        }
+
+        protected Mock<DbSet<User>> UserMock
+        {
+            get
+            {
+                if (null == _userMock)
+                {
+                    _userMock = this.GetMockDbSet(testUsers.AsQueryable());
+                }
+                return _userMock;
             }
         }
 

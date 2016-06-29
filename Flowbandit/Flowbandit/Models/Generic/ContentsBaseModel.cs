@@ -15,14 +15,13 @@ namespace Flowbandit.Models.Generic
         public int TotalPages = 0;
         public IEnumerable<TEntity> sanitizedEntities;
 
-
         public ContentsBaseModel(TRepository repository, int pageNumber, int resultsPerPage) 
             : base(repository)
         {
             this.PageNumber = pageNumber;
 
             var tmpCount = repository.All<TEntity>().Count();
-            TotalPages = this.GetTotalPageCountFromItems(tmpCount, resultsPerPage);
+            //TotalPages = this.GetTotalPageCountFromItems(tmpCount, resultsPerPage);
 
             var parentContents = repository.GetMostRecentVisibleContent<TEntity>(repository.All<TEntity>(), pageNumber, resultsPerPage, CurrentUser);
             

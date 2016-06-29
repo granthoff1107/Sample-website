@@ -1,15 +1,16 @@
 ﻿@using Flowbandit.Models;
+@using FlowService.DTOs.Posts;
 
-@model PostsVM
+@model PostsDTO
 
-@foreach (var post in @Model.FeaturedPosts)
+@foreach (var post in @Model.FeaturedContent)
 {
     var PostsUrl = Url.Action("Post", "Posts", new { ID = post.PostId });
     
     <div>
         <h2>
             <a href="@PostsUrl">@post.Title</a>
-            @if(false == post.isVisible)
+            @if(false == post.IsVisible)
             {
                 <span class="small"> (hidden)</span>
             }

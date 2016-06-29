@@ -1,4 +1,5 @@
-﻿@model Flowbandit.Models.PostVM
+﻿@using FlowService.DTOs.Posts
+@model PostDTO
 
 <input type="hidden" id="tags-url" value="@Url.Action("TagsAutocomplete", "Tags")">
 
@@ -42,7 +43,7 @@
                             @Html.Partial("_updateTags", Model.Tags)
 
                             @{
-                                string isChecked = Model.isVisible ? "checked='checked'" : "";
+                                string isChecked = Model.IsVisible ? "checked='checked'" : "";
                             }
 
                             <div class="row">

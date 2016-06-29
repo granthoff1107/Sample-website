@@ -1,23 +1,20 @@
-﻿@model IEnumerable<Flowbandit.Models.IComment>
-
-@using Flowbandit.Models;
-
-
+﻿@using FlowService.DTOs.Generic
+@model IEnumerable<IComment>
 
 @helper GenerateComments(IEnumerable<IComment> Comments)
 {
-    foreach (var com in Comments)
-    {
+foreach (var comment in Comments)
+{
         <div class="media append-bottom">
             <a class="pull-left" href="#">
-                <img class="media-object" src="@com.UserProfilePicUrl" alt="In A comment">
+                <img class="media-object" src="@comment.UserProfilePicUrl" alt="In A comment">
             </a>
             <div class="media-body">
                 <h4 class="media-heading">
-                    @com.Username;
-                    <small>@com.Created</small>
+                    @comment.Username;
+                    <small>@comment.Created</small>
                 </h4>
-                @com.CommentText
+                @comment.CommentText
 
 
                 @*

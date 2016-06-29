@@ -12,8 +12,12 @@ namespace FlowRepository.Repositories.Contracts.FlowRepository
         List<T> GetMostRecentVisibleContent<T>(IQueryable<T> baseQuery, int pageNumber, int resultsPerPage, int currentUser = 0, int? filterUserId = null, bool shouldStripTags = true)
             where T : class, IHasContent;
 
-        T GetVisibleContentByIdWithCommentsTagsUsers<T>(int id, int currentUser = 0)  
+        List<T> GetMostRecentVisibleContent<T>(IQueryable<T> baseQuery, int pageNumber, int resultsPerPage, out int count, int currentUser = 0, int? filterUserId = null, bool shouldStripTags = true)
+    where T : class, IHasContent;
+
+        T GetVisibleContentByIdWithCommentsTagsUsers<T>(int id, int currentUser = 0)
             where T : class, IHasContent;
+
 
         List<T> SearchContent<T>(string[] searchTerms, int pageNumber, int resultsPerPage, int currentUser = 0)
             where T : class, IHasContent;

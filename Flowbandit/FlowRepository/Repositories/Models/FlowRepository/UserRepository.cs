@@ -121,8 +121,8 @@ namespace FlowRepository.Repositories.Models.FlowRepository
 
         protected void AddVerificationToUser(User user, string verificationName)
         {
-            var verificationType = GetUserVerificationByName(verificationName);
-            var userVerification = CreateUserVerfication(user, verificationType);
+            var verificationType = this.GetUserVerificationByName(verificationName);
+            var userVerification = this.CreateUserVerfication(user, verificationType);
             user.UserVerifications.Add(userVerification);
         }
 

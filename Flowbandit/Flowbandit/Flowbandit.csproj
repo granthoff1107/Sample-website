@@ -20,6 +20,7 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -229,9 +230,9 @@
     <Compile Include="Models\Authorization\FBAuthorizeLevelAttribute.cs" />
     <Compile Include="Models\Generic\BaseModel.cs" />
     <Compile Include="Models\Contact\ContactVM.cs" />
-    <Compile Include="Models\Generic\ContentsBaseModel.cs" />
     <Compile Include="Models\Dashboard\DashboardVM.cs" />
     <Compile Include="Models\Generic\ContentBaseModel.cs" />
+    <Compile Include="Models\Generic\ContentsBaseModel.cs" />
     <Compile Include="Models\Generic\IComment.cs" />
     <Compile Include="Models\GlobalInfo.cs" />
     <Compile Include="Models\Post\PostsVM.cs" />
@@ -729,6 +730,10 @@
     <ProjectReference Include="..\FlowRepository\FlowRepository.csproj">
       <Project>{1460dbb6-862c-4d9c-8fd9-9a64a72211ff}</Project>
       <Name>FlowRepository</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FlowService\FlowService.csproj">
+      <Project>{f2a60d0c-311c-4224-b147-bb97d957d2f0}</Project>
+      <Name>FlowService</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

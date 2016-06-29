@@ -3,6 +3,8 @@ using FlowRepository;
 using FlowRepository.Data.Rules;
 using FlowRepository.Repositories.Contracts.FlowRepository;
 using FlowRepository.Repositories.Models.FlowRepository;
+using FlowService.DTOs.Posts;
+using FlowService.DTOs.Videos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +14,8 @@ namespace Flowbandit.Models.Accounts
 {
     public class ProfileDTO : BaseModel<IUserRepository>
     {
-        public IEnumerable<VideoVM> RecentVideos;
-        public IEnumerable<PostVM> RecentPosts;
+        public IEnumerable<VideoDTO> RecentVideos;
+        public IEnumerable<PostDTO> RecentPosts;
 
         public string THANKS_FOR_REGISTERING_MESSAGE = "Thanks for registering.  Login and Tell us more about yourself";
 
@@ -32,15 +34,9 @@ namespace Flowbandit.Models.Accounts
             {
                 post.Content.Entry = post.Content.Entry.Substring(0, Math.Min(post.Content.Entry.Length, GlobalInfo.DISPLAY_TEXT_MAX_LENGTH)) + "...";
             }
-
-            //foreach (var video in videos)
-            //{
-            //    video.Content.Entry = video.Content.Entry.Substring(0, Math.Min(video.Content.Entry.Length, GlobalInfo.DISPLAY_TEXT_MAX_LENGTH)) + "...";
-            //}
-
-            RecentPosts = posts.Select(post => new PostVM(post));
-            RecentVideos = videos.Select(video => new VideoVM(video));
-
+            
+            RecentPosts = posts.Select(post => new PostDTO(post));
+            RecentVideos = videos.Select(video => new VideoDTO(video));
         }
     }
 }

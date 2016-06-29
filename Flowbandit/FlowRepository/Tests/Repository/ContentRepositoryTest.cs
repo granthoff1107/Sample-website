@@ -21,13 +21,12 @@ namespace FlowRepository.Tests.Repository
         public void Add_Content_Test()
         {
             var dataRepo = this.GetRepository();
-            
             var post = this.GetTestPost();
             post.Content.Entry = rawTestEntry;
             post.Content.LastModified = DateTime.MinValue;
             post.Content.Created = DateTime.MinValue;
 
-            dataRepo.Add<Post>(post);
+            dataRepo.Add(post);
 
             post.Content.LastModified.Should().BeCloseTo(DateTime.Now, 1000);
             post.Content.Created.Should().BeCloseTo(DateTime.Now, 1000);

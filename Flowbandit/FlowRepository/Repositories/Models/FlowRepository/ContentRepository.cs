@@ -31,13 +31,11 @@ namespace FlowRepository.Repositories.Models.FlowRepository
 
         public override void Add<T>(T entity)
         {
-            //HACK: Inheritiance will not allow overriding with additional constriants
+            //HACK: Inheritiance will not allow overriding with additional constraints
             if(entity is IHasContent)
             {
                 var content = (entity as IHasContent).Content;
-                content.LastModified = DateTime.Now;
                 content.Created = DateTime.Now;
-                this.SanitizeEntry(content);
             }
 
             base.Add<T>(entity);
@@ -46,10 +44,6 @@ namespace FlowRepository.Repositories.Models.FlowRepository
         public void Edit<T>(T entity, List<int> tagIds)
             where T : class, IHasContent
         {
-            entity.Content.LastModified = DateTime.Now;
-            
-            //TODO Santization should not be in the repository that should be done externally from a service before hand
-            this.SanitizeEntry(entity.Content);
             this.SetModified(entity);
             this.SetModified(entity.Content);
 
@@ -75,7 +69,7 @@ namespace FlowRepository.Repositories.Models.FlowRepository
             return this.GetMostRecentVisibleContent(baseQuery, pageNumber, resultsPerPage);
         }
 
-        public List<T> GetMostRecentVisibleContent<T>(IQueryable<T> baseQuery, int pageNumber, int resultsPerPage, int currentUser = 0, int? filterUserId = null, bool shouldStripTags = true)
+        public List<T> GetMostRecentVisibleContent<T>(IQueryable<T> baseQuery, int pageNumber, int resultsPerPage, out int count, int currentUser = 0, int? filterUserId = null, bool shouldStripTags = true)
             where T : class, IHasContent
         {
             baseQuery = this.GetAllVisibleBaseQuery(baseQuery, currentUser);
@@ -84,6 +78,8 @@ namespace FlowRepository.Repositories.Models.FlowRepository
             {
                 baseQuery = baseQuery.Where(x => x.Content.UserId == filterUserId.Value);
             }
+
+            count = baseQuery.Count();
 
             var contents = baseQuery.OrderByDescending(p => p.Content.Created)
                                             .ThenByDescending(p => p.Content.Id)
@@ -98,6 +94,13 @@ namespace FlowRepository.Repositories.Models.FlowRepository
             }
 
             return contents;
+        }
+
+        public List<T> GetMostRecentVisibleContent<T>(IQueryable<T> baseQuery, int pageNumber, int resultsPerPage, int currentUser = 0, int? filterUserId = null, bool shouldStripTags = true)
+            where T : class, IHasContent
+        {
+            int count;
+            return GetMostRecentVisibleContent(baseQuery, pageNumber, resultsPerPage, out count, currentUser, filterUserId, shouldStripTags);
         }
 
         public T GetVisibleContentByIdWithCommentsTagsUsers<T>(int id, int currentUser = 0)
@@ -122,12 +125,6 @@ namespace FlowRepository.Repositories.Models.FlowRepository
         #endregion
 
         #region Protected Methods
-
-        //Content is done raw normally
-        protected void SanitizeEntry(Content content, bool isEncoded = false)
-        {
-            content.Entry = HtmlDisplayRule.SanitizeHtml(content.Entry, isEncoded);
-        }
 
         //Content is encoded normally
         protected void StripTags(Content content, bool isEncoded = true)

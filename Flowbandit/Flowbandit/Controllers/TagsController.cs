@@ -21,12 +21,12 @@ namespace Flowbandit.Controllers
             try
             {
                 var urlhelper = new UrlHelper(this.ControllerContext.RequestContext);
+                var results = _repository.TagsStartingWith(term)
+                                         .Select(t => new AutoCompleteResult { label = t.Name,
+                                                                        value = t.ID.ToString() })
+                                         .ToList();
 
-                var Results = new List<AutoCompleteResult>();
-
-                Results = _repository.TagsStartingWith(term).Select(t => new AutoCompleteResult { label = t.Name, value = t.ID.ToString() }).ToList();
-
-                return Json(Results, JsonRequestBehavior.AllowGet);
+                return Json(results, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {

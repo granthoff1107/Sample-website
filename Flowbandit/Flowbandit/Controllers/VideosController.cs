@@ -10,6 +10,8 @@ using Flowbandit.Controllers.Rules;
 using FlowRepository.Repositories.Contracts.FlowRepository;
 using FlowRepository.Repositories.Models.FlowRepository;
 using Flowbandit.Models.Authorization;
+using FlowService.Services;
+using FlowRepository.Models.Pagination;
 
 namespace Flowbandit.Controllers
 {
@@ -24,21 +26,25 @@ namespace Flowbandit.Controllers
 
         public ActionResult Index()
         {
-            var tmpViewModel = new VideosVM(_repository);
-            return View(tmpViewModel);
+            var contentService = new ContentService<IVideoRepository, Video>(_repository);
+            var videosDTO = contentService.GetVideos(new PageTrackingInfo(GlobalInfo.VIDEOSPERPAGE, 0));
+            
+            return View(videosDTO);
         }
 
         public ActionResult GetVideos(int pageNumber)
         {
-            var tmpViewModel = new VideosVM(_repository, pageNumber);
-            var res = RenderRazorViewToString("_VideosContent", tmpViewModel);
+            var contentService = new ContentService<IVideoRepository, Video>(_repository);
+            var videosDTO = contentService.GetVideos(new PageTrackingInfo(GlobalInfo.VIDEOSPERPAGE, pageNumber));
+            var res = RenderRazorViewToString("_VideosContent", videosDTO);
             return Json(new { htmldata = res }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Video(int ID)
+        public ActionResult Video(int id)
         {
-            var tmpViewModel = new VideoVM(_repository, ID);
-            return View(tmpViewModel);
+            var contentService = new ContentService<IVideoRepository, Video>(_repository);
+            var videoDTO = contentService.GetVideo(id, GlobalInfo.UserId ?? 0);
+            return View(videoDTO);
         }
 
         public ActionResult Comment(ContentComment newComment)
@@ -60,10 +66,11 @@ namespace Flowbandit.Controllers
         }
 
         [FBAuthorizeLevel(MaximumLevel = ADMIN_LEVEL, RedirectUrl = "~/Videos/Video/{ID}")]
-        public ActionResult EditVideo(int ID)
+        public ActionResult EditVideo(int id)
         {
-            var tmpViewModel = new VideoVM(_repository, ID);
-            return View(tmpViewModel);
+            var contentService = new ContentService<IVideoRepository, Video>(_repository);
+            var videoDTO = contentService.GetVideo(id, GlobalInfo.UserId ?? 0);
+            return View(videoDTO);
         }
 
         [HttpPost]
@@ -74,9 +81,12 @@ namespace Flowbandit.Controllers
             if (ModelState.IsValid)
             {
                 tagIds = tagIds ?? new List<int>();
-                newVideo.Content.UserId = GlobalInfo.User.UserID;
-                
-                if(newVideo.Id == default(int))
+                newVideo.Content.UserId = GlobalInfo.UserId.Value;
+
+                var service = new ContentService<IVideoRepository, Video>(_repository);
+                service.ProcessContent(newVideo.Content);
+
+                if (newVideo.Id == default(int))
                 {
                     _repository.Add(newVideo);
                 }

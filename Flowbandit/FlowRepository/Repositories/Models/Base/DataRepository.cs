@@ -145,12 +145,10 @@ namespace FlowRepository.Repositories.Models.Base
         }
         public T FindByID<T>(object key) where T : class
         {
-
             var set = _ObjectContext.CreateObjectSet<T>().EntitySet;
             var pk = set.ElementType.KeyMembers[0]; // careful here maybe count can be o or more then 0
             EntityKey entityKey = new EntityKey(set.EntityContainer.Name + "." + set.Name, pk.Name, key);
             return (T)_ObjectContext.GetObjectByKey(entityKey);
-
         }
 
         public T ConvertToRepository<T>()

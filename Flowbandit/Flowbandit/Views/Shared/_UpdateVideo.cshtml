@@ -1,4 +1,5 @@
-﻿@model Flowbandit.Models.VideoVM
+﻿@using FlowService.DTOs.Videos;
+@model VideoDTO
 
 <input type="hidden" id="tags-url" value="@Url.Action("TagsAutocomplete", "Tags")">
 
@@ -52,7 +53,7 @@
                             @Html.Partial("_updateTags", Model.Tags)
                             
                             @{
-                                string isChecked = Model.isVisible ? "checked='checked'" : "";
+                                string isChecked = Model.IsVisible ? "checked='checked'" : "";
                             }
 
                             <div class="row">

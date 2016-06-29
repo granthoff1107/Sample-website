@@ -10,6 +10,8 @@ using Flowbandit.Controllers.Rules;
 using FlowRepository.Repositories.Contracts.FlowRepository;
 using FlowRepository.Repositories.Models.FlowRepository;
 using Flowbandit.Models.Authorization;
+using FlowService.Services;
+using FlowRepository.Models.Pagination;
 
 namespace Flowbandit.Controllers
 {
@@ -22,21 +24,24 @@ namespace Flowbandit.Controllers
 
         public ActionResult GetPosts(int pageNumber)
         {
-            var tmpViewModel = new PostsVM(_repository, pageNumber);
-            var res = RenderRazorViewToString("_PostsContent", tmpViewModel);
+            var contentService = new ContentService<IPostRepository, Post>(_repository);
+            var posts = contentService.GetPosts(new PageTrackingInfo(GlobalInfo.RESULTSPERPAGE, pageNumber));
+            var res = RenderRazorViewToString("_PostsContent", posts);
             return Json(new { htmldata = res }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Index(int PageNumber = 0)
         {
-            var tmpViewModel = new PostsVM(_repository, PageNumber);
-            return View(tmpViewModel);
+            var contentService = new ContentService<IPostRepository, Post>(_repository);
+            var posts = contentService.GetPosts(new PageTrackingInfo(GlobalInfo.RESULTSPERPAGE, PageNumber));
+            return View(posts);
         }
 
-        public ActionResult Post(int ID)
+        public ActionResult Post(int id)
         {
-            var tmpViewModel = new PostVM(_repository, ID);
-            return View(tmpViewModel);
+            var contentService = new ContentService<IPostRepository, Post>(_repository);
+            var postDTO = contentService.GetPost(id, GlobalInfo.UserId ?? 0);
+            return View(postDTO);
         }
 
         [HttpGet]
@@ -48,10 +53,11 @@ namespace Flowbandit.Controllers
 
         [HttpGet]
         [FBAuthorizeLevel(MaximumLevel = ADMIN_LEVEL, RedirectUrl = "~/Posts/Post/{ID}")]
-        public ActionResult EditPost(int ID)
+        public ActionResult EditPost(int id)
         {
-            var tmpViewModel = new PostVM(_repository, ID);
-            return View(tmpViewModel);
+            var contentService = new ContentService<IPostRepository, Post>(_repository);
+            var postDTO = contentService.GetPost(id, GlobalInfo.UserId ?? 0);
+            return View(postDTO);
         }
         
 
@@ -77,7 +83,10 @@ namespace Flowbandit.Controllers
                 }
 
                 //TODO Move this logic into the Post Repository
-                newPost.Content.UserId = GlobalInfo.User.UserID;
+                newPost.Content.UserId = GlobalInfo.UserId.Value;
+
+                var service = new ContentService<IPostRepository, Post>(_repository);
+                service.ProcessContent(newPost.Content);
 
                 if (newPost.Id == default(int))
                 {

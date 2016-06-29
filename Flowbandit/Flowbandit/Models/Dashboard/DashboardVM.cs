@@ -1,5 +1,6 @@
 ﻿using Flowbandit.Models.Generic;
 using FlowRepository;
+using FlowService.DTOs.Generic;
 using System;
 using System.Collections.Generic;
 using System.Linq;

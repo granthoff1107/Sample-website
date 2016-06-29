@@ -1,5 +1,7 @@
 ﻿@using Flowbandit.Models;
-@model Flowbandit.Models.VideoVM
+@using FlowService.DTOs.Videos;
+
+@model VideoDTO
 
 @{
     ViewBag.Title = "Video";
@@ -37,7 +39,7 @@
         <p><span class="glyphicon glyphicon-time"></span> Posted on @Model.Created</p>
         <hr>
         <!-- Preview Image -->
-        @if (Model.isVisible)
+        @if (Model.IsVisible)
         {
         
             <div class="videoWrapper">
