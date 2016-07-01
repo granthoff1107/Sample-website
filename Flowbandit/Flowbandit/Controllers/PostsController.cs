@@ -12,6 +12,7 @@ using FlowRepository.Repositories.Models.FlowRepository;
 using Flowbandit.Models.Authorization;
 using FlowService.Services;
 using FlowRepository.Models.Pagination;
+using FlowService.DTOs.Posts;
 
 namespace Flowbandit.Controllers
 {
@@ -24,23 +25,20 @@ namespace Flowbandit.Controllers
 
         public ActionResult GetPosts(int pageNumber)
         {
-            var contentService = new ContentService<IPostRepository, Post>(_repository);
-            var posts = contentService.GetPosts(new PageTrackingInfo(GlobalInfo.RESULTSPERPAGE, pageNumber));
+            var posts = this.GetPostsDTO(pageNumber);
             var res = RenderRazorViewToString("_PostsContent", posts);
             return Json(new { htmldata = res }, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult Index(int PageNumber = 0)
+        public ActionResult Index(int pageNumber = 0)
         {
-            var contentService = new ContentService<IPostRepository, Post>(_repository);
-            var posts = contentService.GetPosts(new PageTrackingInfo(GlobalInfo.RESULTSPERPAGE, PageNumber));
+            var posts = this.GetPostsDTO(pageNumber);
             return View(posts);
         }
 
         public ActionResult Post(int id)
         {
-            var contentService = new ContentService<IPostRepository, Post>(_repository);
-            var postDTO = contentService.GetPost(id, GlobalInfo.UserId ?? 0);
+            var postDTO = this.GetPostDTO(id);
             return View(postDTO);
         }
 
@@ -55,11 +53,9 @@ namespace Flowbandit.Controllers
         [FBAuthorizeLevel(MaximumLevel = ADMIN_LEVEL, RedirectUrl = "~/Posts/Post/{ID}")]
         public ActionResult EditPost(int id)
         {
-            var contentService = new ContentService<IPostRepository, Post>(_repository);
-            var postDTO = contentService.GetPost(id, GlobalInfo.UserId ?? 0);
+            var postDTO = this.GetPostDTO(id);
             return View(postDTO);
         }
-        
 
         //TODO Refactor to use DTO so controllers are not dependent on Database objects
         [HttpPost]
@@ -74,7 +70,7 @@ namespace Flowbandit.Controllers
                 //TODO Move this logic into the Base Repository
                 if (CoverPhoto != null)
                 {
-                    var tmpRelative = SavePostedFile(CoverPhoto, "UserResources");
+                    var tmpRelative = this.SavePostedFile(CoverPhoto, "UserResources");
 
                     if (!string.IsNullOrEmpty(tmpRelative))
                     {
@@ -112,6 +108,21 @@ namespace Flowbandit.Controllers
             }
             
             return Redirect(HttpContext.Request.UrlReferrer.ToString());
+        }
+
+        protected PostsDTO GetPostsDTO(int pageNumber)
+        {
+            var contentService = new ContentService<IPostRepository, Post>(_repository);
+            var pageTrackingInfo = new PageTrackingInfo(GlobalInfo.RESULTSPERPAGE, pageNumber);
+            var posts = contentService.GetPosts(pageTrackingInfo, GlobalInfo.UserId ?? 0);
+            return posts;
+        }
+
+        protected PostDTO GetPostDTO(int id)
+        {
+            var contentService = new ContentService<IPostRepository, Post>(_repository);
+            var postDTO = contentService.GetPost(id, GlobalInfo.UserId ?? 0);
+            return postDTO;
         }
     }
 }

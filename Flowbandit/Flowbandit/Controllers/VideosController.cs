@@ -12,6 +12,7 @@ using FlowRepository.Repositories.Models.FlowRepository;
 using Flowbandit.Models.Authorization;
 using FlowService.Services;
 using FlowRepository.Models.Pagination;
+using FlowService.DTOs.Videos;
 
 namespace Flowbandit.Controllers
 {
@@ -26,24 +27,20 @@ namespace Flowbandit.Controllers
 
         public ActionResult Index()
         {
-            var contentService = new ContentService<IVideoRepository, Video>(_repository);
-            var videosDTO = contentService.GetVideos(new PageTrackingInfo(GlobalInfo.VIDEOSPERPAGE, 0));
-            
+            var videosDTO = this.GetVideosDTO();
             return View(videosDTO);
         }
 
         public ActionResult GetVideos(int pageNumber)
         {
-            var contentService = new ContentService<IVideoRepository, Video>(_repository);
-            var videosDTO = contentService.GetVideos(new PageTrackingInfo(GlobalInfo.VIDEOSPERPAGE, pageNumber));
+            var videosDTO = this.GetVideosDTO();
             var res = RenderRazorViewToString("_VideosContent", videosDTO);
             return Json(new { htmldata = res }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult Video(int id)
         {
-            var contentService = new ContentService<IVideoRepository, Video>(_repository);
-            var videoDTO = contentService.GetVideo(id, GlobalInfo.UserId ?? 0);
+            var videoDTO = this.GetVideoDTO(id);
             return View(videoDTO);
         }
 
@@ -68,8 +65,7 @@ namespace Flowbandit.Controllers
         [FBAuthorizeLevel(MaximumLevel = ADMIN_LEVEL, RedirectUrl = "~/Videos/Video/{ID}")]
         public ActionResult EditVideo(int id)
         {
-            var contentService = new ContentService<IVideoRepository, Video>(_repository);
-            var videoDTO = contentService.GetVideo(id, GlobalInfo.UserId ?? 0);
+            var videoDTO = this.GetVideoDTO(id);
             return View(videoDTO);
         }
 
@@ -103,5 +99,18 @@ namespace Flowbandit.Controllers
             return  GetJsonRedirectResult(Url.Action("Index"));
         }
 
+        protected VideosDTO GetVideosDTO()
+        {
+            var contentService = new ContentService<IVideoRepository, Video>(_repository);
+            var pageTrackingInfo = new PageTrackingInfo(GlobalInfo.VIDEOSPERPAGE, 0);
+            var videosDTO = contentService.GetVideos(pageTrackingInfo, GlobalInfo.UserId ?? 0);
+            return videosDTO;
+        }
+        protected VideoDTO GetVideoDTO(int id)
+        {
+            var contentService = new ContentService<IVideoRepository, Video>(_repository);
+            var videoDTO = contentService.GetVideo(id, GlobalInfo.UserId ?? 0);
+            return videoDTO;
+        }
     }
 }

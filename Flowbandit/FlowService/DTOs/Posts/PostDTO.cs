@@ -12,6 +12,10 @@ namespace FlowService.DTOs.Posts
     {
         #region Constructors
 
+        public PostDTO() : base()
+        {
+        }
+
         public PostDTO(Post post) : base(post)
         {
         }

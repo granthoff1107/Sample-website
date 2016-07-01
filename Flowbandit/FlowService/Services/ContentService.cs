@@ -39,30 +39,31 @@ namespace FlowService.Services
 
         #region Refactor Maybe Abstract Factor
 
-        public VideosDTO GetVideos(PageTrackingInfo pageInfo)
+        public VideosDTO GetVideos(PageTrackingInfo pageInfo, int currentUser)
         {
             PaginationInfo paginationInfo;
-            //TODO Pass in current user id
-            List<Video> videos = this.GetEntriesForDisplay<Video>(pageInfo, out paginationInfo, 0, 500);
+            //TODO Pass in current user id4
+            
+            List<Video> videos = this.GetEntriesForDisplay<Video>(pageInfo, out paginationInfo, currentUser, 500);
 
             return new VideosDTO(videos, paginationInfo);
         }
 
-        public VideoDTO GetVideo(int id, int userId = 0)
+        public VideoDTO GetVideo(int id, int userId)
         {
             var video = this._repository.GetVisibleContentByIdWithCommentsTagsUsers<Video>(id, userId);
             return new VideoDTO(video);
         }
 
-        public PostsDTO GetPosts(PageTrackingInfo pageInfo)
+        public PostsDTO GetPosts(PageTrackingInfo pageInfo, int currentUser)
         {
             PaginationInfo paginationInfo;
-            List<Post> posts = this.GetEntriesForDisplay<Post>(pageInfo, out paginationInfo, 0, 500);
+            List<Post> posts = this.GetEntriesForDisplay<Post>(pageInfo, out paginationInfo, currentUser, 500);
 
             return new PostsDTO(posts, paginationInfo);
         }
 
-        public PostDTO GetPost(int id, int userId = 0)
+        public PostDTO GetPost(int id, int userId)
         {
             var post = this._repository.GetVisibleContentByIdWithCommentsTagsUsers<Post>(id, userId);
             return new PostDTO(post);

@@ -12,6 +12,10 @@ namespace FlowService.DTOs.Videos
     {
         #region Constructors
 
+        public VideoDTO() : base()
+        {
+        }
+
         public VideoDTO(Video video) : base(video)
         {
         }

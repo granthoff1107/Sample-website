@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace FlowService.DTOs.Generic
 {
     public class ContentBaseModel<T> : BaseModel
-        where T : IHasContent
+        where T : IHasContent, new()
     {
         #region Members
 
@@ -26,12 +26,21 @@ namespace FlowService.DTOs.Generic
         }
 
         public ContentBaseModel()
-            : base()
+            : this(Instantiate())
         {
         }
 
+        protected static T Instantiate()
+        {
+            var parentContent = new T();
+            var content = new Content();
+            parentContent.Content = content;
+
+            return parentContent;
+        }
+
         #endregion
-        
+
         public List<IComment> Comments
         {
             get
