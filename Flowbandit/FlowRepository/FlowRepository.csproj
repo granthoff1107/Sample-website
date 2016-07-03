@@ -90,6 +90,9 @@
       <DependentUpon>FlowCollectionLog.tt</DependentUpon>
     </Compile>
     <Compile Include="ExtendedModels\Contracts\IHasContent.cs" />
+    <Compile Include="ExtendedModels\Contracts\IHasMessageProperties.cs" />
+    <Compile Include="ExtendedModels\Models\Message.cs" />
+    <Compile Include="ExtendedModels\Models\Notification.cs" />
     <Compile Include="ExtendedModels\Models\Post.cs" />
     <Compile Include="ExtendedModels\Models\Video.cs" />
     <Compile Include="Info.cs">
@@ -98,13 +101,21 @@
     <Compile Include="InfoType.cs">
       <DependentUpon>FlowCollectionLog.tt</DependentUpon>
     </Compile>
+    <Compile Include="Message.cs">
+      <DependentUpon>FlowCollection.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Const\Consts.cs" />
     <Compile Include="Models\Factories\FlowCollectionRepositoryFactory.cs" />
     <Compile Include="Models\Pagination\PageInfo.cs" />
     <Compile Include="Models\Pagination\PaginationInfo.cs" />
+    <Compile Include="Notification.cs">
+      <DependentUpon>FlowCollection.tt</DependentUpon>
+    </Compile>
     <Compile Include="Repositories\Contracts\FlowLog\IFlowLogRepository.cs" />
     <Compile Include="Repositories\Contracts\FlowRepository\IContentRepository.cs" />
     <Compile Include="Repositories\Contracts\FlowRepository\IFlowRepository.cs" />
+    <Compile Include="Repositories\Contracts\FlowRepository\IMessageRepository.cs" />
+    <Compile Include="Repositories\Contracts\FlowRepository\INotificationRepository.cs" />
     <Compile Include="Repositories\Models\Base\DataRepository.cs" />
     <Compile Include="ExtendedModels\Contracts\IHasCommentProperties.cs" />
     <Compile Include="FlowCollection.Context.cs">
@@ -147,6 +158,8 @@
     </Compile>
     <Compile Include="Repositories\Models\FlowLog\LogRepository.cs" />
     <Compile Include="Repositories\Models\FlowRepository\ContentRepository.cs" />
+    <Compile Include="Repositories\Models\FlowRepository\MessageRepository.cs" />
+    <Compile Include="Repositories\Models\FlowRepository\NotificationRepository.cs" />
     <Compile Include="Repositories\Models\FlowRepository\PostRepository.cs" />
     <Compile Include="PrivilegeLevel.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
@@ -154,6 +167,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\UserRepository\NewUserDTO.cs" />
     <Compile Include="Rules\Pagination\PaginationRule.cs" />
+    <Compile Include="Subscription.cs">
+      <DependentUpon>FlowCollection.tt</DependentUpon>
+    </Compile>
+    <Compile Include="SubscriptionType.cs">
+      <DependentUpon>FlowCollection.tt</DependentUpon>
+    </Compile>
     <Compile Include="Tag.cs">
       <DependentUpon>FlowCollection.tt</DependentUpon>
     </Compile>

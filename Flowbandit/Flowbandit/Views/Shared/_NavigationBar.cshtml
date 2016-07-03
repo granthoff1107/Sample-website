@@ -1,6 +1,5 @@
 ﻿@using Flowbandit.Models;
 @model FlowService.DTOs.Generic.BaseModel
-
 <!-- Navigation -->
 <nav class="navbar navbar-default navbar-static-top no-bottom" role="navigation">
     <div class="navbar-header width-100">
@@ -11,7 +10,6 @@
             <span class="icon-bar"></span>
         </button>
         <ul class="nav navbar-top-links navbar-right pull-right">
-            <!-- /.dropdown -->
             <li class="dropdown loginPanel" id="menusignup">
                 <a class="dropdown-toggle" href="#" data-toggle="dropdown" id="navLogin">Sign Up</a>
                 <!-- -->
@@ -25,7 +23,6 @@
                             <input name="password" class="form-control" id="inputpassword" type="password" placeholder="Password" required="">
                             <input name="verify" class="form-control" id="inputVerify" type="password" placeholder="Confirm Password" required="">
                         </div>
-
                         <div class="overflow-y-auto">
                             <span class="pull-left vertical-align">
                                 <a class="no-padding"><span class="small">I Accept the Terms</span></a>
@@ -47,7 +44,6 @@
                         <div>
                             <input name="LoginData.Password" class="form-control" id="password" type="password" placeholder="Password" title="Enter your password" required="">
                         </div>
-
                         <br>
                         <div class="overflow-y-auto">
                             <span class="vertical-align">
@@ -60,6 +56,22 @@
                     @*<a data-toggle="modal" role="button" href="#forgotPasswordModal">Forgot password?</a>
                         <a data-toggle="modal" role="button" href="#contactModal"><small>Need help? Contact us</small></a>*@
                 </div>
+
+            </li>
+            <!-- /.dropdown -->
+            <li class="dropdown membersPanel hidden">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                    <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                </a>
+                <ul id="message-dropdown" class="dropdown-menu dropdown-messages">
+                    <li>
+                        <a class="text-center" href="#">
+                            <strong>Read All Messages</strong>
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    </li>
+                </ul>
+                <!-- /.dropdown-messages -->
             </li>
 
             <li class="dropdown membersPanel hidden">
@@ -100,7 +112,6 @@
                     </div>
                     <!-- /input-group -->
                 </li>
-
                 <li>
                     <a href="@Url.Action("index", "Dashboard")"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                 </li>
@@ -133,4 +144,18 @@
         <!-- /.sidebar-collapse -->
     </div>
     <!-- /.navbar-static-side -->
+    <div id="messageTemplate" class="hidden">
+        <li class="messageContainer">
+            <a href="#">
+                <div>
+                    <strong class="senderName">John Smith</strong>
+                    <span class="pull-right text-muted">
+                        <em class="moment">Yesterday</em>
+                    </span>
+                </div>
+                <div class="message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
+            </a>
+        </li>
+        <li class="divider"></li>
+    </div>
 </nav>

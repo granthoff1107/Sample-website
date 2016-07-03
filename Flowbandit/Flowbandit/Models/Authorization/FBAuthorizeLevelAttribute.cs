@@ -37,16 +37,19 @@ namespace Flowbandit.Models.Authorization
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
             base.HandleUnauthorizedRequest(filterContext);
-            
-            if(false == string.IsNullOrWhiteSpace(RedirectUrl))
+
+            if (filterContext.ActionDescriptor is ReflectedActionDescriptor)
             {
-                //TODO Support Query String when searching for values
-                var caseInsensitiveRouteMap = filterContext.RouteData.Values.ToDictionary(k => k.Key, v => v.Value, StringComparer.OrdinalIgnoreCase);
-                var url = BuildUrl(RedirectUrl, caseInsensitiveRouteMap);
-                if (filterContext.ActionDescriptor is System.Web.Mvc.ReflectedActionDescriptor)
+                var actionDescriptor = (filterContext.ActionDescriptor as ReflectedActionDescriptor);
+
+                if (false == string.IsNullOrWhiteSpace(RedirectUrl))
                 {
-                    var actionDescriptor = (filterContext.ActionDescriptor as System.Web.Mvc.ReflectedActionDescriptor);
-                    
+                    //TODO Support Query String when searching for values
+                    var caseInsensitiveRouteMap = filterContext.RouteData.Values
+                                                    .ToDictionary(k => k.Key, v => v.Value, 
+                                                    StringComparer.OrdinalIgnoreCase);
+                    var url = BuildUrl(RedirectUrl, caseInsensitiveRouteMap);
+                   
                     if(actionDescriptor.MethodInfo.ReturnType == typeof(JsonResult))
                     {
                         filterContext.Result = JsonResultFactory.GetJsonRedirectResult(url); 

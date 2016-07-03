@@ -15,26 +15,24 @@ namespace FlowRepository
 using System;
     using System.Collections.Generic;
     
-public partial class UserVerification
+public partial class SubscriptionType
 {
 
-    public int ID { get; set; }
+    public SubscriptionType()
+    {
 
-    public int FK_UserId { get; set; }
+        this.Subscriptions = new HashSet<Subscription>();
 
-    public System.Guid VerifiedGuid { get; set; }
-
-    public System.DateTime Timestamp { get; set; }
-
-    public int FK_VerficationId { get; set; }
-
-    public bool isVerified { get; set; }
+    }
 
 
+    public int Id { get; set; }
 
-    public virtual VerificationType VerificationType { get; set; }
+    public string Name { get; set; }
 
-    public virtual User User { get; set; }
+
+
+    public virtual ICollection<Subscription> Subscriptions { get; set; }
 
 }
 

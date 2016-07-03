@@ -28,6 +28,28 @@
           <Property Name="ParentCommentId" Type="int" />
           <Property Name="ContentId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Messages">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Data" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ReceiverUserId" Type="int" Nullable="false" />
+          <Property Name="SenderUserId" Type="int" Nullable="false" />
+          <Property Name="IsViewed" Type="bit" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime2" Precision="3" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Notifications">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Data" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="ReceiverUserId" Type="int" Nullable="false" />
+          <Property Name="Url" Type="nvarchar" MaxLength="1024" Nullable="false" />
+          <Property Name="IsViewed" Type="bit" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime2" Precision="3" Nullable="false" />
+        </EntityType>
         <EntityType Name="Post">
           <Key>
             <PropertyRef Name="Id" />
@@ -42,6 +64,22 @@
           </Key>
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Subscriptions">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="SubscriptionTypeId" Type="int" Nullable="false" />
+          <Property Name="Value" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SubscriptionType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="64" Nullable="false" />
         </EntityType>
         <EntityType Name="Tag">
           <Key>
@@ -146,6 +184,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Messages_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Messages" Type="Self.Messages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Messages">
+              <PropertyRef Name="ReceiverUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Messages_User1">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Messages" Type="Self.Messages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Messages">
+              <PropertyRef Name="SenderUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Notifications" Type="Self.Notifications" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Notifications">
+              <PropertyRef Name="ReceiverUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Post_New_Content">
           <End Role="Content" Type="Self.Content" Multiplicity="1" />
           <End Role="Post" Type="Self.Post" Multiplicity="*" />
@@ -155,6 +229,30 @@
             </Principal>
             <Dependent Role="Post">
               <PropertyRef Name="ContentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subscriptions_SubscriptionType">
+          <End Role="SubscriptionType" Type="Self.SubscriptionType" Multiplicity="1" />
+          <End Role="Subscriptions" Type="Self.Subscriptions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubscriptionType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Subscriptions">
+              <PropertyRef Name="SubscriptionTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subscriptions_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Subscriptions" Type="Self.Subscriptions" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Subscriptions">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -235,8 +333,12 @@
         <EntityContainer Name="FlowCollectionModelStoreContainer">
           <EntitySet Name="Content" EntityType="Self.Content" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContentComments" EntityType="Self.ContentComments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Messages" EntityType="Self.Messages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PrivilegeLevel" EntityType="Self.PrivilegeLevel" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Subscriptions" EntityType="Self.Subscriptions" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SubscriptionType" EntityType="Self.SubscriptionType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tag" EntityType="Self.Tag" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TagsToContent" EntityType="Self.TagsToContent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
@@ -259,9 +361,29 @@
             <End Role="ContentComments" EntitySet="ContentComments" />
             <End Role="ContentComments1" EntitySet="ContentComments" />
           </AssociationSet>
+          <AssociationSet Name="FK_Messages_User" Association="Self.FK_Messages_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Messages" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Messages_User1" Association="Self.FK_Messages_User1">
+            <End Role="User" EntitySet="User" />
+            <End Role="Messages" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_User" Association="Self.FK_Notifications_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Notifications" EntitySet="Notifications" />
+          </AssociationSet>
           <AssociationSet Name="FK_Post_New_Content" Association="Self.FK_Post_New_Content">
             <End Role="Content" EntitySet="Content" />
             <End Role="Post" EntitySet="Post" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subscriptions_SubscriptionType" Association="Self.FK_Subscriptions_SubscriptionType">
+            <End Role="SubscriptionType" EntitySet="SubscriptionType" />
+            <End Role="Subscriptions" EntitySet="Subscriptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subscriptions_User" Association="Self.FK_Subscriptions_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Subscriptions" EntitySet="Subscriptions" />
           </AssociationSet>
           <AssociationSet Name="FK_TagsToContent_Content" Association="Self.FK_TagsToContent_Content">
             <End Role="Content" EntitySet="Content" />
@@ -363,6 +485,30 @@
             <End Role="Content" EntitySet="Contents" />
             <End Role="Video" EntitySet="Videos" />
           </AssociationSet>
+          <EntitySet Name="Subscriptions" EntityType="FlowCollectionModel.Subscription" />
+          <EntitySet Name="SubscriptionTypes" EntityType="FlowCollectionModel.SubscriptionType" />
+          <AssociationSet Name="FK_Subscriptions_SubscriptionType" Association="FlowCollectionModel.FK_Subscriptions_SubscriptionType">
+            <End Role="SubscriptionType" EntitySet="SubscriptionTypes" />
+            <End Role="Subscription" EntitySet="Subscriptions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Subscriptions_User" Association="FlowCollectionModel.FK_Subscriptions_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Subscription" EntitySet="Subscriptions" />
+          </AssociationSet>
+          <EntitySet Name="Messages" EntityType="FlowCollectionModel.Message" />
+          <EntitySet Name="Notifications" EntityType="FlowCollectionModel.Notification" />
+          <AssociationSet Name="FK_Messages_User" Association="FlowCollectionModel.FK_Messages_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Message" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Messages_User1" Association="FlowCollectionModel.FK_Messages_User1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Message" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Notifications_User" Association="FlowCollectionModel.FK_Notifications_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Notification" EntitySet="Notifications" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="UserVerification">
           <Key>
@@ -412,7 +558,11 @@
           <NavigationProperty Name="UserVerifications" Relationship="FlowCollectionModel.FK_UserVerification_User" FromRole="User" ToRole="UserVerification" />
           <NavigationProperty Name="ContentComments" Relationship="FlowCollectionModel.FK_ContentComments_ContentComments" FromRole="User" ToRole="ContentComment" />
           <NavigationProperty Name="Contents" Relationship="FlowCollectionModel.FK_Content_User" FromRole="User" ToRole="Content" />
-        </EntityType>
+          <NavigationProperty Name="Subscriptions" Relationship="FlowCollectionModel.FK_Subscriptions_User" FromRole="User" ToRole="Subscription" />
+          <NavigationProperty Name="Messages" Relationship="FlowCollectionModel.FK_Messages_User" FromRole="User" ToRole="Message" />
+          <NavigationProperty Name="Messages1" Relationship="FlowCollectionModel.FK_Messages_User1" FromRole="User" ToRole="Message" />
+          <NavigationProperty Name="Notifications" Relationship="FlowCollectionModel.FK_Notifications_User" FromRole="User" ToRole="Notification" />
+          </EntityType>
         <Association Name="FK_Users_PrivilegeLevel">
           <End Type="FlowCollectionModel.PrivilegeLevel" Role="PrivilegeLevel" Multiplicity="1" />
           <End Type="FlowCollectionModel.User" Role="User" Multiplicity="*" />
@@ -595,6 +745,110 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Subscription">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="SubscriptionTypeId" Type="Int32" Nullable="false" />
+          <Property Name="Value" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="SubscriptionType" Relationship="FlowCollectionModel.FK_Subscriptions_SubscriptionType" FromRole="Subscription" ToRole="SubscriptionType" />
+          <NavigationProperty Name="User" Relationship="FlowCollectionModel.FK_Subscriptions_User" FromRole="Subscription" ToRole="User" />
+        </EntityType>
+        <EntityType Name="SubscriptionType">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="64" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Subscriptions" Relationship="FlowCollectionModel.FK_Subscriptions_SubscriptionType" FromRole="SubscriptionType" ToRole="Subscription" />
+        </EntityType>
+        <Association Name="FK_Subscriptions_SubscriptionType">
+          <End Type="FlowCollectionModel.SubscriptionType" Role="SubscriptionType" Multiplicity="1" />
+          <End Type="FlowCollectionModel.Subscription" Role="Subscription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SubscriptionType">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Subscription">
+              <PropertyRef Name="SubscriptionTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Subscriptions_User">
+          <End Type="FlowCollectionModel.User" Role="User" Multiplicity="1" />
+          <End Type="FlowCollectionModel.Subscription" Role="Subscription" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Subscription">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Data" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ReceiverUserId" Type="Int32" Nullable="false" />
+          <Property Name="SenderUserId" Type="Int32" Nullable="false" />
+          <Property Name="IsViewed" Type="Boolean" Nullable="false" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="User" Relationship="FlowCollectionModel.FK_Messages_User" FromRole="Message" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="FlowCollectionModel.FK_Messages_User1" FromRole="Message" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Data" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="ReceiverUserId" Type="Int32" Nullable="false" />
+          <Property Name="Url" Type="String" Nullable="false" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Name="IsViewed" Type="Boolean" Nullable="false" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="User" Relationship="FlowCollectionModel.FK_Notifications_User" FromRole="Notification" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Messages_User">
+          <End Type="FlowCollectionModel.User" Role="User" Multiplicity="1" />
+          <End Type="FlowCollectionModel.Message" Role="Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Message">
+              <PropertyRef Name="ReceiverUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Messages_User1">
+          <End Type="FlowCollectionModel.User" Role="User" Multiplicity="1" />
+          <End Type="FlowCollectionModel.Message" Role="Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Message">
+              <PropertyRef Name="SenderUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Notifications_User">
+          <End Type="FlowCollectionModel.User" Role="User" Multiplicity="1" />
+          <End Type="FlowCollectionModel.Notification" Role="Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="ReceiverUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -699,6 +953,48 @@
                 <ScalarProperty Name="Created" ColumnName="Created" />
                 <ScalarProperty Name="Entry" ColumnName="Entry" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subscriptions">
+            <EntityTypeMapping TypeName="FlowCollectionModel.Subscription">
+              <MappingFragment StoreEntitySet="Subscriptions">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="SubscriptionTypeId" ColumnName="SubscriptionTypeId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SubscriptionTypes">
+            <EntityTypeMapping TypeName="FlowCollectionModel.SubscriptionType">
+              <MappingFragment StoreEntitySet="SubscriptionType">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Messages">
+            <EntityTypeMapping TypeName="FlowCollectionModel.Message">
+              <MappingFragment StoreEntitySet="Messages">
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="IsViewed" ColumnName="IsViewed" />
+                <ScalarProperty Name="SenderUserId" ColumnName="SenderUserId" />
+                <ScalarProperty Name="ReceiverUserId" ColumnName="ReceiverUserId" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notifications">
+            <EntityTypeMapping TypeName="FlowCollectionModel.Notification">
+              <MappingFragment StoreEntitySet="Notifications">
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="IsViewed" ColumnName="IsViewed" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="ReceiverUserId" ColumnName="ReceiverUserId" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

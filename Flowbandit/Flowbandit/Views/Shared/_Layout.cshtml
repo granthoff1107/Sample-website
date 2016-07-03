@@ -33,7 +33,13 @@
         <script src="~/Content/dist/js/sb-admin-2.js"></script>
         <script src="~/Scripts/jquery.icheck.min.js"></script>
         <script src="~/Content/js/FlowJS/Flowbandit.js"></script>
-    
+        <script src="~/Scripts/moment.min.js"></script>
+        
+        @if (false == LoginHelper.isAnon)
+        {
+            <script src="~/Content/js/FlowJS/messages.js"></script>
+        }
+
         @RenderSection("AdditionalScripts", required: false)
 
     </body>

@@ -15,24 +15,20 @@ namespace FlowRepository
 using System;
     using System.Collections.Generic;
     
-public partial class UserVerification
+public partial class Subscription
 {
 
-    public int ID { get; set; }
+    public int Id { get; set; }
 
-    public int FK_UserId { get; set; }
+    public int UserId { get; set; }
 
-    public System.Guid VerifiedGuid { get; set; }
+    public int SubscriptionTypeId { get; set; }
 
-    public System.DateTime Timestamp { get; set; }
-
-    public int FK_VerficationId { get; set; }
-
-    public bool isVerified { get; set; }
+    public int Value { get; set; }
 
 
 
-    public virtual VerificationType VerificationType { get; set; }
+    public virtual SubscriptionType SubscriptionType { get; set; }
 
     public virtual User User { get; set; }
 

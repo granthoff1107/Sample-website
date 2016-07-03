@@ -10,7 +10,9 @@ namespace Flowbandit.Controllers.Rules
     {
         public static JsonResult GetJsonRedirectResult(string url)
         {
-            return new JsonResult { Data = new { redirectUrl = url } };
+            var jsonResult = new JsonResult { Data = new { redirectUrl = url } };
+            jsonResult.JsonRequestBehavior = JsonRequestBehavior.AllowGet;
+            return jsonResult;
         }
     }
 }

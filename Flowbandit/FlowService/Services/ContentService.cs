@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 
 namespace FlowService.Services
 {
+    //TODO Make this an actual service
     public class ContentService<TRepository, TEntity> : ServiceBase<TRepository>
         where TRepository : class, IFlowRepository, IContentRepository
         where TEntity : class, IHasContent

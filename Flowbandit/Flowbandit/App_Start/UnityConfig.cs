@@ -24,6 +24,8 @@ namespace Flowbandit
             container.RegisterType<IPostRepository, PostRepository>();
             container.RegisterType<ITagRepository, TagRepository>();
             container.RegisterType<IVideoRepository, VideoRepository>();
+            container.RegisterType<INotificationRepository, NotificationRepository>();
+            container.RegisterType<IMessageRepository, MessageRepository>();
 
             container.RegisterType<IFlowLogRepository, LogRepository>();
 

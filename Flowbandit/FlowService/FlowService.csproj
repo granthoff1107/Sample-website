@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,13 +47,18 @@
     <Compile Include="DTOs\Generic\ContentBaseModel.cs" />
     <Compile Include="DTOs\Generic\ContentsBaseModel.cs" />
     <Compile Include="DTOs\Generic\IComment.cs" />
-    <Compile Include="DTOs\Posts\PostsDTO.cs" />
-    <Compile Include="DTOs\Posts\PostDTO.cs" />
+    <Compile Include="DTOs\Generic\MessageBase.cs" />
+    <Compile Include="DTOs\Messages\MessageDTO.cs" />
+    <Compile Include="DTOs\Notifications\NotificationDTO.cs" />
+    <Compile Include="DTOs\Notifications\Posts\PostsDTO.cs" />
+    <Compile Include="DTOs\Notifications\Posts\PostDTO.cs" />
+    <Compile Include="DTOs\Users\UserDTO.cs" />
     <Compile Include="DTOs\Videos\VideoDTO.cs" />
     <Compile Include="DTOs\Videos\VideosDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\ContentService.cs" />
     <Compile Include="Services\General\ServiceBase.cs" />
+    <Compile Include="Services\MessageService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FlowRepository\FlowRepository.csproj">
