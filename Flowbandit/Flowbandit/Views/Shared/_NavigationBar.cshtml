@@ -59,21 +59,18 @@
 
             </li>
             <!-- /.dropdown -->
+           
             <li class="dropdown membersPanel hidden">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
                     <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
                 </a>
                 <ul id="message-dropdown" class="dropdown-menu dropdown-messages">
                     <li>
-                        <a class="text-center" href="#">
-                            <strong>Read All Messages</strong>
-                            <i class="fa fa-angle-right"></i>
-                        </a>
+                        @Html.Partial("_chat")
                     </li>
                 </ul>
                 <!-- /.dropdown-messages -->
             </li>
-
             <li class="dropdown membersPanel hidden">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> @LoginHelper.Username <b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -144,18 +141,4 @@
         <!-- /.sidebar-collapse -->
     </div>
     <!-- /.navbar-static-side -->
-    <div id="messageTemplate" class="hidden">
-        <li class="messageContainer">
-            <a href="#">
-                <div>
-                    <strong class="senderName">John Smith</strong>
-                    <span class="pull-right text-muted">
-                        <em class="moment">Yesterday</em>
-                    </span>
-                </div>
-                <div class="message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
-            </a>
-        </li>
-        <li class="divider"></li>
-    </div>
 </nav>

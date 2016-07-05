@@ -59,6 +59,7 @@
     <Compile Include="Services\ContentService.cs" />
     <Compile Include="Services\General\ServiceBase.cs" />
     <Compile Include="Services\MessageService.cs" />
+    <Compile Include="Services\NotificationService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FlowRepository\FlowRepository.csproj">

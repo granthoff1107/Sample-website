@@ -284,6 +284,7 @@
     <Content Include="Content\bower_components\metisMenu\src\metisMenu.css" />
     <Content Include="Content\bower_components\metisMenu\src\metisMenu.js" />
     <Content Include="Content\css\FlowCss\bootstrap-jQuery-autocomplete.css" />
+    <Content Include="Content\css\FlowCss\chat.css" />
     <Content Include="Content\css\FlowCss\Flowbandit.css" />
     <Content Include="Content\css\iCheck\all.css" />
     <Content Include="Content\css\iCheck\flat\aero%402x.png" />
@@ -419,6 +420,7 @@
     <Content Include="Content\Images\RightBannerS.png" />
     <Content Include="Content\Images\RightBannerSS.png" />
     <Content Include="Content\index.html" />
+    <Content Include="Content\js\FlowJS\chat.js" />
     <Content Include="Content\js\FlowJS\editPost.js" />
     <Content Include="Content\js\FlowJS\editVideo.js" />
     <Content Include="Content\js\FlowJS\Flowbandit.js" />
@@ -703,6 +705,7 @@
     <Content Include="Scripts\tinymce\langs\readme.md" />
     <Content Include="Views\Accounts\Profile.cshtml" />
     <None Include="Properties\PublishProfiles\flowbandit.com - FTP.pubxml" />
+    <Content Include="Views\Shared\_chat.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

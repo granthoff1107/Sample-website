@@ -10,7 +10,8 @@
 
         for (var i = 0; i < messages.length; i++)
         {
-            setMessage(messages[i]);
+            //setMessage(messages[i]);
+            setFriendMessage(messages[i]);
         }
     }).fail(function (xhr, ajaxOptions, thrownError) {
         console.log("error:" + thrownError.toString())
@@ -39,4 +40,21 @@ function setMessage(message)
     $(messageTemplate).find(".messageContainer").attr('data-id', message.SenderUserId)
 
     $("#message-dropdown").prepend(messageTemplate.html());
+}
+
+function setFriendMessage(message)
+{
+    var messageTemplate = $("#inboxTemplate").clone().removeAttr('id').removeClass("hidden");
+    var timestamp = message.Timestamp;
+    console.log(timestamp)
+    var relativeTime = moment(timestamp).fromNow();
+
+    messageTemplate.find(".inbox-message").html(message.Data);
+    messageTemplate.find(".moment").html(relativeTime);
+    messageTemplate.find(".senderName").html(message.SenderUser.Username);
+
+    $(messageTemplate).find(".friend").attr('data-id', message.SenderUserId)
+
+    $("#chats").prepend(messageTemplate.html());
+    
 }
