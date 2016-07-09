@@ -35,6 +35,10 @@ public partial class User
 
         this.Notifications = new HashSet<Notification>();
 
+        this.Friends = new HashSet<Friend>();
+
+        this.Friends1 = new HashSet<Friend>();
+
     }
 
 
@@ -69,6 +73,10 @@ public partial class User
     public virtual ICollection<Message> Messages1 { get; set; }
 
     public virtual ICollection<Notification> Notifications { get; set; }
+
+    public virtual ICollection<Friend> Friends { get; set; }
+
+    public virtual ICollection<Friend> Friends1 { get; set; }
 
 }
 

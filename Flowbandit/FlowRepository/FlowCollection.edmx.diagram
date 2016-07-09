@@ -13,7 +13,7 @@
         <EntityTypeShape EntityType="FlowCollectionModel.User" Width="1.5" PointX="2.875" PointY="4" />
         <AssociationConnector Association="FlowCollectionModel.FK_Users_PrivilegeLevel" />
         <AssociationConnector Association="FlowCollectionModel.FK_UserVerification_User" />
-        <EntityTypeShape EntityType="FlowCollectionModel.ContentComment" Width="1.5" PointX="3.25" PointY="8.625" />
+        <EntityTypeShape EntityType="FlowCollectionModel.ContentComment" Width="1.5" PointX="4" PointY="9.875" />
         <EntityTypeShape EntityType="FlowCollectionModel.Post" Width="1.5" PointX="7.375" PointY="7.375" />
         <EntityTypeShape EntityType="FlowCollectionModel.TagsToContent" Width="1.5" PointX="7.25" PointY="4.875" />
         <EntityTypeShape EntityType="FlowCollectionModel.Video" Width="1.5" PointX="5.625" PointY="8.5" />
@@ -30,11 +30,14 @@
         <EntityTypeShape EntityType="FlowCollectionModel.SubscriptionType" Width="1.5" PointX="0.5" PointY="0.5" />
         <AssociationConnector Association="FlowCollectionModel.FK_Subscriptions_SubscriptionType" />
         <AssociationConnector Association="FlowCollectionModel.FK_Subscriptions_User" />
-        <EntityTypeShape EntityType="FlowCollectionModel.Message" Width="1.5" PointX="0.5" PointY="8" />
-        <EntityTypeShape EntityType="FlowCollectionModel.Notification" Width="1.5" PointX="0.5" PointY="4.875" />
+        <EntityTypeShape EntityType="FlowCollectionModel.Message" Width="1.5" PointX="0.5" PointY="7.375" />
+        <EntityTypeShape EntityType="FlowCollectionModel.Notification" Width="1.5" PointX="0.5" PointY="4.75" />
         <AssociationConnector Association="FlowCollectionModel.FK_Messages_User" />
         <AssociationConnector Association="FlowCollectionModel.FK_Messages_User1" />
         <AssociationConnector Association="FlowCollectionModel.FK_Notifications_User" />
+        <EntityTypeShape EntityType="FlowCollectionModel.Friend" Width="1.5" PointX="0.5" PointY="10.375" />
+        <AssociationConnector Association="FlowCollectionModel.FK_Friends_User" />
+        <AssociationConnector Association="FlowCollectionModel.FK_Friends_User1" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

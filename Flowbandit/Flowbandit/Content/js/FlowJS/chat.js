@@ -3,30 +3,6 @@
     var preloadbg = document.createElement("img");
     preloadbg.src = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/timeline1.png";
 
-    $("#searchfield").focus(function () {
-        if ($(this).val() == "Search contacts...") {
-            $(this).val("");
-        }
-    });
-    $("#searchfield").focusout(function () {
-        if ($(this).val() == "") {
-            $(this).val("Search contacts...");
-
-        }
-    });
-
-    $("#sendmessage input").focus(function () {
-        if ($(this).val() == "Send message...") {
-            $(this).val("");
-        }
-    });
-    $("#sendmessage input").focusout(function () {
-        if ($(this).val() == "") {
-            $(this).val("Send message...");
-
-        }
-    });
-
     $('body').on('click', '#chatbox', function (e) {
         //prevent bootstrap dropdown propagation
         e.stopPropagation();
@@ -35,12 +11,16 @@
     var navContainerIds = ['#friends', '#chats']
     $('body').on('click', '.chats', function () {
         $(navContainerIds.join()).addClass('hidden');
-        $('#chats').removeClass('hidden')
+        $('#chats').removeClass('hidden');
+        $('.chats').addClass('active');
+        $('.friends').removeClass('active');
     });
 
     $('body').on('click', '.friends', function () {
         $(navContainerIds.join()).addClass('hidden');
-        $('#friends').removeClass('hidden')
+        $('#friends').removeClass('hidden');
+        $('.friends').addClass('active');
+        $('.chats').removeClass('active');
     });
 
     $('body').on('click', '.friend', function (e) {

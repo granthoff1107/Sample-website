@@ -28,6 +28,15 @@
           <Property Name="ParentCommentId" Type="int" />
           <Property Name="ContentId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="Friends">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="FriendUserId" Type="int" Nullable="false" />
+          <Property Name="Timestamp" Type="datetime2" Precision="3" Nullable="false" />
+        </EntityType>
         <EntityType Name="Messages">
           <Key>
             <PropertyRef Name="Id" />
@@ -184,6 +193,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Friends_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Friends" Type="Self.Friends" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Friends">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Friends_User1">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Friends" Type="Self.Friends" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Friends">
+              <PropertyRef Name="FriendUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Messages_User">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="Messages" Type="Self.Messages" Multiplicity="*" />
@@ -333,6 +366,7 @@
         <EntityContainer Name="FlowCollectionModelStoreContainer">
           <EntitySet Name="Content" EntityType="Self.Content" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContentComments" EntityType="Self.ContentComments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Friends" EntityType="Self.Friends" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Messages" EntityType="Self.Messages" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Notifications" EntityType="Self.Notifications" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
@@ -360,6 +394,14 @@
           <AssociationSet Name="FK_ContentComments_ContentComments1" Association="Self.FK_ContentComments_ContentComments1">
             <End Role="ContentComments" EntitySet="ContentComments" />
             <End Role="ContentComments1" EntitySet="ContentComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Friends_User" Association="Self.FK_Friends_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Friends" EntitySet="Friends" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Friends_User1" Association="Self.FK_Friends_User1">
+            <End Role="User" EntitySet="User" />
+            <End Role="Friends" EntitySet="Friends" />
           </AssociationSet>
           <AssociationSet Name="FK_Messages_User" Association="Self.FK_Messages_User">
             <End Role="User" EntitySet="User" />
@@ -509,6 +551,15 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Notification" EntitySet="Notifications" />
           </AssociationSet>
+          <EntitySet Name="Friends" EntityType="FlowCollectionModel.Friend" />
+          <AssociationSet Name="FK_Friends_User" Association="FlowCollectionModel.FK_Friends_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Friend" EntitySet="Friends" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Friends_User1" Association="FlowCollectionModel.FK_Friends_User1">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Friend" EntitySet="Friends" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="UserVerification">
           <Key>
@@ -562,6 +613,8 @@
           <NavigationProperty Name="Messages" Relationship="FlowCollectionModel.FK_Messages_User" FromRole="User" ToRole="Message" />
           <NavigationProperty Name="Messages1" Relationship="FlowCollectionModel.FK_Messages_User1" FromRole="User" ToRole="Message" />
           <NavigationProperty Name="Notifications" Relationship="FlowCollectionModel.FK_Notifications_User" FromRole="User" ToRole="Notification" />
+          <NavigationProperty Name="Friends" Relationship="FlowCollectionModel.FK_Friends_User" FromRole="User" ToRole="Friend" />
+          <NavigationProperty Name="Friends1" Relationship="FlowCollectionModel.FK_Friends_User1" FromRole="User" ToRole="Friend" />
           </EntityType>
         <Association Name="FK_Users_PrivilegeLevel">
           <End Type="FlowCollectionModel.PrivilegeLevel" Role="PrivilegeLevel" Multiplicity="1" />
@@ -849,6 +902,41 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Friend">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="FriendUserId" Type="Int32" Nullable="false" />
+          <Property Name="Timestamp" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="User" Relationship="FlowCollectionModel.FK_Friends_User" FromRole="Friend" ToRole="User" />
+          <NavigationProperty Name="User1" Relationship="FlowCollectionModel.FK_Friends_User1" FromRole="Friend" ToRole="User" />
+        </EntityType>
+        <Association Name="FK_Friends_User">
+          <End Type="FlowCollectionModel.User" Role="User" Multiplicity="1" />
+          <End Type="FlowCollectionModel.Friend" Role="Friend" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Friend">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Friends_User1">
+          <End Type="FlowCollectionModel.User" Role="User" Multiplicity="1" />
+          <End Type="FlowCollectionModel.Friend" Role="Friend" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="Friend">
+              <PropertyRef Name="FriendUserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -995,6 +1083,16 @@
                 <ScalarProperty Name="Url" ColumnName="Url" />
                 <ScalarProperty Name="ReceiverUserId" ColumnName="ReceiverUserId" />
                 <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Friends">
+            <EntityTypeMapping TypeName="FlowCollectionModel.Friend">
+              <MappingFragment StoreEntitySet="Friends">
+                <ScalarProperty Name="Timestamp" ColumnName="Timestamp" />
+                <ScalarProperty Name="FriendUserId" ColumnName="FriendUserId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

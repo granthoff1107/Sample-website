@@ -78,7 +78,7 @@ namespace Flowbandit.Controllers
                     }
                 }
 
-                //TODO Move this logic into the Post Repository
+                //TODO Move this logic into the Content Service
                 newPost.Content.UserId = GlobalInfo.UserId.Value;
 
                 var service = new ContentService<IPostRepository, Post>(_repository);

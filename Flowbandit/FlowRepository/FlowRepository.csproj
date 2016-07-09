@@ -95,6 +95,9 @@
     <Compile Include="ExtendedModels\Models\Notification.cs" />
     <Compile Include="ExtendedModels\Models\Post.cs" />
     <Compile Include="ExtendedModels\Models\Video.cs" />
+    <Compile Include="Friend.cs">
+      <DependentUpon>FlowCollection.tt</DependentUpon>
+    </Compile>
     <Compile Include="Info.cs">
       <DependentUpon>FlowCollectionLog.tt</DependentUpon>
     </Compile>
@@ -114,6 +117,7 @@
     <Compile Include="Repositories\Contracts\FlowLog\IFlowLogRepository.cs" />
     <Compile Include="Repositories\Contracts\FlowRepository\IContentRepository.cs" />
     <Compile Include="Repositories\Contracts\FlowRepository\IFlowRepository.cs" />
+    <Compile Include="Repositories\Contracts\FlowRepository\IFriendRepository.cs" />
     <Compile Include="Repositories\Contracts\FlowRepository\IMessageRepository.cs" />
     <Compile Include="Repositories\Contracts\FlowRepository\INotificationRepository.cs" />
     <Compile Include="Repositories\Models\Base\DataRepository.cs" />
@@ -158,6 +162,7 @@
     </Compile>
     <Compile Include="Repositories\Models\FlowLog\LogRepository.cs" />
     <Compile Include="Repositories\Models\FlowRepository\ContentRepository.cs" />
+    <Compile Include="Repositories\Models\FlowRepository\FriendRepository.cs" />
     <Compile Include="Repositories\Models\FlowRepository\MessageRepository.cs" />
     <Compile Include="Repositories\Models\FlowRepository\NotificationRepository.cs" />
     <Compile Include="Repositories\Models\FlowRepository\PostRepository.cs" />

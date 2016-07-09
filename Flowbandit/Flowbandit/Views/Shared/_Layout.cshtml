@@ -13,6 +13,7 @@
         <link href="~/Content/bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
         <link href="~/Content/css/FlowCss/Flowbandit.css" rel="stylesheet" />
         <link href="~/Content/css/FlowCss/chat.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </head>
     <body>
         <div id="wrapper">
@@ -38,6 +39,7 @@
 
         @if (false == LoginHelper.isAnon)
         {
+            <input type="hidden" id="userId" value="@LoginHelper.UserID" />
             <script src="~/Content/js/FlowJS/messages.js"></script>
         }
 

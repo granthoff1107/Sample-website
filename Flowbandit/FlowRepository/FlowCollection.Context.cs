@@ -60,6 +60,8 @@ public partial class FlowCollectionEntities : DbContext
 
     public virtual DbSet<Notification> Notifications { get; set; }
 
+    public virtual DbSet<Friend> Friends { get; set; }
+
 }
 
 }

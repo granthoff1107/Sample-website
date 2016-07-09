@@ -4,10 +4,6 @@
     padding-top: 2px;
 }
 
-#friends .friend:first-child p span{
-    display:block;
-}
-
 .chatwidget * {
     margin: 0px; 
     padding: 0px;
@@ -41,17 +37,50 @@
 	width:310px;
 	border-bottom:1px solid #d8dfe3;	
 }
+
 #topmenu span{
 	float:left;	
-	width: 96px;
+	width: 103px;
     height: 70px;
-    background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/top-menu.png") -3px -118px no-repeat;
+    position: relative;
+    /*background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/top-menu.png") -3px -118px no-repeat;*/
 }
-#topmenu span.friends{margin-bottom:-1px;}
+
+
+
+.button_badge {
+  background-color: #fa3e3e;
+  border-radius: 2px;
+  color: white;
+ 
+  padding: 1px 3px;
+  font-size: 14px;
+  
+  position: absolute; /* Position the badge within the relatively positioned button */
+  top: 42px;
+  right: 25px;
+}
+
+#topmenu span i{
+    font-size:50px;
+    margin: 10px 26px;
+}
+
+#topmenu span:hover {
+    cursor:pointer;
+    color: #e8e8e8;
+}
+
+#topmenu span.active{
+    color: #5bc0de;
+}
+
+/*#topmenu span.friends{margin-bottom:-1px;}
 #topmenu span.chats{background-position:-95px 25px; cursor:pointer;}
 #topmenu span.chats:hover{background-position:-95px -46px; cursor:pointer;}
 #topmenu span.history{background-position:-190px 24px; cursor:pointer;}
-#topmenu span.history:hover{background-position:-190px -47px; cursor:pointer;}
+#topmenu span.history:hover{background-position:-190px -47px; cursor:pointer;}*/
+
 .friend{
 	height:70px;
 	border-bottom:1px solid #e7ebee;		
@@ -138,7 +167,7 @@ p.inbox-message{
 }
 #chatview{
 	width:310px;
-	height:484px;
+	height:495px;
 	position:absolute;
 	top:0;
 	left:0;	
@@ -215,7 +244,8 @@ p.inbox-message{
 #chat-messages div.message{
 	padding:0 0 30px 58px;
 	clear:both;
-	margin-bottom:45px;
+    overflow: auto;
+	/*margin-bottom:45px;*/
 }
 #chat-messages div.message.right{
 	  padding: 0 58px 30px 0;
